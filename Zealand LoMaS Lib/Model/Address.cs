@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zealand_LoMaS_Lib.Repo
+namespace Zealand_LoMaS_Lib.Model
 {
-    internal class AdressRepo
+    internal class Address
     {
     }
 }

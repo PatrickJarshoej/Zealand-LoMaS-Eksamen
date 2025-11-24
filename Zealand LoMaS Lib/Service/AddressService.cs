@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zealand_LoMaS_Lib.Service
 {
-    internal class AdressService
+    internal class AddressService
     {
     }
 }
