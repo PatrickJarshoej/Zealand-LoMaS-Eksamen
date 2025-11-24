@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zealand_LoMaS_Lib.Repo
 {
-    internal class AddressRepo
+    internal class IAddressRepo
     {
     }
 }
