@@ -23,14 +23,21 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("INSERT INTO Transport(TeacherID) VALUES (@TeacherID)", connection);
+                    var command = new SqlCommand("INSERT INTO " +
+                        "Transport(TeacherID, TransportHours, TransportCost , TheDate, InstituteFromID, InstituteToID) " +
+                        "VALUES (@TeacherID, @TransportHours, @TransportCost , @TheDate, @InstituteFromID, @InstituteToID)", connection);
                     command.Parameters.AddWithValue("@TeacherID", transport.TeacherID);
+                    command.Parameters.AddWithValue("@TransportHours", transport.TransportHours);
+                    command.Parameters.AddWithValue("@TransportCost", transport.TransportCost);
+                    command.Parameters.AddWithValue("@TheDate", transport.TheDate);
+                    command.Parameters.AddWithValue("@InstituteFromID", transport.InstitueFromID);
+                    command.Parameters.AddWithValue("@InstituteToID", transport.InstitueToID);
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in Add() in DomicileRepo");
+                    Debug.WriteLine("Error in Add() in TransportRepo");
                     Debug.WriteLine($"Error: {ex.Message}");
                 }
                 finally
