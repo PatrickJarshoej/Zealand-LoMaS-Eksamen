@@ -7,4 +7,8 @@
     <RootNamespace>Zealand_LoMaS_Web</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Zealand LoMaS Lib\Zealand LoMaS Lib.csproj" />
+  </ItemGroup>
+
 </Project>

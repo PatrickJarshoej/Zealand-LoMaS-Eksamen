@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Zealand_LoMaS_Lib.Repo.Interfaces
 {
-    internal interface IAdminRepo
+    public interface IAdminRepo
     {
+        public bool CheckLogIn(string Email, string Password);
     }
 }
