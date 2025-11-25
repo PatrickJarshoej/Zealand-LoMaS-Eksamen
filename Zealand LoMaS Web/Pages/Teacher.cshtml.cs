@@ -9,21 +9,18 @@ using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
 {
-    public class TransportModel : PageModel
+    public class TeacherModel : PageModel
     {
-        TransportService _transportService;
-        public List<Transport> Transports { get; set; }
+        TeacherService _teacherService;
         [BindProperty]
         public int TeacherID { get; set; }
         [BindProperty]
-        public DateTime Date { get; set; }
-        [BindProperty]
-        public int InstituteToID { get; set; }
-        [BindProperty]
-        public int InstituteFromID { get; set; }
-        public TransportModel(TransportService ts)
+        public List<Teacher> Teachers { get; set; }
+
+        public TeacherModel(TeacherService ts)
         {
-            
+            _teacherService = ts;
+            //Teachers = _teacherService.GetAll();
         }
 
         public void OnGet()
@@ -31,8 +28,21 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostCreate()
         {
-            _transportService.Create(TeacherID, Date, InstituteFromID, InstituteToID);
-            return RedirectToPage("/Domiciles");
+
+            _teacherService.CreateTeacher(
+                institutionID: 1,
+                firstName: "Test",
+                lastName: "Teacher",
+                weeklyHours: new TimeSpan(37, 0, 0),
+                hasCar: true,
+                region: "Region Zealand",
+                city: "Køge",
+                postalCode: 4600,
+                roadName: "Testvej",
+                roadNumber: "1",
+                adminIDs: new List<int> { 1, 2 }
+                );
+            return RedirectToPage("/Index");
         }
     }
 
