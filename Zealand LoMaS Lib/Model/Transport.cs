@@ -26,12 +26,20 @@ namespace Zealand_LoMaS_Lib.Model
             InstitueFromID=0;
             InstitueToID=0;
         }
-        public Transport(int teacherID, TimeSpan transportHours, double transportCost, DateTime theDate, int institueFromID, int institueToID, int transportID=0)
+        public Transport(int teacherID, DateTime theDate, int institueFromID, int institueToID, double transportCost=0, int transportID=0)
+        {
+            TransportID = transportID;
+            TeacherID = teacherID;
+            TransportHours = TimeSpan.Zero;
+            TheDate = theDate;
+            InstitueFromID = institueFromID;
+            InstitueToID = institueToID;
+        }
+        public Transport(int teacherID, DateTime theDate, int institueFromID, int institueToID, TimeSpan transportHours, double transportCost = 0, int transportID = 0)
         {
             TransportID = transportID;
             TeacherID = teacherID;
             TransportHours = transportHours;
-            TransportCost = transportCost;
             TheDate = theDate;
             InstitueFromID = institueFromID;
             InstitueToID = institueToID;
