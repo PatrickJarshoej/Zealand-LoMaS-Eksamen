@@ -224,14 +224,14 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public List<Teacher> GetAll()
         {
-            var teacher = new List<Teacher>();
+            var teachers = new List<Teacher>();
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
                 {
                     var command = new SqlCommand("SELECT * FROM Teachers", connection);
                     connection.Open();
-                    teacher = GetTeachersByCommand(command);
+                    teachers = GetTeachersByCommand(command);
                 }
                 catch (Exception ex)
                 {
@@ -242,7 +242,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
 
             }
-            return teacher;
+            return teachers;
         }
 
         public List<Teacher> GetByAdminID(int adminID)
