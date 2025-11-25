@@ -28,7 +28,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     var command = new SqlCommand("INSERT INTO Teachers (FirstName, LastName, WeeklyHours, HasCar) OUTPUT Inserted.TeacherID VALUES (@FirstName, @LastName, @WeeklyHours, @HasCar);", connection);
                     command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
                     command.Parameters.AddWithValue("@LastName", teacher.LastName);
-                    command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours);
+                    command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours.TotalHours);
                     command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
                     connection.Open();
                     int teacherID = (int)command.ExecuteScalar();
