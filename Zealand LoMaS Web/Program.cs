@@ -13,6 +13,8 @@ namespace Zealand_LoMaS_Web
             //Singleton for TransportRepo
             builder.Services.AddSingleton<ITransportRepo, TransportRepo>();
             builder.Services.AddSingleton<TransportService>();
+            builder.Services.AddSingleton<IAdminRepo, AdminRepo>();
+            builder.Services.AddSingleton<AdminService>();
 
             // Add services to the container.
             builder.Services.AddRazorPages();

@@ -18,6 +18,7 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public bool CheckLogIn(string Email, string Password)
         {
+            Console.WriteLine("HepService");
             bool AdminLoggedIn = _adminRepo.CheckLogIn(Email, Password);
             return AdminLoggedIn;
         }
