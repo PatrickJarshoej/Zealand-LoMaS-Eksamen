@@ -1,0 +1,22 @@
+﻿@page
+@model TransportModel
+@{
+    ViewData["Title"] = "Transports";
+}
+<link rel="stylesheet" href="~/css/OurDefeault.css" asp-append-version="true" />
+<h1>@ViewData["Title"]</h1>
+<div class="card">
+    <form method="post" asp-page-handler="Create">
+        <input type="Text" name="TeacherID" asp-for="TeacherID" value="0" required />
+        <input type="submit" value="Create" />
+    </form>
+</div>
+@foreach (Zealand_LoMaS_Lib.Model.Transport transport in Model.Transports)
+{
+    <div class="card">
+        <h1>
+            Transport Id: @transport.TransportID
+        </h1>
+    </div>
+
+}
