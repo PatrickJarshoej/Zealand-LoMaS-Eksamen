@@ -1,3 +1,7 @@
+using Zealand_LoMaS_Lib.Repo;
+using Zealand_LoMaS_Lib.Repo.Interfaces;
+using Zealand_LoMaS_Lib.Service;
+
 namespace Zealand_LoMaS_Web
 {
     public class Program
@@ -5,6 +9,10 @@ namespace Zealand_LoMaS_Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //Singleton for TransportRepo
+            builder.Services.AddSingleton<ITransportRepo, TransportRepo>();
+            builder.Services.AddSingleton<TransportService>();
 
             // Add services to the container.
             builder.Services.AddRazorPages();

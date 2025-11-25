@@ -54,7 +54,41 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public List<Transport> GetAll()
         {
-            throw new NotImplementedException();
+            var transports = new List<Transport>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports", connection);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var transport = new Transport
+                            (
+                                (int)reader["TeacherID"],
+                                (DateTime)reader["theDate"],
+                                (int)reader["InstituteFromID"],
+                                (int)reader["InstituteToID"],
+                                (TimeSpan)reader["TransportHours"],
+                                (double)reader["TransportCost"],
+                                (int)reader["TransportID"]
+                            );
+                            transports.Add(transport);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return transports;
         }
 
         public List<Transport> GetByDate(DateTime date)
