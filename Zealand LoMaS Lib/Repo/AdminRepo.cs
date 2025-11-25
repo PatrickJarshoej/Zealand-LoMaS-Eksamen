@@ -19,9 +19,11 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public bool CheckLogIn(string Email, string Password)
         {
+            Console.WriteLine("Repo");
             bool AdminIsLoginCorrect = false;
             using (var connection = new SqlConnection(_connectionString))
             {
+            Console.WriteLine("Repo1");
                 var command = new SqlCommand("SELECT AdministratorID from Administrators WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", Email);
                 var command2 = new SqlCommand("SELECT AdministratorID from AdministratorPassword WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
@@ -30,12 +32,17 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
 
+                    Console.WriteLine(Email);
+                    Console.WriteLine(Password);
                     using (var reader = command.ExecuteReader())
                     {
                         int AdminID = (int)reader["AdministratorID"];
+                        Console.WriteLine("hep1");
+                        Console.WriteLine(AdminID);
                         command2.Parameters.AddWithValue("@AdministratorID", AdminID);
                         using (var reader2 = command2.ExecuteReader())
                         {
+                            Console.WriteLine("Hep2");
                             AdminIsLoginCorrect = true;
                         }
                     }

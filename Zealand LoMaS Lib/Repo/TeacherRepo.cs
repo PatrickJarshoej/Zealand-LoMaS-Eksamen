@@ -8,5 +8,6 @@ namespace Zealand_LoMaS_Lib.Repo
 {
     internal class TeacherRepo
     {
+
     }
 }

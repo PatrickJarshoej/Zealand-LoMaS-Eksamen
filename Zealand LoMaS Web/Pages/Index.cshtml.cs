@@ -7,15 +7,15 @@ namespace Zealand_LoMaS_Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly AdminService _adminService;
+        private AdminService _adminService;
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty]
         public string Email { get; set; }
         [BindProperty]
         public string Pass { get; set; }
-        //[BindProperty]
-        //public bool IsLoggedIn { get; set; } = false;
+        [BindProperty]
+        public bool IsLoggedIn { get; set; } = false;
 
 
         public IndexModel(ILogger<IndexModel> logger, AdminService adminService)
@@ -35,6 +35,17 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void  OnPostLogIn()
         {
+            Console.WriteLine(Email);
+            Console.WriteLine(Pass);
+            bool IsLoggedIn = _adminService.CheckLogIn(Email, Pass);
+            if (IsLoggedIn == true)
+            {
+                Console.WriteLine("Du er logged in");
+            }
+            else
+            {
+                Console.WriteLine("Did not log in");
+            }
             //User user = _userService.CheckPassword(Userid, Pass);
             //if (user.UserID == 0)
             //{
