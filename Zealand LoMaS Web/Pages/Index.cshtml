@@ -16,5 +16,12 @@
 			<input type="password" asp-for="Pass" class="form-label" required />
 		</div>
 		<input type="submit" value="Log-in" />
+		<h1></h1>
+		@if(Model.FailedToLogIn == true)
+		{	
+		<div class="alert alert-danger" role="alert">
+			Email or Password incorrect
+		</div>
+		}
 	</form>
 </div>

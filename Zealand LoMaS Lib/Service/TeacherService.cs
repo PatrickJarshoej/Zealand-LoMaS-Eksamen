@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zealand_LoMaS_Lib.Model;
+using Zealand_LoMaS_Lib.Repo;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
 
 namespace Zealand_LoMaS_Lib.Service
@@ -33,6 +34,12 @@ namespace Zealand_LoMaS_Lib.Service
                 Console.WriteLine("Error in TeacherService CreateTeacher()");
                 Console.WriteLine("Error: " + ex.Message);
             }
+        }
+        public bool CheckLogIn(string Email, string Password)
+        {
+            Console.WriteLine("HepService");
+            bool AdminLoggedIn = _teacherRepo.CheckLogIn(Email, Password);
+            return AdminLoggedIn;
         }
     }
 }
