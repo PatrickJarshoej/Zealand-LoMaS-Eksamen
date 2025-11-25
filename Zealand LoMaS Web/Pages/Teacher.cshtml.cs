@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.Net;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
 using Zealand_LoMaS_Lib.Service;
@@ -9,13 +10,26 @@ using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
 {
+    [BindProperties]
     public class TeacherModel : PageModel
     {
         TeacherService _teacherService;
-        [BindProperty]
         public int TeacherID { get; set; }
-        [BindProperty]
-        public List<Teacher> Teachers { get; set; }
+        public int InstitutionID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public TimeSpan WeeklyHours { get; set; }
+        public bool HasCar { get; set; } = false;
+
+
+        public string Region { get; private set; }
+        public string City { get; private set; }
+        public int PostalCode { get; private set; }
+        public string RoadName { get; private set; }
+        public string RoadNumber { get; private set; }
+        public List<int> AdminIDs { get; set; }
+
 
         public TeacherModel(TeacherService ts)
         {
@@ -28,20 +42,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostCreate()
         {
-
-            _teacherService.CreateTeacher(
-                institutionID: 1,
-                firstName: "Test",
-                lastName: "Teacher",
-                weeklyHours: new TimeSpan(37, 0, 0),
-                hasCar: true,
-                region: "Region Zealand",
-                city: "Køge",
-                postalCode: 4600,
-                roadName: "Testvej",
-                roadNumber: "1",
-                adminIDs: new List<int> { 1, 2 }
-                );
+            _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
             return RedirectToPage("/Index");
         }
     }

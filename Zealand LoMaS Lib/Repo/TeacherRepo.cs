@@ -25,7 +25,8 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("INSERT INTO Teachers (FirstName, LastName, WeeklyHours, HasCar) OUTPUT Inserted.TeacherID VALUES (@FirstName, @LastName, @WeeklyHours, @HasCar);", connection);
+                    var command = new SqlCommand("INSERT INTO Teachers (Email, FirstName, LastName, WeeklyHours, HasCar) OUTPUT Inserted.TeacherID VALUES (@Email, @FirstName, @LastName, @WeeklyHours, @HasCar);", connection);
+                    command.Parameters.AddWithValue("@Email", teacher.Email);
                     command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
                     command.Parameters.AddWithValue("@LastName", teacher.LastName);
                     command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours.TotalHours);
@@ -71,7 +72,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             finally
             {
-                connection.Close();
+
             }
         }
 
@@ -81,7 +82,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 foreach (var adminID in teacher.AdminIDs)
                 {
-                    var command3 = new SqlCommand("INSERT INTO MapTeachersAdministrators (TeacherID, AdminID) VALUES (@TeacherID, @AdminID);", connection);
+                    var command3 = new SqlCommand("INSERT INTO MapAdministratorsTeachers (TeacherID, AdministratorID) VALUES (@TeacherID, @AdminID);", connection);
                     command3.Parameters.AddWithValue("@TeacherID", tID);
                     command3.Parameters.AddWithValue("@AdminID", adminID);
                     command3.ExecuteNonQuery();
@@ -103,7 +104,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 foreach (var classID in teacher.ClassIDs)
                 {
-                    var command4 = new SqlCommand("INSERT INTO MapTeachersClasses (TeacherID, ClassID) VALUES (@TeacherID, @ClassID);", connection);
+                    var command4 = new SqlCommand("INSERT INTO MapTeacherClasses (TeacherID, ClassID) VALUES (@TeacherID, @ClassID);", connection);
                     command4.Parameters.AddWithValue("@TeacherID", tID);
                     command4.Parameters.AddWithValue("@ClassID", classID);
                     command4.ExecuteNonQuery();
@@ -147,9 +148,11 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             try
             {
-                var command6 = new SqlCommand("INSERT INTO TeacherPasswords (TeacherID, Password) VALUES (@TeacherID, @Password);", connection);
+                string password = "teacherDefault";
+                var command6 = new SqlCommand("INSERT INTO TeacherPasswords (TeacherID, Password) VALUES (@TeacherID, @Password)", connection);
                 command6.Parameters.AddWithValue("@TeacherID", teacherID);
-                command6.Parameters.AddWithValue("@Password", "teacherDefault");
+                command6.Parameters.AddWithValue("@Password", password);
+                command6.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -164,7 +167,7 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             try
             {
-                var command7 = new SqlCommand("INSERT INTO MapTeachersInstitutions (TeacherID, InstitutionID) VALUES (@TeacherID, @InstitutionID);", connection);
+                var command7 = new SqlCommand("INSERT INTO MapInstitutionsTeachers (TeacherID, InstitutionID) VALUES (@TeacherID, @InstitutionID);", connection);
                 command7.Parameters.AddWithValue("@TeacherID", teacherID);
                 command7.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
                 command7.ExecuteNonQuery();

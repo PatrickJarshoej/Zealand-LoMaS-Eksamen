@@ -18,13 +18,13 @@ namespace Zealand_LoMaS_Lib.Service
         }
 
 
-        public void CreateTeacher(int institutionID, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
+        public void CreateTeacher(int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
             try
             {
                 Address address = new Address(region, city, postalCode, roadName, roadNumber);
 
-                Teacher teacher = new Teacher(0, institutionID, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
+                Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
 
                 _teacherRepo.Add(teacher);
             }

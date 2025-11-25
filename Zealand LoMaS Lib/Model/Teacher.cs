@@ -12,6 +12,7 @@ namespace Zealand_LoMaS_Lib.Model
         public int InstitutionID { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public string Email { get; private set; }
         public TimeSpan WeeklyHours { get; private set; }
         public bool HasCar { get; private set; }
         public Address Address { get; private set; }
@@ -22,10 +23,11 @@ namespace Zealand_LoMaS_Lib.Model
 
 
         public Teacher() { }
-        public Teacher(int teacherID, int institutionID, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, Address address, List<int> adminIDs, List<int> classIDs, List<int> transportIDs, List<Competency> competencies)
+        public Teacher(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, Address address, List<int> adminIDs, List<int> classIDs, List<int> transportIDs, List<Competency> competencies)
         {
             TeacherID = teacherID;
             InstitutionID = institutionID;
+            Email = email;
             FirstName = firstName;
             LastName = lastName;
             WeeklyHours = weeklyHours;
@@ -37,10 +39,11 @@ namespace Zealand_LoMaS_Lib.Model
             Competencies = competencies;
         }
 
-        public Teacher(int teacherID, int institutionID, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, Address address, List<int> adminIDs)
+        public Teacher(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, Address address, List<int> adminIDs)
         {
             TeacherID = teacherID;
             InstitutionID = institutionID;
+            Email = email;
             FirstName = firstName;
             LastName = lastName;
             WeeklyHours = weeklyHours;
