@@ -23,7 +23,7 @@ namespace Zealand_LoMaS_Web.Pages
         public int InstituteFromID { get; set; }
         public TransportModel(TransportService ts)
         {
-            
+            _transportService = ts;
         }
 
         public void OnGet()
