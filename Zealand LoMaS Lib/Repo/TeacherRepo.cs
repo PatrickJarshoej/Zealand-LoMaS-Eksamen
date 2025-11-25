@@ -231,5 +231,48 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             throw new NotImplementedException();
         }
+
+        public bool CheckLogIn(string Email, string Password)
+        {
+            Console.WriteLine("Repo");
+            bool TeacherIsLoginCorrect = false;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                Console.WriteLine("Repo1");
+                var command = new SqlCommand("SELECT TeacherID from Teachers WHERE Email = @Email", connection);
+                command.Parameters.AddWithValue("@Email", Email);
+                var command2 = new SqlCommand("SELECT TeacherID from TeacherPassword WHERE Password = @Password and TeacherID = @TeacherID", connection);
+                command2.Parameters.AddWithValue("@Password", Password);
+                connection.Open();
+                try
+                {
+
+                    Console.WriteLine(Email);
+                    Console.WriteLine(Password);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        int TeacherID = (int)reader["TeacherID"];
+                        Console.WriteLine("hep1");
+                        Console.WriteLine(TeacherID);
+                        command2.Parameters.AddWithValue("@TeacherID", TeacherID);
+                        using (var reader2 = command2.ExecuteReader())
+                        {
+                            Console.WriteLine("Hep2");
+                            TeacherIsLoginCorrect = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo CheckLogIn");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return TeacherIsLoginCorrect;
+        }
     }
 }
