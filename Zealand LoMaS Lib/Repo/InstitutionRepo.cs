@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zealand_LoMaS_Lib.Repo.Interfaces
+namespace Zealand_LoMaS_Lib.Repo
 {
-    internal interface IInstituteRepo
+    public class InstituteRepo
     {
     }
 }
