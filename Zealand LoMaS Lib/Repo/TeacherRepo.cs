@@ -229,13 +229,13 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("SELECT * FROM Transports", connection);
+                    var command = new SqlCommand("SELECT * FROM Teachers", connection);
                     connection.Open();
                     teacher = GetTeachersByCommand(command);
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine("Error in GetAll() in TeacherRepo");
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
