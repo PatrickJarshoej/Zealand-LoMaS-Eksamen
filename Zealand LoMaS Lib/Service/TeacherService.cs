@@ -18,7 +18,10 @@ namespace Zealand_LoMaS_Lib.Service
             _teacherRepo = tRepo;
         }
 
-
+        public List<Teacher> GetAll() 
+        { 
+        return _teacherRepo.GetAll();
+        }
         public void CreateTeacher(int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
             try

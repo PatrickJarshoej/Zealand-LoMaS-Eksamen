@@ -7,7 +7,12 @@
 <h1>@ViewData["Title"]</h1>
 <div class="card">
     <form method="post" asp-page-handler="Create">
-        <input type="Text" name="TeacherID" asp-for="TeacherID" value="0" required />
+        <select id="TeacherID" name="TeacherID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
+            {
+                <option value="@teacher.TeacherID">@teacher.Email</option>
+            }
+        </select>
         <input type="submit" value="Create" />
     </form>
 </div>

@@ -29,11 +29,11 @@ namespace Zealand_LoMaS_Lib.Repo
                     var teacher = new Teacher
                     (
                         (int)reader["TeacherID"],
-                        (int)reader["InstitutionID"],
+                        0,//couldn't find institutionID, needs to be fixed
                         (string)reader["Email"],
                         (string)reader["FirstName"],
                         (string)reader["LastName"],
-                        TimeSpan.FromHours((double)reader["WeeklyHours"]),
+                        TimeSpan.FromHours(Decimal.ToDouble((decimal)reader["WeeklyHours"])),
                         (bool)reader["HasCar"],
                         //we need to actually make a get adress and admins, couldn't be bothered right now
                         new Address(),

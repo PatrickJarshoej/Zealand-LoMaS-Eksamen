@@ -12,7 +12,10 @@ namespace Zealand_LoMaS_Web.Pages
     public class TransportModel : PageModel
     {
         TransportService _transportService;
+        TeacherService _teacherService;
         public List<Transport> Transports { get; set; }
+        [BindProperty]
+        public List<Teacher> Teachers { get; set; }
         [BindProperty]
         public int TeacherID { get; set; }
         [BindProperty]
@@ -21,10 +24,12 @@ namespace Zealand_LoMaS_Web.Pages
         public int InstituteToID { get; set; }
         [BindProperty]
         public int InstituteFromID { get; set; }
-        public TransportModel(TransportService ts)
+        public TransportModel(TransportService ts, TeacherService teacherService)
         {
             _transportService = ts;
             Transports = ts.GetAll();
+            _teacherService = teacherService;
+            Teachers=_teacherService.GetAll();
         }
 
         public void OnGet()
