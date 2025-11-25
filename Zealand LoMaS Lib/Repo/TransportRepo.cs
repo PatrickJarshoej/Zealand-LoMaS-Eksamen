@@ -61,23 +61,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     var command = new SqlCommand("SELECT * FROM Transports", connection);
                     connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var transport = new Transport
-                            (
-                                (int)reader["TeacherID"],
-                                (DateTime)reader["theDate"],
-                                (int)reader["InstituteFromID"],
-                                (int)reader["InstituteToID"],
-                                (TimeSpan)reader["TransportHours"],
-                                (double)reader["TransportCost"],
-                                (int)reader["TransportID"]
-                            );
-                            transports.Add(transport);
-                        }
-                    }
+                    transports = GetTransportsByCommand(command);
                 }
                 catch (Exception ex)
                 {
@@ -95,25 +79,122 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             throw new NotImplementedException();
         }
-
+        private List<Transport> GetTransportsByCommand(SqlCommand command) 
+        {
+            var transports = new List<Transport>();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var transport = new Transport
+                    (
+                        (int)reader["TeacherID"],
+                        (DateTime)reader["theDate"],
+                        (int)reader["InstituteFromID"],
+                        (int)reader["InstituteToID"],
+                        (TimeSpan)reader["TransportHours"],
+                        (double)reader["TransportCost"],
+                        (int)reader["TransportID"]
+                    );
+                    transports.Add(transport);
+                }
+            }
+            return( transports );
+        }
         public Transport GetByID(int transportID)
         {
-            throw new NotImplementedException();
+            Transport transport = new Transport();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports WHERE TransportID=@TransportID", connection);
+                    command.Parameters.AddWithValue("@TransportID", transportID);
+                    connection.Open();
+                    transport=GetTransportsByCommand(command)[0];
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByID() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return transport;
         }
 
         public List<Transport> GetByInstitutionFromID(int institutionID)
         {
-            throw new NotImplementedException();
+            var transports = new List<Transport>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports WHERE InstitutionFromID=@institutionID", connection);
+                    command.Parameters.AddWithValue("@institutionID", institutionID);
+                    connection.Open();
+                    transports = GetTransportsByCommand(command);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return transports;
         }
 
         public List<Transport> GetByInstitutionToID(int institutionID)
         {
-            throw new NotImplementedException();
+            var transports = new List<Transport>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports WHERE InstitutionToID=@institutionID", connection);
+                    command.Parameters.AddWithValue("@institutionID", institutionID);
+                    connection.Open();
+                    transports = GetTransportsByCommand(command);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return transports;
         }
 
         public List<Transport> GetByTeacherID(int teacherID)
         {
-            throw new NotImplementedException();
+            var transports = new List<Transport>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports WHERE TeacherID=@TeacherID", connection);
+                    command.Parameters.AddWithValue("@TeacherID", teacherID);
+                    connection.Open();
+                    transports = GetTransportsByCommand(command);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return transports;
         }
 
         public void Update(Transport transport)

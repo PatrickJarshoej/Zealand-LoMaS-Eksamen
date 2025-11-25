@@ -24,10 +24,12 @@ namespace Zealand_LoMaS_Web.Pages
         public TransportModel(TransportService ts)
         {
             _transportService = ts;
+            Transports = ts.GetAll();
         }
 
         public void OnGet()
         {
+
         }
         public IActionResult OnPostCreate()
         {
