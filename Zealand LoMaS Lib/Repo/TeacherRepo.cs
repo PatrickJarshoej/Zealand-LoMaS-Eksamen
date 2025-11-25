@@ -33,7 +33,7 @@ namespace Zealand_LoMaS_Lib.Repo
                         (string)reader["Email"],
                         (string)reader["FirstName"],
                         (string)reader["LastName"],
-                        (TimeSpan)reader["WeeklyHours"],
+                        TimeSpan.FromHours((double)reader["WeeklyHours"]),
                         (bool)reader["HasCar"],
                         //we need to actually make a get adress and admins, couldn't be bothered right now
                         new Address(),
