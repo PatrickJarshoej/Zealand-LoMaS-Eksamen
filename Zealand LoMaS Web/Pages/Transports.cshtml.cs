@@ -43,7 +43,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostCreate()
         {
-            _transportService.Create(TeacherID, Date, InstituteFromID, InstituteToID);
+            _transportService.Create(TeacherID, DateTime.Now, InstituteFromID, InstituteToID);
             return RedirectToPage("/Transports");
         }
     }

@@ -24,12 +24,12 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
                     var command = new SqlCommand("INSERT INTO " +
-                        "Transport(TeacherID, TransportHours, TransportCost , TheDate, InstituteFromID, InstituteToID) " +
-                        "VALUES (@TeacherID, @TransportHours, @TransportCost , @TheDate, @InstituteFromID, @InstituteToID)", connection);
+                        "Transports(TeacherID, TransportHours, TransportCost , Date, InstituteFromID, InstituteToID) " +
+                        "VALUES (@TeacherID, @TransportHours, @TransportCost , @Date, @InstituteFromID, @InstituteToID)", connection);
                     command.Parameters.AddWithValue("@TeacherID", transport.TeacherID);
                     command.Parameters.AddWithValue("@TransportHours", transport.TransportHours);
                     command.Parameters.AddWithValue("@TransportCost", transport.TransportCost);
-                    command.Parameters.AddWithValue("@TheDate", transport.TheDate);
+                    command.Parameters.AddWithValue("@Date", transport.TheDate);
                     command.Parameters.AddWithValue("@InstituteFromID", transport.InstitueFromID);
                     command.Parameters.AddWithValue("@InstituteToID", transport.InstitueToID);
                     connection.Open();
@@ -89,11 +89,11 @@ namespace Zealand_LoMaS_Lib.Repo
                     var transport = new Transport
                     (
                         (int)reader["TeacherID"],
-                        (DateTime)reader["theDate"],
+                        (DateTime)reader["Date"],
                         (int)reader["InstituteFromID"],
                         (int)reader["InstituteToID"],
                         (TimeSpan)reader["TransportHours"],
-                        (double)reader["TransportCost"],
+                        Decimal.ToDouble((decimal)reader["TransportCost"]),
                         (int)reader["TransportID"]
                     );
                     transports.Add(transport);
