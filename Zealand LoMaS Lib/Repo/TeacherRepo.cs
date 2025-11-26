@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Zealand_LoMaS_Lib.Model;
@@ -18,7 +19,31 @@ namespace Zealand_LoMaS_Lib.Repo
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
 
-
+        private List<Teacher> GetTeachersByCommand(SqlCommand command)
+        {
+            var teachers = new List<Teacher>();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var teacher = new Teacher
+                    (
+                        (int)reader["TeacherID"],
+                        0,//couldn't find institutionID, needs to be fixed
+                        (string)reader["Email"],
+                        (string)reader["FirstName"],
+                        (string)reader["LastName"],
+                        TimeSpan.FromHours(Decimal.ToDouble((decimal)reader["WeeklyHours"])),
+                        (bool)reader["HasCar"],
+                        //we need to actually make a get adress and admins, couldn't be bothered right now
+                        new Address(),
+                        new List<int>()
+                    );
+                    teachers.Add(teacher);
+                }
+            }
+            return (teachers);
+        }
         public void Add(Teacher teacher)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -199,7 +224,25 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public List<Teacher> GetAll()
         {
-            throw new NotImplementedException();
+            var teachers = new List<Teacher>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Teachers", connection);
+                    connection.Open();
+                    teachers = GetTeachersByCommand(command);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TeacherRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return teachers;
         }
 
         public List<Teacher> GetByAdminID(int adminID)

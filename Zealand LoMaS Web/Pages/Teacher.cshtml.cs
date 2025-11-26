@@ -6,6 +6,7 @@ using System.Net;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
 using Zealand_LoMaS_Lib.Service;
+using System.Diagnostics;
 
 
 namespace Zealand_LoMaS_Web.Pages
@@ -19,9 +20,11 @@ namespace Zealand_LoMaS_Web.Pages
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public double Hours { get; set; }
         public TimeSpan WeeklyHours { get; set; }
         public bool HasCar { get; set; } = false;
 
+        public int Location { get; set; }
 
         public string Region { get; private set; }
         public string City { get; private set; }
@@ -42,7 +45,69 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostCreate()
         {
-            _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
+            WeeklyHours = TimeSpan.FromHours(Hours);
+            switch (Location)
+            {
+                case 1:
+                    Region = "Region Sjælland";
+                    City = "Roskilde";
+                    PostalCode = 4000;
+                    RoadName = "Maglegårdsvej";
+                    RoadNumber = "2";
+                    break;
+                case 2:
+                    Region = "Region Hovedstaden";
+                    City = "Køge";
+                    PostalCode = 4600;
+                    RoadName = "Lyngbyvej";
+                    RoadNumber = "21";
+                    break;
+                case 3:
+                    Region = "Region Sjælland";
+                    City = "Næstved";
+                    PostalCode = 4700;
+                    RoadName = "Femøvej";
+                    RoadNumber = "3";
+                    break;
+                case 4:
+                    Region = "Region Sjælland";
+                    City = "Slagelse";
+                    PostalCode = 4200;
+                    RoadName = "Bredahlsgade";
+                    RoadNumber = "1A";
+                    break;
+                case 5:
+                    Region = "Region Sjælland";
+                    City = "Holbæk";
+                    PostalCode = 4300;
+                    RoadName = "Anders Larsensvej";
+                    RoadNumber = "7";
+                    break;
+                case 6:
+                    Region = "Region Hovedstaden";
+                    City = "Nødebo";
+                    PostalCode = 3480;
+                    RoadName = "Nødebovej";
+                    RoadNumber = "77A";
+                    break;
+                case 7:
+                    Region = "Region Hovedstaden";
+                    City = "Nykøbing F.";
+                    PostalCode = 4800;
+                    RoadName = "Bispegade";
+                    RoadNumber = "5";
+                    break;
+                default:
+                    Region = "Fiske land";
+                    City = "Aquapolis";
+                    PostalCode = 420;
+                    RoadName = "Fishy Tast";
+                    RoadNumber = "69";
+                    break;
+            }
+            Debug.WriteLine("Weekly Hours: " + WeeklyHours.TotalHours);
+            Debug.WriteLine("Weekly: " + WeeklyHours.ToString());
+            //_teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
             return RedirectToPage("/Index");
         }
     }

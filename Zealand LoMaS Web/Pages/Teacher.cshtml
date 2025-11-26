@@ -7,21 +7,23 @@
 <h1>@ViewData["Title"]</h1>
 <div class="card">
     <form method="post" asp-page-handler="Create">
-        <input type="number" name="InstitutionID" asp-for="InstitutionID" required />
-        <input type="Text" name="FirstName" asp-for="FirstName" required />
-        <input type="Text" name="LastName" asp-for="LastName" value="0" required />
-        <input type="Text" name="Email" asp-for="Email" value="0" required />
-        <input type="Text" name="WeeklyHours" asp-for="WeeklyHours" value="0" required />
+        <input type="number" name="InstitutionID" asp-for="InstitutionID" value="InstitutionID" required />
+        <input type="Text" name="FirstName" asp-for="FirstName" value="First Name" required />
+        <input type="Text" name="LastName" asp-for="LastName" value="Last Name" required />
+        <input type="Text" name="Email" asp-for="Email" value="Email" required />
+        <input type="Text" name="Hours" asp-for="Hours" value="Weekly Hours" required />
         <input type="Text" name="HasCar" asp-for="HasCar" value="false" required />
-        <label for="Machine Selection"></label>
-        <select id="MachineIDs" name="MachineIDs" required>
+        <label for="Location Selection"></label>
+        <select id="Location" name="Location" required>
             <option value="1">Roskilde</option>
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-            <option value="5"></option>
-            <option value="6"></option>
+            <option value="2">Køge</option>
+            <option value="3">Næstved</option>
+            <option value="4">Slagelse</option>
+            <option value="5">Holbæk</option>
+            <option value="6">Nødebo</option>
+            <option value="7">Nykøbing F.</option>
         </select>
+        <input type="number" name="AdminIDs" asp-for="AdminIDs" value="AdminID" required />
         <input type="submit" value="Create" />
     </form>
 </div>
