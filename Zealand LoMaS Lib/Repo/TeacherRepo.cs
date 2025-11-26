@@ -376,9 +376,12 @@ namespace Zealand_LoMaS_Lib.Repo
             using (var connection = new SqlConnection(_connectionString))
             {
                 Console.WriteLine("Repo1");
-                var command = new SqlCommand("SELECT TeacherID from Teachers WHERE Email = @Email", connection);
+                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
+                var command = new SqlCommand("SELECT * from Teachers WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", Email);
-                var command2 = new SqlCommand("SELECT TeacherID from TeacherPassword WHERE Password = @Password and TeacherID = @TeacherID", connection);
+                //command.Parameters.AddWithValue("@Password", Password);
+                //var command2 = new SqlCommand("SELECT * FROM AdministratorPassword WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
+                var command2 = new SqlCommand("SELECT TeacherID from TeacherPasswords WHERE Password = @Password and TeacherID = @TeacherID", connection);
                 command2.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
@@ -388,14 +391,29 @@ namespace Zealand_LoMaS_Lib.Repo
                     Console.WriteLine(Password);
                     using (var reader = command.ExecuteReader())
                     {
-                        int TeacherID = (int)reader["TeacherID"];
+
+                        int teacherID = 0;
+                        if (reader.Read())
+                        {
+                            teacherID = (int)reader["TeacherID"];
+                        }
+                        //AdminIsLoginCorrect = true;
+                        //var admin = new Admin((int)reader["AdministratorID"]);
                         Console.WriteLine("hep1");
-                        Console.WriteLine(TeacherID);
-                        command2.Parameters.AddWithValue("@TeacherID", TeacherID);
+                        Console.WriteLine(teacherID);
+                        command2.Parameters.AddWithValue("@TeacherID", teacherID);
                         using (var reader2 = command2.ExecuteReader())
                         {
-                            Console.WriteLine("Hep2");
-                            TeacherIsLoginCorrect = true;
+                            string Passw = "no Password";
+                            if (reader.Read())
+                            {
+                                Passw = (string)reader["Password"];
+                            }
+                            if (Passw != "no Password")
+                            {
+                                TeacherIsLoginCorrect = true;
+
+                            }
                         }
                     }
                 }
