@@ -7,7 +7,27 @@
 <h1>@ViewData["Title"]</h1>
 <div class="card">
     <form method="post" asp-page-handler="Create">
-        <input type="Text" name="TeacherID" asp-for="TeacherID" value="0" required />
+        Lære:
+        <select id="TeacherID" name="TeacherID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
+            {
+                <option value="@teacher.TeacherID">@teacher.Email</option>
+            }
+        </select>
+        Rejse Til Institut:
+        <select id="InstituteToID" name="InstituteToID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+            {
+                <option value="@institution.InstitutionID">@institution.Location.City</option>
+            }
+        </select>
+        Rejse Fra Institut:
+        <select id="InstituteFromID" name="InstituteFromID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+            {
+                <option value="@institution.InstitutionID">@institution.Location.City</option>
+            }
+        </select>
         <input type="submit" value="Create" />
     </form>
 </div>

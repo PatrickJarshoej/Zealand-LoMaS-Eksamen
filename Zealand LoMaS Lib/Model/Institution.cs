@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zealand_LoMaS_Lib.Model
 {
-    internal class Institution
+    public class Institution
     {
         public int InstitutionID { get; private set; }
         public Address Location { get; private set; }
