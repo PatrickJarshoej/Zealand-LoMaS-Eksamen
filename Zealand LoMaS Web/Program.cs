@@ -22,6 +22,10 @@ namespace Zealand_LoMaS_Web
             builder.Services.AddSingleton<ITeacherRepo, TeacherRepo>();
             builder.Services.AddSingleton<TeacherService>();
 
+            //Singleton for InstitutionRepo
+            builder.Services.AddSingleton<IInstitutionRepo, InstitutionRepo>();
+            builder.Services.AddSingleton<InstitutionService>();
+
             // Add services to the container.
             builder.Services.AddRazorPages();
 

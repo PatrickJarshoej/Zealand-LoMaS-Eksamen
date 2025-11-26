@@ -12,10 +12,10 @@ using Zealand_LoMaS_Lib.Repo.Interfaces;
 
 namespace Zealand_LoMaS_Lib.Repo
 {
-    public class InstituteRepo : IInstitutionRepo
+    public class InstitutionRepo : IInstitutionRepo
     {
         private string _connectionString;
-        public InstituteRepo() 
+        public InstitutionRepo() 
         {
             _connectionString = string.Empty;
         }
@@ -30,7 +30,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     (
                         (int)reader["InstitutionID"],
                         //we need a map reader
-                        new Address(),
+                        new Address((string)reader["Region"], (string)reader["City"], (int)reader["PostalCode"], (string)reader["RoadName"], (string)reader["RoadNumber"]),
                         new List<int>(),
                         new List<int>()
                     );
