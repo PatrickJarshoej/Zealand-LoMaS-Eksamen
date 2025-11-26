@@ -44,12 +44,12 @@ namespace Zealand_LoMaS_Web.Pages
             Console.WriteLine(Email);
             Console.WriteLine(Pass);
             IsLoggedInAdmin = _adminService.CheckLogIn(Email, Pass);
+            IsLoggedInteacher = _teacherService.CheckLogIn(Email, Pass);
             if (IsLoggedInAdmin == true)
             {
                 Console.WriteLine("Admin er logged in");
             }
-            IsLoggedInteacher = _teacherService.CheckLogIn(Email, Pass);
-            if (IsLoggedInteacher == true)
+            else if (IsLoggedInteacher == true)
             {
                 Console.WriteLine("Lærer er logged in");
             }

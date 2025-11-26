@@ -39,21 +39,30 @@ namespace Zealand_LoMaS_Lib.Repo
                     Console.WriteLine(Password);
                     using (var reader = command.ExecuteReader())
                     {
-                        
+
                         int adminID = 0;
                         if (reader.Read())
                         {
                             adminID = (int)reader["AdministratorID"];
                         }
                         //AdminIsLoginCorrect = true;
-                            //var admin = new Admin((int)reader["AdministratorID"]);
-                            Console.WriteLine("hep1");
-                            Console.WriteLine(adminID);
-                            command2.Parameters.AddWithValue("@AdministratorID", adminID);
-                            using (var reader2 = command2.ExecuteReader())
+                        //var admin = new Admin((int)reader["AdministratorID"]);
+                        Console.WriteLine("hep1");
+                        Console.WriteLine(adminID);
+                        command2.Parameters.AddWithValue("@AdministratorID", adminID);
+                        using (var reader2 = command2.ExecuteReader())
                         {
                             Console.WriteLine("Hep2");
-                            AdminIsLoginCorrect = true;
+                            string Passw = "no Password";
+                            if (reader.Read())
+                            {
+                                Passw = (string)reader["Password"];
+                            }
+                            if (Passw != "no Password")
+                            {
+                                AdminIsLoginCorrect = true;
+
+                            }
                         }
                     }
                 }
