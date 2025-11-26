@@ -15,7 +15,7 @@ namespace Zealand_LoMaS_Lib.Repo
         private string _connectionString;
         public TransportRepo() 
         {
-            _connectionString= string.Empty;
+            _connectionString= "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
         public void Add(Transport transport)
         {

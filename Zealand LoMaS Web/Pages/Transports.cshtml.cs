@@ -13,9 +13,12 @@ namespace Zealand_LoMaS_Web.Pages
     {
         TransportService _transportService;
         TeacherService _teacherService;
+        InstitutionService _institutionService;
         public List<Transport> Transports { get; set; }
         [BindProperty]
         public List<Teacher> Teachers { get; set; }
+        [BindProperty]
+        public List<Institution> Institutions { get; set; }
         [BindProperty]
         public int TeacherID { get; set; }
         [BindProperty]
@@ -24,12 +27,14 @@ namespace Zealand_LoMaS_Web.Pages
         public int InstituteToID { get; set; }
         [BindProperty]
         public int InstituteFromID { get; set; }
-        public TransportModel(TransportService ts, TeacherService teacherService)
+        public TransportModel(TransportService ts, TeacherService teacherService,InstitutionService iS)
         {
             _transportService = ts;
             Transports = ts.GetAll();
             _teacherService = teacherService;
             Teachers=_teacherService.GetAll();
+            _institutionService = iS;
+            Institutions=_institutionService.GetAll();
         }
 
         public void OnGet()
@@ -39,7 +44,7 @@ namespace Zealand_LoMaS_Web.Pages
         public IActionResult OnPostCreate()
         {
             _transportService.Create(TeacherID, Date, InstituteFromID, InstituteToID);
-            return RedirectToPage("/Domiciles");
+            return RedirectToPage("/Transports");
         }
     }
 
