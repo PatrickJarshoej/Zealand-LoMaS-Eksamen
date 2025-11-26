@@ -27,12 +27,16 @@
         <input type="submit" value="Create" />
     </form>
 </div>
-@* @foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
+@foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
 {
     <div class="card">
         <h1>
-            Transport Id: @transport.TransportID
+            Teacher Id: @teacher.TeacherID
+            @teacher.FirstName @teacher.LastName
         </h1>
+        <p>
+            @teacher.Email
+        </p>
     </div>
 
-} *@
+}

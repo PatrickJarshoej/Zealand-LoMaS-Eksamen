@@ -15,6 +15,7 @@ namespace Zealand_LoMaS_Web.Pages
     public class TeacherModel : PageModel
     {
         TeacherService _teacherService;
+        public List<Teacher> Teachers { get; set; }
         public int TeacherID { get; set; }
         public int InstitutionID { get; set; }
         public string FirstName { get; set; }
@@ -42,6 +43,7 @@ namespace Zealand_LoMaS_Web.Pages
 
         public void OnGet()
         {
+            Teachers = _teacherService.GetAll();
         }
         public IActionResult OnPostCreate()
         {

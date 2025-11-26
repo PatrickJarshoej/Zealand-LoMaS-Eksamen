@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Zealand_LoMaS_Lib.Model;
@@ -19,30 +20,123 @@ namespace Zealand_LoMaS_Lib.Repo
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
 
-        private List<Teacher> GetTeachersByCommand(SqlCommand command)
+        private List<Teacher> GetTeachersByCommand(SqlCommand command, SqlConnection connection)
         {
             var teachers = new List<Teacher>();
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    var teacher = new Teacher
+                    Debug.WriteLine("Hello, World!");
+                    Teacher teacher = new Teacher
                     (
                         (int)reader["TeacherID"],
-                        (int)reader["InstitutionID"],
+                        //0,
+                        GetInstitutionID((int)reader["TeacherID"], connection),
                         (string)reader["Email"],
                         (string)reader["FirstName"],
                         (string)reader["LastName"],
-                        TimeSpan.FromHours((double)reader["WeeklyHours"]),
+                        TimeSpan.FromHours(Decimal.ToDouble((decimal)reader["WeeklyHours"])),
                         (bool)reader["HasCar"],
-                        //we need to actually make a get adress and admins, couldn't be bothered right now
-                        new Address(),
-                        new List<int>()
+                        GetAddress((int)reader["TeacherID"], connection),
+                        GetAdmins((int)reader["TeacherID"], connection)
                     );
                     teachers.Add(teacher);
                 }
             }
             return (teachers);
+        }
+        private int GetInstitutionID(int teacherID, SqlConnection connection)
+        {
+            Debug.WriteLine("Get InstitutionID!");
+            int institutionID = 0;
+            
+            try
+            {
+                var command = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsTeachers WHERE TeacherID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", teacherID);
+                using (var reader2 = command.ExecuteReader())
+                {
+
+                    if (reader2.Read())
+                    {
+                        institutionID = (int)reader2["InstitutionID"];
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetInstitutionID() in TeacherRepo");
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+            return institutionID;
+        }
+        private Address GetAddress(int id, SqlConnection connection)
+        {
+            Debug.WriteLine("Get Address!");
+
+            Address address = null;
+           
+            try
+            {
+                var command = new SqlCommand("SELECT * FROM TeacherAddress WHERE TeacherID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+
+                //connection.Open();
+                using (var reader3 = command.ExecuteReader())
+                {
+                    if (reader3.Read())
+                    {
+                        address = new Address
+                        (
+                            (string)reader3["Region"],
+                            (string)reader3["City"],
+                            (int)reader3["PostalCode"],
+                            (string)reader3["RoadName"],
+                            (string)reader3["RoadNumber"]
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetAddress() in TeacherRepo");
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+            }
+
+            
+            return address;
+        }
+        private List<int> GetAdmins(int id, SqlConnection connection)
+        {
+            List<int> adminIDs = new List<int>();
+            try
+            {
+                var command = new SqlCommand("SELECT * FROM MapAdministratorsTeachers WHERE TeacherID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                //connection.Open();
+                using (var reader4 = command.ExecuteReader())
+                {
+                    while (reader4.Read())
+                    {
+                        adminIDs.Add((int)reader4["AdministratorID"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetAdmin() in TeacherRepo");
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+            }
+
+            return adminIDs;
         }
         public void Add(Teacher teacher)
         {
@@ -77,7 +171,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
-        public void AddTeacherAddress(Teacher teacher, int tID, SqlConnection connection)
+        private void AddTeacherAddress(Teacher teacher, int tID, SqlConnection connection)
         {
             try
             {
@@ -101,7 +195,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        public void AddTeacherAdmins(Teacher teacher, int tID, SqlConnection connection)
+        private void AddTeacherAdmins(Teacher teacher, int tID, SqlConnection connection)
         {
             try
             {
@@ -123,7 +217,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        public void AddTeacherClasses(Teacher teacher, int tID, SqlConnection connection)
+        private void AddTeacherClasses(Teacher teacher, int tID, SqlConnection connection)
         {
             try
             {
@@ -145,7 +239,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        public void AddTeacherCompetencies(Teacher teacher, int tID, SqlConnection connection)
+        private void AddTeacherCompetencies(Teacher teacher, int tID, SqlConnection connection)
         {
             try
             {
@@ -169,7 +263,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        public void AddTeacherPassword(Teacher teacher, int teacherID, SqlConnection connection)
+        private void AddTeacherPassword(Teacher teacher, int teacherID, SqlConnection connection)
         {
             try
             {
@@ -188,7 +282,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
         }
-        public void AddTeacherInstitution(Teacher teacher, int teacherID, SqlConnection connection)
+        private void AddTeacherInstitution(Teacher teacher, int teacherID, SqlConnection connection)
         {
             try
             {
@@ -231,7 +325,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     var command = new SqlCommand("SELECT * FROM Teachers", connection);
                     connection.Open();
-                    teachers = GetTeachersByCommand(command);
+                    teachers = GetTeachersByCommand(command, connection);
                 }
                 catch (Exception ex)
                 {
@@ -307,7 +401,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("There is a fault in AdminRepo CheckLogIn");
+                    Debug.WriteLine("There is a fault in TeacherRepo CheckLogIn");
                     Debug.WriteLine(ex);
                 }
                 finally
