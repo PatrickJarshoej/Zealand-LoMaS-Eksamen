@@ -1,10 +1,12 @@
-﻿namespace Zealand_LoMaS_Web.wwwroot.css {
-    public class OurDefeault
-
+﻿namespace Zealand_LoMaS_Web.wwwroot.css 
 {
+    public class OurDefeault
+        {
+        }
+}
 
 
-.card {
+.card{
     margin-bottom: 5%;
     border-color: gray;
     border-radius: 25px;
