@@ -25,12 +25,13 @@ namespace Zealand_LoMaS_Lib.Repo
             using (var connection = new SqlConnection(_connectionString))
             {
                 Console.WriteLine("Repo1");
-                var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
-                //var command = new SqlCommand("SELECT AdministratorID FROM Administrators WHERE Email = @Email", connection);
+                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
+                var command = new SqlCommand("SELECT * from Administrators WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", Email);
-                command.Parameters.AddWithValue("@Password", Password);
+                //command.Parameters.AddWithValue("@Password", Password);
                 //var command2 = new SqlCommand("SELECT * FROM AdministratorPassword WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
-                //command2.Parameters.AddWithValue("@Password", Password);
+                var command2 = new SqlCommand("SELECT AdministratorID from AdministratorPasswords WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
+                command2.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
                 {
@@ -38,20 +39,21 @@ namespace Zealand_LoMaS_Lib.Repo
                     Console.WriteLine(Password);
                     using (var reader = command.ExecuteReader())
                     {
+                        
+                        int adminID = 0;
                         if (reader.Read())
                         {
-
-                            int id = (int)reader["AdministratorID"];
-                            AdminIsLoginCorrect = true;
+                            adminID = (int)reader["AdministratorID"];
+                        }
+                        //AdminIsLoginCorrect = true;
                             //var admin = new Admin((int)reader["AdministratorID"]);
-                            //Console.WriteLine("hep1");
-                            //Console.WriteLine(id);
-                            //command2.Parameters.AddWithValue("@AdministratorID", id);
-                            //using (var reader2 = command2.ExecuteReader())
-                            //{
-                            //    Console.WriteLine("Hep2");
-                            //    AdminIsLoginCorrect = true;
-                            //}
+                            Console.WriteLine("hep1");
+                            Console.WriteLine(adminID);
+                            command2.Parameters.AddWithValue("@AdministratorID", adminID);
+                            using (var reader2 = command2.ExecuteReader())
+                        {
+                            Console.WriteLine("Hep2");
+                            AdminIsLoginCorrect = true;
                         }
                     }
                 }
