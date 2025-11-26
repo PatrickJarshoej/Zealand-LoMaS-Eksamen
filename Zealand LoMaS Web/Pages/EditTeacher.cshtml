@@ -1,5 +1,5 @@
 ﻿@page
-@model TeacherModel
+@model EditTeacherModel
 @{
     ViewData["Title"] = "Transports";
 }
@@ -30,20 +30,3 @@
         <input type="submit" value="Create" />
     </form>
 </div>
-@foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
-{
-    <div class="card">
-        <h1>
-            Teacher Id: @teacher.TeacherID
-            @teacher.FirstName @teacher.LastName
-        </h1>
-        <p>
-            @teacher.Email
-        </p>
-        <form method="post" asp-page-handler="Editt">
-            <input type="hidden" name="TeacherID" value="@teacher.TeacherID" />
-            <input type="submit" formaction="/Teacher?handler=Delete" value="Delete" />½
-        </form>
-    </div>
-
-}
