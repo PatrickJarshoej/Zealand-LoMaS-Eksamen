@@ -7,12 +7,13 @@ using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
 using Zealand_LoMaS_Lib.Service;
 using System.Diagnostics;
+using Microsoft.Identity.Client;
 
 
 namespace Zealand_LoMaS_Web.Pages
 {
     [BindProperties]
-    public class TeacherModel : PageModel
+    public class EditTeacherModel : PageModel
     {
         TeacherService _teacherService;
         InstitutionService _institutionService;
@@ -37,7 +38,7 @@ namespace Zealand_LoMaS_Web.Pages
         public List<Institution> Institutions { get; set; }
 
 
-        public TeacherModel(TeacherService ts, InstitutionService iS)
+        public EditTeacherModel(TeacherService ts, InstitutionService iS)
         {
             _teacherService = ts;
             _institutionService = iS;
@@ -48,31 +49,11 @@ namespace Zealand_LoMaS_Web.Pages
             Teachers = _teacherService.GetAll();
             Institutions = _institutionService.GetAll();
         }
-        public IActionResult OnPostCreate()
+        
+        public void OnPostEdit()
         {
-            //We need to pull up the full list of institutions again because it forgets our existing list the moment a button is pressed
-            Institutions = _institutionService.GetAll();
-            WeeklyHours = TimeSpan.FromHours(Hours);
-            Console.WriteLine(Location);
-            Region = Institutions[Location].Location.Region;
-            City = Institutions[Location].Location.City;
-            PostalCode = Institutions[Location].Location.PostalCode;
-            RoadName = Institutions[Location].Location.RoadName;
-            RoadNumber = Institutions[Location].Location.RoadNumber;
-
             
-            //Debug.WriteLine("Weekly Hours: " + WeeklyHours.TotalHours);
-            //Debug.WriteLine("Weekly: " + WeeklyHours.ToString());
-            //Debug.WriteLine($"Region: {Region} City: {City} PostalCode: {PostalCode} RoadName: {RoadName} RoadNumber: {RoadNumber}");
-            _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
-            return RedirectToPage("/Index");
-        }
-        public IActionResult OnPostEdit()
-        {
 
-
-
-            return RedirectToPage("/Teacher");
         }
     }
 

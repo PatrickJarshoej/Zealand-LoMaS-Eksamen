@@ -27,7 +27,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 while (reader.Read())
                 {
-                    Debug.WriteLine("Hello, World!");
+                    //Debug.WriteLine("Hello, World!");
                     Teacher teacher = new Teacher
                     (
                         (int)reader["TeacherID"],
@@ -48,7 +48,7 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private int GetInstitutionID(int teacherID, SqlConnection connection)
         {
-            Debug.WriteLine("Get InstitutionID!");
+            //Debug.WriteLine("Get InstitutionID!");
             int institutionID = 0;
 
             try
@@ -74,7 +74,7 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private Address GetAddress(int id, SqlConnection connection)
         {
-            Debug.WriteLine("Get Address!");
+            //Debug.WriteLine("Get Address!");
 
             Address address = null;
 
