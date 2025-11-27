@@ -39,11 +39,10 @@ namespace Zealand_LoMaS_Lib.Service
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
-        public bool CheckLogIn(string Email, string Password)
+        public int LogIn(string Email, string Password)
         {
-            Console.WriteLine("HepService");
-            bool AdminLoggedIn = _teacherRepo.CheckLogIn(Email, Password);
-            return AdminLoggedIn;
+            int TeacherLoggedIn = _teacherRepo.GetLogIn(Email, Password);
+            return TeacherLoggedIn;
         }
     }
 }

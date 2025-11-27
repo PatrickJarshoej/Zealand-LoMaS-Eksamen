@@ -8,6 +8,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
 {
     public interface IAdminRepo
     {
-        public bool CheckLogIn(string Email, string Password);
+        public int GetLogIn(string Email, string Password);
     }
 }

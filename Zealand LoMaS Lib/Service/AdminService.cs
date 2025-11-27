@@ -16,11 +16,10 @@ namespace Zealand_LoMaS_Lib.Service
         {
             _adminRepo = adminRepo;
         }
-        public bool CheckLogIn(string Email, string Password)
+        public int LogIn(string Email, string Password)
         {
-            Console.WriteLine("HepService");
-            bool AdminLoggedIn = _adminRepo.CheckLogIn(Email, Password);
-            return AdminLoggedIn;
+            int adminID = _adminRepo.GetLogIn(Email, Password);
+            return adminID;
         }
     }
 }

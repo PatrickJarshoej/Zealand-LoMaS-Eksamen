@@ -18,52 +18,25 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
-        public bool CheckLogIn(string Email, string Password)
+        public int GetLogIn(string Email, string Password)
         {
-            Console.WriteLine("Repo");
-            bool AdminIsLoginCorrect = false;
+            int adminID = 0;
             using (var connection = new SqlConnection(_connectionString))
             {
-                Console.WriteLine("Repo1");
-                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
-                var command = new SqlCommand("SELECT * from Administrators WHERE Email = @Email", connection);
+                var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
                 command.Parameters.AddWithValue("@Email", Email);
-                //command.Parameters.AddWithValue("@Password", Password);
-                //var command2 = new SqlCommand("SELECT * FROM AdministratorPassword WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
-                var command2 = new SqlCommand("SELECT AdministratorID from AdministratorPasswords WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
-                command2.Parameters.AddWithValue("@Password", Password);
+                command.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
                 {
-                    Console.WriteLine(Email);
-                    Console.WriteLine(Password);
                     using (var reader = command.ExecuteReader())
                     {
 
-                        int adminID = 0;
                         if (reader.Read())
                         {
                             adminID = (int)reader["AdministratorID"];
                         }
-                        //AdminIsLoginCorrect = true;
-                        //var admin = new Admin((int)reader["AdministratorID"]);
-                        Console.WriteLine("hep1");
-                        Console.WriteLine(adminID);
-                        command2.Parameters.AddWithValue("@AdministratorID", adminID);
-                        using (var reader2 = command2.ExecuteReader())
-                        {
-                            Console.WriteLine("Hep2");
-                            string Passw = "no Password";
-                            if (reader.Read())
-                            {
-                                Passw = (string)reader["Password"];
-                            }
-                            if (Passw != "no Password")
-                            {
-                                AdminIsLoginCorrect = true;
-
-                            }
-                        }
+                        return adminID;
                     }
                 }
                 catch (Exception ex)
@@ -76,7 +49,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     connection.Close();
                 }
             }
-            return AdminIsLoginCorrect;
+            return adminID;
         }
     }
 }

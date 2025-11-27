@@ -16,11 +16,16 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public string Pass { get; set; }
         [BindProperty]
-        public bool IsLoggedInAdmin { get; set; } = false;
+        public int AdminID { get; set; } = 0;
         [BindProperty]
-        public bool IsLoggedInteacher { get; set; } = false;
+        public int TeacherID { get; set; } = 0;
         [BindProperty]
         public bool FailedToLogIn { get; set; } = false;
+        [BindProperty]
+        public string CookieID { get; set; } = "0";
+        [BindProperty]
+        public string CookieIsAdmin { get; set; } = "false";
+
 
 
         public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService)
@@ -32,7 +37,7 @@ namespace Zealand_LoMaS_Web.Pages
 
         public void OnGet()
         {
-
+            //HttpContext.Request.Cookies("UserID", CookieID);
         }
 
         public void OnPost()
@@ -41,37 +46,25 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostLogIn()
         {
-            Console.WriteLine(Email);
-            Console.WriteLine(Pass);
-            IsLoggedInAdmin = _adminService.CheckLogIn(Email, Pass);
-            IsLoggedInteacher = _teacherService.CheckLogIn(Email, Pass);
-            if (IsLoggedInAdmin == true)
+            AdminID = _adminService.LogIn(Email, Pass);
+            TeacherID = _teacherService.LogIn(Email, Pass);
+            if (AdminID != 0)
             {
-                Console.WriteLine("Admin er logged in");
+                Debug.WriteLine("Admin er logged in");
+                CookieID = Convert.ToString(AdminID);
+                CookieIsAdmin = "true";
+
             }
-            else if (IsLoggedInteacher == true)
+            else if (TeacherID != 0)
             {
-                Console.WriteLine("Lærer er logged in");
+                Debug.WriteLine("Lærer er logged in");
+                CookieID = Convert.ToString(TeacherID);
             }
             else
             {
-                Console.WriteLine("Did not log in");
+                Debug.WriteLine("Did not log in");
                 FailedToLogIn = true;
             }
-            //User user = _userService.CheckPassword(Userid, Pass);
-            //if (user.UserID == 0)
-            //{
-            //    Debug.WriteLine("Error in Username or password");
-            //    IsLoggedIn = false;
-            //    Debug.WriteLine($"{user.FirstName} is logged in? {IsLoggedIn}");
-            //    return RedirectToPage("/Index");
-            //}
-            //else
-            //{
-            //    IsLoggedIn = true;
-            //    Debug.WriteLine($"{user.FirstName} is logged in? {IsLoggedIn}");
-            //    return RedirectToPage("/Profile", user);
-            //}
         }
     }
 }

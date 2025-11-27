@@ -50,7 +50,7 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             Debug.WriteLine("Get InstitutionID!");
             int institutionID = 0;
-            
+
             try
             {
                 var command = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsTeachers WHERE TeacherID = @ID", connection);
@@ -77,7 +77,7 @@ namespace Zealand_LoMaS_Lib.Repo
             Debug.WriteLine("Get Address!");
 
             Address address = null;
-           
+
             try
             {
                 var command = new SqlCommand("SELECT * FROM TeacherAddress WHERE TeacherID = @ID", connection);
@@ -108,7 +108,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
 
-            
+
             return address;
         }
         private List<int> GetAdmins(int id, SqlConnection connection)
@@ -187,7 +187,7 @@ namespace Zealand_LoMaS_Lib.Repo
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in AddTeacherAddress() in TeacherRepo");
-                Debug.WriteLine("Error"+ ex.Message);
+                Debug.WriteLine("Error" + ex.Message);
             }
             finally
             {
@@ -369,20 +369,14 @@ namespace Zealand_LoMaS_Lib.Repo
             throw new NotImplementedException();
         }
 
-        public bool CheckLogIn(string Email, string Password)
+        public int GetLogIn(string Email, string Password)
         {
-            Console.WriteLine("Repo");
-            bool TeacherIsLoginCorrect = false;
+            int teacherID = 0;
             using (var connection = new SqlConnection(_connectionString))
             {
-                Console.WriteLine("Repo1");
-                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
-                var command = new SqlCommand("SELECT * from Teachers WHERE Email = @Email", connection);
+                var command = new SqlCommand("SELECT * FROM teachers WHERE Email = @Email AND (select TeacherID FROM Teachers WHERE Email = @Email) = ALL (Select TeacherID FROM TeacherPasswords WHERE Password = @Password)", connection);
                 command.Parameters.AddWithValue("@Email", Email);
-                //command.Parameters.AddWithValue("@Password", Password);
-                //var command2 = new SqlCommand("SELECT * FROM AdministratorPassword WHERE Password = @Password and AdministratorID = @AdministratorID", connection);
-                var command2 = new SqlCommand("SELECT TeacherID from TeacherPasswords WHERE Password = @Password and TeacherID = @TeacherID", connection);
-                command2.Parameters.AddWithValue("@Password", Password);
+                command.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
                 {
@@ -392,29 +386,11 @@ namespace Zealand_LoMaS_Lib.Repo
                     using (var reader = command.ExecuteReader())
                     {
 
-                        int teacherID = 0;
                         if (reader.Read())
                         {
                             teacherID = (int)reader["TeacherID"];
                         }
-                        //AdminIsLoginCorrect = true;
-                        //var admin = new Admin((int)reader["AdministratorID"]);
-                        Console.WriteLine("hep1");
-                        Console.WriteLine(teacherID);
-                        command2.Parameters.AddWithValue("@TeacherID", teacherID);
-                        using (var reader2 = command2.ExecuteReader())
-                        {
-                            string Passw = "no Password";
-                            if (reader.Read())
-                            {
-                                Passw = (string)reader["Password"];
-                            }
-                            if (Passw != "no Password")
-                            {
-                                TeacherIsLoginCorrect = true;
-
-                            }
-                        }
+                        return teacherID;
                     }
                 }
                 catch (Exception ex)
@@ -427,7 +403,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     connection.Close();
                 }
             }
-            return TeacherIsLoginCorrect;
+            return teacherID;
         }
     }
 }

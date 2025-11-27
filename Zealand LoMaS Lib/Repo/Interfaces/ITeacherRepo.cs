@@ -20,6 +20,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         public Teacher GetByClassID(int classID);
         public void ChangePassword(int id, string newPass, string oldPass);
         public bool CheckPassword(int id, string pass);
-        public bool CheckLogIn(string Email, string Password);
+        public int GetLogIn(string Email, string Password);
     }
 }
