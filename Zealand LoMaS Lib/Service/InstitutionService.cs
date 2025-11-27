@@ -37,7 +37,7 @@ namespace Zealand_LoMaS_Lib.Service
 
         public Institution GetByID(int id)
         {
-            throw new NotImplementedException();
+            return _institutionRepo.GetByID(id);
         }
 
         public void Update(Institution institution)
