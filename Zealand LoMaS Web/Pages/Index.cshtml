@@ -42,6 +42,10 @@ else
 				HttpContext.Response.Cookies.Append("UserID", Model.CookieID);
 				HttpContext.Response.Cookies.Append("UserStatus", Model.CookieIsAdmin);
 			}
+			@if(Model.NeedToRefresh == true)
+			{
+				<script>window.location.reload()</script>;
+			}
 		</form>
 	</div>
 }

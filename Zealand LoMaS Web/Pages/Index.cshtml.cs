@@ -22,6 +22,8 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public bool FailedToLogIn { get; set; } = false;
         [BindProperty]
+        public bool NeedToRefresh { get; set; } = false;
+        [BindProperty]
         public string CookieID { get; set; } = "0";
         [BindProperty]
         public string CookieIsAdmin { get; set; } = "false";
@@ -37,7 +39,7 @@ namespace Zealand_LoMaS_Web.Pages
 
         public void OnGet()
         {
-            //HttpContext.Request.Cookies("UserID", CookieID);
+            NeedToRefresh = false;
         }
 
         public void OnPost()
@@ -53,12 +55,14 @@ namespace Zealand_LoMaS_Web.Pages
                 Debug.WriteLine("Admin er logged in");
                 CookieID = Convert.ToString(AdminID);
                 CookieIsAdmin = "true";
+                NeedToRefresh = true;
 
             }
             else if (TeacherID != 0)
             {
                 Debug.WriteLine("Lærer er logged in");
                 CookieID = Convert.ToString(TeacherID);
+                NeedToRefresh = true;
             }
             else
             {
