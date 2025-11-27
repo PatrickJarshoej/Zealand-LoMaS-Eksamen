@@ -22,6 +22,10 @@ namespace Zealand_LoMaS_Lib.Service
         {
             return _teacherRepo.GetAll();
         }
+        public Teacher GetByID(int ID)
+        {
+            return _teacherRepo.GetByID(ID);
+        }
 
         public void CreateTeacher(int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {

@@ -351,7 +351,27 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Teacher GetByID(int id)
         {
-            throw new NotImplementedException();
+            Teacher teacher = new();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Teachers WHERE TeacherID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", id);
+                    connection.Open();
+                    teacher = GetTeachersByCommand(command, connection)[0] ;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByID() in TeacherRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally 
+                {
+                    connection.Close(); 
+                }
+            }
+            return teacher;
         }
 
         public List<Teacher> GetByInstitutionID(int institutionID)
