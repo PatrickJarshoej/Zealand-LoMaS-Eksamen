@@ -1,0 +1,82 @@
+﻿@page
+@model TransportModel
+@{
+    ViewData["Title"] = "Transport";
+}
+<link rel="stylesheet" href="~/css/OurDefeault.css" asp-append-version="true" />
+<h1>@ViewData["Title"]</h1>
+@if (Model.Edit == false)
+{
+    <div class="card">
+        <h1>
+            Domicile Id: @Model.SpecificDomicile.DomicileID
+        </h1>
+
+        <p>
+            Adress: @Model.SpecificDomicile.Roadname @Model.SpecificDomicile.Door, @Model.SpecificDomicile.Floor. etage, @Model.SpecificDomicile.Postalcode @Model.SpecificDomicile.City, @Model.SpecificDomicile.Region, @Model.SpecificDomicile.Country
+        </p>
+
+        <p>
+            User Ids:
+            @foreach (var i in Model.SpecificDomicile.UserIDs)
+            {
+                <text>@i  </text>
+            }
+        </p>
+        <p>
+            PriceTally: @Model.SpecificDomicile.PriceTally
+        </p>
+        <form method="post" asp-page-handler="Delete">
+            <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificDomicile.DomicileID" />
+            <input type="submit" value="Delete" />
+        </form>
+        <div>
+            <form method="post" asp-page-handler="Edit">
+                <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificDomicile.DomicileID" />
+                <input type="hidden" name="Edit" asp-for="Edit" value="true" />
+                <input type="submit" value="Edit" />
+            </form>
+        </div>
+    </div>
+}
+else if (Model.Edit == true)
+{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            <h1>
+                Domicile Id: @Model.SpecificDomicile.DomicileID
+            </h1>
+
+            <p>
+                Adress: @Model.SpecificDomicile.Roadname @Model.SpecificDomicile.Door, @Model.SpecificDomicile.Floor. etage, @Model.SpecificDomicile.Postalcode @Model.SpecificDomicile.City, @Model.SpecificDomicile.Region, @Model.SpecificDomicile.Country
+                New RoadName: <input type="text" name="TempRoadName" asp-for="TempRoadName" Value="@Model.SpecificDomicile.Roadname" />
+                New Door: <input type="text" name="TempDoor" asp-for="TempDoor" Value="@Model.SpecificDomicile.Door" />
+                New Region: <input type="text" name="TempRegion" asp-for="TempRegion" Value="@Model.SpecificDomicile.Region" />
+                New City: <input type="text" name="TempCity" asp-for="TempCity" Value="@Model.SpecificDomicile.City" />
+                New Country:<input type="text" name="TempCountry" asp-for="TempCountry" Value="@Model.SpecificDomicile.Country" />
+            </p>
+            <p>
+                User Ids:
+                @foreach (var i in Model.SpecificDomicile.UserIDs)
+                {
+                    <text>@i  </text>
+                }
+                All Users:
+                @foreach (var i in Model.Users)
+                {
+                    <text>@i.UserID  </text>
+                }
+                New User:<input type="text" name="TempUserID" asp-for="TempUserID" />
+                Delete a user?:<input type="text" name="DeleteTempUserID" asp-for="DeleteTempUserID" />
+            </p>
+
+            <p>
+                PriceTally: @Model.SpecificDomicile.PriceTally
+            </p>
+
+            <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificDomicile.DomicileID" />
+            <input type="submit" value="Save Changes" />
+        </form>
+    </div>
+
+}

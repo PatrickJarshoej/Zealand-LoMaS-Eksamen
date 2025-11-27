@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using Zealand_LoMaS_Lib.Model;
@@ -9,7 +10,7 @@ using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
 {
-    public class TransportsModel : PageModel
+    public class TransportModel : PageModel
     {
         TransportService _transportService;
         TeacherService _teacherService;
@@ -20,16 +21,20 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public List<Institution> Institutions { get; set; }
         [BindProperty]
-        public int TempTransportID { get; set; }
-        [BindProperty]
         public int TeacherID { get; set; }
         [BindProperty]
         public DateTime Date { get; set; }
         [BindProperty]
         public int InstituteToID { get; set; }
         [BindProperty]
+        public int TempID { get; set; }
+        [BindProperty]
+        public Transport SpecificTransport { get; set; }
+        [BindProperty]
+        public bool Edit { get; set; }
+        [BindProperty]
         public int InstituteFromID { get; set; }
-        public TransportsModel(TransportService ts, TeacherService teacherService,InstitutionService iS)
+        public TransportModel(TransportService ts, TeacherService teacherService,InstitutionService iS)
         {
             _transportService = ts;
             Transports = ts.GetAll();
@@ -39,14 +44,17 @@ namespace Zealand_LoMaS_Web.Pages
             Institutions=_institutionService.GetAll();
         }
 
-        public void OnGet()
+        public void OnGet(int transportID)
         {
-
+            SpecificTransport=_transportService.GetByID(transportID);
+            TempID = transportID;
         }
-        public IActionResult OnPostCreate()
+        public void OnPostEdit()
         {
-            _transportService.Create(TeacherID, DateTime.Now, InstituteFromID, InstituteToID);
-            return RedirectToPage("/Transports");
+            Debug.WriteLine("Temp Domicile ID: " + TempID);
+            Edit = true;
+            SpecificTransport = _transportService.GetByID(TempID);
+            Users = _userService.GetAll();
         }
     }
 
