@@ -6,7 +6,7 @@
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
 <div class="card">
-    <form method="post" asp-page-handler="Create">
+    <form method="post" asp-page-handler="Edit">
         <label for="Institution Selection"></label>
         <select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
@@ -40,8 +40,8 @@
                 }
             }
         </select>
-        <input type="number" name="AdminIDs" asp-for="AdminIDs" value="AdminID" required />
-        <input type="submit" value="Create" />
+        <input type="number" name="AdminIDs" asp-for="AdminIDs" value="@Model.Teacher.AdminIDs" required />
+        <input type="submit" value="Edit" />
     </form>
     <p>@Model.Teacher.InstitutionID</p>
 </div>

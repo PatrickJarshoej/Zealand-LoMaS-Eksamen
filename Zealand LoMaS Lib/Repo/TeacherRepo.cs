@@ -138,7 +138,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
             return adminIDs;
         }
-        public void Add(Teacher teacher)
+        public void Add(Teacher teacher, string password)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -156,9 +156,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     AddTeacherAddress(teacher, teacherID, connection);
                     AddTeacherAdmins(teacher, teacherID, connection);
                     AddTeacherInstitution(teacher, teacherID, connection);
-                    AddTeacherPassword(teacher, teacherID, connection);
-                    //AddTeacherClasses(teacher, teacherID, connection);
-                    //AddTeacherCompetencies(teacher, teacherID, connection);
+                    AddTeacherPassword(teacher, teacherID, password, connection);
                 }
                 catch (Exception ex)
                 {
@@ -263,11 +261,11 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        private void AddTeacherPassword(Teacher teacher, int teacherID, SqlConnection connection)
+        private void AddTeacherPassword(Teacher teacher, int teacherID, string password, SqlConnection connection)
         {
             try
             {
-                string password = "teacherDefault";
+                
                 var command6 = new SqlCommand("INSERT INTO TeacherPasswords (TeacherID, Password) VALUES (@TeacherID, @Password)", connection);
                 command6.Parameters.AddWithValue("@TeacherID", teacherID);
                 command6.Parameters.AddWithValue("@Password", password);
@@ -384,10 +382,87 @@ namespace Zealand_LoMaS_Lib.Repo
             throw new NotImplementedException();
         }
 
-        public void Update(Teacher t)
+        public void Update(Teacher teacher)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    //var command = new SqlCommand("UPDATE Teachers SET TeacherID=@TeacherID, InstitutionID=@InstitutionID, FirstName=@FirstName, LastName=@LastName, Email=@Email, WeeklyHours=@WeeklyHours, HasCar=@HasCar WHERE TeacherID = @TeacherID ");
+                    //command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                    //command.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
+                    //command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
+                    //command.Parameters.AddWithValue("@LastName", teacher.LastName);
+                    //command.Parameters.AddWithValue("@Email", teacher.Email);
+                    //command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours);
+                    //command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
+                    connection.Open();
+                    UpdateAdminIDs(teacher.TeacherID, teacher.AdminIDs, connection);
+
+                }
+                catch (Exception ex) 
+                {
+                    Debug.WriteLine("There was an error in Update() in TeacherRepo");
+                    Debug.WriteLine("Error: " + ex);
+                }
+                finally 
+                {
+                    connection.Close();
+                }
+            }
         }
+
+        private void UpdateAdminIDs(int teacherID, List<int> adminIDs, SqlConnection connection)
+        {
+            try
+            {
+                List<int> tempAdmins = new();
+                var command = new SqlCommand("SELECT COUNT(TeacherID) AS NumberOfAdmins FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
+                command.Parameters.AddWithValue("@TeacherID", teacherID);
+                var reader = command.ExecuteReader();
+                int count = 0;
+                if (reader.Read())
+                {
+                    count = (int)reader["NumberOfAdmins"];
+                }
+                var command2 = new SqlCommand("Select AdministratorID FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
+                command2.Parameters.AddWithValue("@TeacherID", teacherID);
+                Debug.WriteLine("Count: " + count);
+                //Debug.WriteLine("Admin Count: " + adminIDs.Count());
+                if(adminIDs != null)
+                {
+                    if (count == adminIDs.Count())
+                    {
+                        //Call all admin ids currently connected to the teacher
+                        using (var reader2 = command2.ExecuteReader())
+                        {
+                            while (reader2.Read())
+                            {
+                                tempAdmins.Add((int)reader2["AdministratorID"]);
+                            }
+                            if (adminIDs == tempAdmins)
+                            {
+                                Debug.WriteLine("admin == admin");
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                //else if ()
+                //Check what numbers are the same as the 
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in UpdateAdmin() in TeacherRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+
+
+        }
+
 
         public int GetLogIn(string Email, string Password)
         {

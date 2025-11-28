@@ -54,7 +54,7 @@ namespace Zealand_LoMaS_Web.Pages
         
         public void OnPostEdit()
         {
-            
+            _teacherService.Update(Teacher);
 
         }
     }

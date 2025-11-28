@@ -34,8 +34,8 @@ namespace Zealand_LoMaS_Lib.Service
                 Address address = new Address(region, city, postalCode, roadName, roadNumber);
 
                 Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
-
-                _teacherRepo.Add(teacher);
+                string password = "Default";
+                _teacherRepo.Add(teacher, password);
             }
             catch (Exception ex)
             {
@@ -47,6 +47,10 @@ namespace Zealand_LoMaS_Lib.Service
         {
             int TeacherLoggedIn = _teacherRepo.GetLogIn(Email, Password);
             return TeacherLoggedIn;
+        }
+        public void Update(Teacher t)
+        {
+            _teacherRepo.Update(t);
         }
     }
 }
