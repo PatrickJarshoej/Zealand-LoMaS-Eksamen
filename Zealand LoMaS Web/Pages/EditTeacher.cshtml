@@ -8,25 +8,40 @@
 <div class="card">
     <form method="post" asp-page-handler="Create">
         <label for="Institution Selection"></label>
-        <select id="InstitutionID" name="InstitutionID" required>
+        <select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
             {
-                <option value="@institution.InstitutionID">@institution.Location.City</option>
+                if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                {
+                    <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                }
+                else
+                {
+                    <option value="@institution.InstitutionID">@institution.Location.City</option>
+                }
             }
         </select>
-        <input type="Text" name="FirstName" asp-for="FirstName" value="First Name" required />
-        <input type="Text" name="LastName" asp-for="LastName" value="Last Name" required />
-        <input type="Text" name="Email" asp-for="Email" value="Email" required />
-        <input type="Text" name="Hours" asp-for="Hours" value="Weekly Hours" required />
-        <input type="Text" name="HasCar" asp-for="HasCar" value="false" required />
+        <input type="Text" name="FirstName" asp-for="FirstName" value="@Model.Teacher.FirstName" required />
+        <input type="Text" name="LastName" asp-for="LastName" value="@Model.Teacher.LastName" required />
+        <input type="Text" name="Email" asp-for="Email" value="@Model.Teacher.Email" required />
+        <input type="Text" name="Hours" asp-for="Hours" value="@Model.Teacher.WeeklyHours" required />
+        <input type="Text" name="HasCar" asp-for="HasCar" value="@Model.Teacher.HasCar" required />
         <label for="Location Selection"></label>
         <select id="Location" name="Location" required>
-            @for (int i = 0; i< Model.Institutions.Count; i++)
+            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
             {
-                <option value="@i">@Model.Institutions[i].Location.City</option>
+                if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                {
+                    <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                }
+                else
+                {
+                    <option value="@institution.InstitutionID">@institution.Location.City</option>
+                }
             }
         </select>
         <input type="number" name="AdminIDs" asp-for="AdminIDs" value="AdminID" required />
         <input type="submit" value="Create" />
     </form>
+    <p>@Model.Teacher.InstitutionID</p>
 </div>
