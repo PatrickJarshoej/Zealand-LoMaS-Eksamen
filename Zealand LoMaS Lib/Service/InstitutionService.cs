@@ -15,9 +15,11 @@ namespace Zealand_LoMaS_Lib.Service
         { 
         _institutionRepo = institutionRepo;
         }
-        public void Create(List<int> adminIDs, List<int> classIDs, string region, string city, int postalCode, string roadName, string RoadNumber)
+        public void Create(string region, string city, int postal, string roadName, string roadNumber)
         {
-            throw new NotImplementedException();
+            Address address = new Address(region, city, postal, roadName, roadNumber);
+            Institution institute = new Institution(address);
+            _institutionRepo.Add(institute);
         }
 
         public void DeleteByID(int id)

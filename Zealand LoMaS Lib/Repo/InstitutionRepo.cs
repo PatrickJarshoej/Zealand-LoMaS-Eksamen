@@ -41,8 +41,31 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public void Add(Institution institution)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("INSERT INTO Institutions (Region, City, PostalCode, RoadName, RoadNumber) VALUES (@Region, @City, @PostalCode, @RoadName, @RoadNumber);", connection);
+                    command.Parameters.AddWithValue("@Region", institution.Location.Region);
+                    command.Parameters.AddWithValue("@City", institution.Location.City);
+                    command.Parameters.AddWithValue("@PostalCode", institution.Location.PostalCode);
+                    command.Parameters.AddWithValue("@RoadName", institution.Location.RoadName);
+                    command.Parameters.AddWithValue("@RoadNumber", institution.Location.RoadNumber);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error in Add() in InstitutionRepo");
+                    Debug.WriteLine("Error" + ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
+        
 
         public void DeleteByID(int id)
         {

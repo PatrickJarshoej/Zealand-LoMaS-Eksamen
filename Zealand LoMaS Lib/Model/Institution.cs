@@ -14,7 +14,15 @@ namespace Zealand_LoMaS_Lib.Model
         public List<int> ClassIDs { get; private set; }
 
 
-        public Institution() { } 
+        public Institution() { }
+        public Institution(Address address)
+        {
+            InstitutionID = 0;
+            Location = address;
+            AdminIDs = new List<int>();
+            ClassIDs = new List<int>();
+        }
+       
         public Institution(int institutionID, Address location, List<int> adminIDs, List<int> classIDs)
         {
             InstitutionID = institutionID;
