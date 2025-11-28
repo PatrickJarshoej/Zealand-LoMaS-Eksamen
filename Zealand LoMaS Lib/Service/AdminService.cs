@@ -17,10 +17,20 @@ namespace Zealand_LoMaS_Lib.Service
         {
             _adminRepo = adminRepo;
         }
-        public int LogIn(string Email, string Password)
+        public int VerifyLogIn(string email, string password)
         {
-            int adminID = _adminRepo.GetLogIn(Email, Password);
-            return adminID;
+            string hashedpassword = Argon2.Hash(password);
+            int adminID = _adminRepo.GetAdminIDByEmail(email);
+            string StoredPassword = _adminRepo.GetPasswordByEmail(email);
+            if (hashedpassword == StoredPassword)
+            {
+                return adminID;
+            }
+            else
+            {
+                adminID = 0;
+                return adminID;
+            }
         }
     }
 }

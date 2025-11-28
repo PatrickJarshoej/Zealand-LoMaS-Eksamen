@@ -61,8 +61,8 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostLogIn()
         {
-            AdminID = _adminService.LogIn(Email, Pass);
-            TeacherID = _teacherService.LogIn(Email, Pass);
+            AdminID = _adminService.VerifyLogIn(Email, Pass);
+            TeacherID = _teacherService.VerifyLogIn(Email, Pass);
             if (AdminID != 0)
             {
                 Debug.WriteLine("Admin er logged in");

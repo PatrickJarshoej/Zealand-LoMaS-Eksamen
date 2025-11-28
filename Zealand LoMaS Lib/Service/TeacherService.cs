@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Isopoh.Cryptography.Argon2;
+using Microsoft.Data.SqlClient;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
@@ -43,10 +46,20 @@ namespace Zealand_LoMaS_Lib.Service
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
-        public int LogIn(string Email, string Password)
+        public int VerifyLogIn(string email, string password)
         {
-            int TeacherLoggedIn = _teacherRepo.GetLogIn(Email, Password);
-            return TeacherLoggedIn;
+            string hashedpassword = Argon2.Hash(password);
+            int teacherID = _teacherRepo.GetTeacherIDByEmail(email);
+            string StoredPassword = _teacherRepo.GetPasswordByEmail(email);
+            if (hashedpassword == StoredPassword && teacherID !=0)
+            {
+                return teacherID;
+            }
+            else
+            {
+                teacherID = 0;
+                return teacherID;
+            }
         }
     }
 }
