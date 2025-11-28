@@ -9,6 +9,19 @@
 	<div class="text-center">
 		<h1 class="display-1">Admin</h1>
 	</div>
+
+	<div class="text-center">
+		<h3 class="display-3">Institutions</h3>
+
+		<form method="post" asp-page-handler="CreateInstitute">
+			<input type="text" asp-for="InstituteRegion" placeholder="Region" class="form-label" required />
+			<input type="text" asp-for="InstituteCity" placeholder="By" class="form-label" required />
+			<input type="number" asp-for="InstitutePostal" placeholder="Postnummer" class="form-label" required />
+			<input type="text" asp-for="InstituteRoadName" placeholder="Vejnavn" class="form-label" required />
+			<input type="text" asp-for="InstituteRoadNumber" placeholder="Vejnummer" class="form-label" required />
+			<input type="submit" value="Create Institute" />
+		</form>
+	</div>
 }
 else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
 {
@@ -41,6 +54,10 @@ else
 			{
 				HttpContext.Response.Cookies.Append("UserID", Model.CookieID);
 				HttpContext.Response.Cookies.Append("UserStatus", Model.CookieIsAdmin);
+			}
+			@if(Model.NeedToRefresh == true)
+			{
+				<script>window.location.reload()</script>;
 			}
 		</form>
 	</div>

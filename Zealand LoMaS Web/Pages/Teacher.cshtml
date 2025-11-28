@@ -40,9 +40,9 @@
         <p>
             @teacher.Email
         </p>
-        <form method="post" asp-page-handler="Editt">
+        <form method="post" asp-page-handler="Edit">
             <input type="hidden" name="TeacherID" value="@teacher.TeacherID" />
-            <input type="submit" formaction="/Teacher?handler=Delete" value="Delete" />½
+            <input type="submit" value="Edit" />
         </form>
     </div>
 

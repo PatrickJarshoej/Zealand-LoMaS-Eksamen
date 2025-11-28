@@ -72,7 +72,7 @@ namespace Zealand_LoMaS_Web.Pages
 
 
 
-            return RedirectToPage("/Teacher");
+            return RedirectToPage("/EditTeacher", new { TeacherID = TeacherID });
         }
     }
 

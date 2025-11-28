@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
@@ -9,6 +10,7 @@ namespace Zealand_LoMaS_Web.Pages
     {
         private AdminService _adminService;
         private TeacherService _teacherService;
+        private InstitutionService _institutionService;
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty]
@@ -22,22 +24,35 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public bool FailedToLogIn { get; set; } = false;
         [BindProperty]
+        public bool NeedToRefresh { get; set; } = false;
+        [BindProperty]
         public string CookieID { get; set; } = "0";
         [BindProperty]
         public string CookieIsAdmin { get; set; } = "false";
+        [BindProperty]
+        public string InstituteRegion { get; set; }
+        [BindProperty]
+        public string InstituteCity { get; set; }
+        [BindProperty]
+        public int InstitutePostal { get; set; }
+        [BindProperty]
+        public string InstituteRoadName { get; set; }
+        [BindProperty]
+        public string InstituteRoadNumber { get; set; }
 
 
 
-        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService)
+        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService)
         {
             _logger = logger;
             _adminService = adminService;
             _teacherService = teacherService;
+            _institutionService = institutionService;
         }
 
         public void OnGet()
         {
-            //HttpContext.Request.Cookies("UserID", CookieID);
+            NeedToRefresh = false;
         }
 
         public void OnPost()
@@ -53,18 +68,24 @@ namespace Zealand_LoMaS_Web.Pages
                 Debug.WriteLine("Admin er logged in");
                 CookieID = Convert.ToString(AdminID);
                 CookieIsAdmin = "true";
+                NeedToRefresh = true;
 
             }
             else if (TeacherID != 0)
             {
                 Debug.WriteLine("Lærer er logged in");
                 CookieID = Convert.ToString(TeacherID);
+                NeedToRefresh = true;
             }
             else
             {
                 Debug.WriteLine("Did not log in");
                 FailedToLogIn = true;
             }
+        }
+        public void OnPostCreateInstitute()
+        {
+            _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
         }
     }
 }
