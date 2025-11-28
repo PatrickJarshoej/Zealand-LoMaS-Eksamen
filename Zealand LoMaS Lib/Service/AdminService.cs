@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Isopoh.Cryptography.Argon2;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
 

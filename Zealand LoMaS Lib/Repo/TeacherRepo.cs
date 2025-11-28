@@ -344,7 +344,32 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Teacher GetByClassID(int classID)
         {
-            throw new NotImplementedException();
+            Teacher teacher = new();
+            int teacherID = 0;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT TeacherID FROM Classes WHERE ClassID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", classID);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        teacherID = (int)reader["TeacherID"];
+                    }
+                    teacher = GetByID(teacherID);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByClassID() in TeacherRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return teacher;
         }
 
         public Teacher GetByID(int id)
@@ -379,7 +404,32 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Teacher GetByTransportID(int transportID)
         {
-            throw new NotImplementedException();
+            Teacher teacher = new();
+            int teacherID = 0;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT TeacherID FROM Transports WHERE TransportID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", transportID);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        teacherID = (int)reader["TeacherID"];
+                    }
+                    teacher = GetByID(teacherID);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByTransportID() in TeacherRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return teacher;
         }
 
         public void Update(Teacher teacher)

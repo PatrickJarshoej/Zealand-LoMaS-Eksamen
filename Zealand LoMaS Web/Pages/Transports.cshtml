@@ -1,9 +1,9 @@
 ﻿@page
-@model TransportModel
+@model TransportsModel
 @{
     ViewData["Title"] = "Transports";
 }
-<link rel="stylesheet" href="~/css/OurDefeault.css" asp-append-version="true" />
+<link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
 <div class="card">
     <form method="post" asp-page-handler="Create">
@@ -37,6 +37,14 @@
         <h1>
             Transport Id: @transport.TransportID
         </h1>
+        <div>
+            <!--This button runs the OnPostShow method and defines a temporary booking id we can send over -->
+            <form method="post" asp-page-handler="Show">
+                <!--to the next page -->
+                <input type="hidden" name="TempTransportID" asp-for="TempTransportID" value="@transport.TransportID" />
+                <input type="submit" value="Open Transport" />
+            </form>
+        </div>
     </div>
 
 }
