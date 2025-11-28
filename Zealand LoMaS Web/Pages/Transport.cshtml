@@ -1,0 +1,47 @@
+﻿@page
+@model TransportModel
+@{
+    ViewData["Title"] = "Transport";
+}
+<link rel="stylesheet" href="~/css/OurDefeault.css" asp-append-version="true" />
+<h1>@ViewData["Title"]</h1>
+@if (Model.Edit == false)
+{
+    <div class="card">
+        <h1>
+            Domicile Id: @Model.SpecificTransport.TransportID
+        </h1>
+
+        <p>
+            InstitueFromID: @Model.SpecificTransport.InstitueFromID
+        </p>
+
+        <p>
+            InstitueToID: @Model.SpecificTransport.InstitueToID
+        </p>
+
+        <p>
+            TeacherID:@Model.SpecificTransport.TeacherID
+        </p>
+        <form method="post" asp-page-handler="Delete">
+            <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificTransport.TransportID" />
+            <input type="submit" value="Delete" />
+        </form>
+        <div>
+            <form method="post" asp-page-handler="Edit">
+                <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificTransport.TransportID" />
+                <input type="hidden" name="Edit" asp-for="Edit" value="true" />
+                <input type="submit" value="Edit" />
+            </form>
+        </div>
+    </div>
+}
+else if (Model.Edit == true)
+{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            
+        </form>
+    </div>
+
+}

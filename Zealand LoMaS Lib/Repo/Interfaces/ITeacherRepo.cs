@@ -9,7 +9,7 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
 {
     public interface ITeacherRepo
     {
-        public void Add(Teacher t);
+        public void Add(Teacher t, string password);
         public List<Teacher> GetAll();
         public Teacher GetByID(int id);
         public void Update(Teacher t);

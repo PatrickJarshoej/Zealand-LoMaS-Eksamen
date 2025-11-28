@@ -102,7 +102,26 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Institution GetByID(int id)
         {
-            throw new NotImplementedException();
+            var institution =new Institution();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Institutions WHERE InstitutionID=@InstitutionID", connection);
+                    command.Parameters.AddWithValue("@InstitutionID", id);
+                    connection.Open();
+                    institution = GetInstitutionsByCommand(command)[0];
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByID() in InstitutionRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+
+            }
+            return institution;
         }
 
         public void Update(Institution institution)

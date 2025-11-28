@@ -199,7 +199,25 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Update(Transport transport)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("UPDATE Transports SET Cost=@cost,WHERE TransportID=@TransportID  ", connection);
+                    command.Parameters.AddWithValue("@cost", transport.TransportCost);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in Add() in DomicileRepo");
+                    Debug.WriteLine($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }

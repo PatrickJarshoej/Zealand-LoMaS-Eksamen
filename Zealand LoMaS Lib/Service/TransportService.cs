@@ -37,7 +37,7 @@ namespace Zealand_LoMaS_Lib.Service
 
         public Transport GetByID(int transportID)
         {
-            throw new NotImplementedException();
+            return _transportRepo.GetByID(transportID);
         }
 
         public List<Transport> GetByInstitutionFromID(int institutionID)
@@ -55,9 +55,18 @@ namespace Zealand_LoMaS_Lib.Service
             throw new NotImplementedException();
         }
 
-        public void Update(Transport transport)
+        public void Update(int transportID, DateTime date, double newCost)
         {
-            throw new NotImplementedException();
+            var earlierTransport=GetByID(transportID);
+            var updatedTransport = new Transport(
+                earlierTransport.TeacherID,
+                date,
+                earlierTransport.InstitueFromID,
+                earlierTransport.InstitueToID,
+                newCost,
+                transportID
+                );
+            _transportRepo.Update( updatedTransport );
         }
     }
 }
