@@ -54,7 +54,6 @@ namespace Zealand_LoMaS_Web.Pages
             Debug.WriteLine("Temp Domicile ID: " + TempID);
             Edit = true;
             SpecificTransport = _transportService.GetByID(TempID);
-            Users = _userService.GetAll();
         }
     }
 

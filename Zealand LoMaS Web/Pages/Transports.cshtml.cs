@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using Zealand_LoMaS_Lib.Model;
@@ -47,6 +48,11 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _transportService.Create(TeacherID, DateTime.Now, InstituteFromID, InstituteToID);
             return RedirectToPage("/Transports");
+        }
+        public IActionResult OnPostShow()
+        {
+            Debug.WriteLine("Temp Transport ID: " + TempTransportID);
+            return RedirectToPage("/Transport", new { TransportID = TempTransportID });
         }
     }
 
