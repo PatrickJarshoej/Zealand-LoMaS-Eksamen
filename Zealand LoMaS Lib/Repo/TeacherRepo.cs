@@ -438,15 +438,17 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE Teachers SET TeacherID=@TeacherID, InstitutionID=@InstitutionID, FirstName=@FirstName, LastName=@LastName, Email=@Email, WeeklyHours=@WeeklyHours, HasCar=@HasCar WHERE TeacherID = @TeacherID ");
+                    var command = new SqlCommand("UPDATE Teachers SET Email=@Email, FirstName=@FirstName, LastName=@LastName, HasCar=@HasCar, WeeklyHours=@WeeklyHours WHERE TeacherID = @TeacherID", connection);
                     command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
-                    command.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
+                    //command.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
                     command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
+                    //Debug.WriteLine("Firs Name: " + teacher.FirstName);
                     command.Parameters.AddWithValue("@LastName", teacher.LastName);
                     command.Parameters.AddWithValue("@Email", teacher.Email);
-                    command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours);
+                    command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours.TotalHours);
                     command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
                     connection.Open();
+                    command.ExecuteNonQuery();
                     UpdateAdminIDs(teacher.TeacherID, teacher.AdminIDs, connection);
                     UpdateTeacherInstitution(teacher, connection);
                     UpdateTeacherAddress(teacher, connection);
@@ -477,7 +479,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 command2.Parameters.AddWithValue("@TeacherID", teacherID);
                 foreach (var adminID in adminIDs)
                 {
-                    command2.Parameters.AddWithValue("@AdminID", adminIDs);
+                    command2.Parameters.AddWithValue("@AdminID", adminID);
                     command2.ExecuteNonQuery();
                 }
             }
@@ -517,6 +519,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
                 var command2 = new SqlCommand("INSERT INTO TeacherAddress (TeacherID, Region, City, PostalCode, RoadName, RoadNumber) VALUES (@TeacherID, @Region, @City, @PostalCode, @RoadName, @RoadNumber)", connection);
                 command2.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                //Debug.WriteLine("Region: " + teacher.Address.Region);
                 command2.Parameters.AddWithValue("@Region", teacher.Address.Region);
                 command2.Parameters.AddWithValue("@City", teacher.Address.City);
                 command2.Parameters.AddWithValue("@PostalCode", teacher.Address.PostalCode);
