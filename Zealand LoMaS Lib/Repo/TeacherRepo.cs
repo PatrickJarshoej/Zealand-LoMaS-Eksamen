@@ -466,6 +466,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
         private void UpdateAdminIDs(int teacherID, List<int> adminIDs, SqlConnection connection)
         {
+            Debug.WriteLine("TeacherID: "+teacherID);
             try
             {
                 var command = new SqlCommand("DELETE FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
