@@ -39,6 +39,10 @@ namespace Zealand_LoMaS_Web.Pages
         public string InstituteRoadName { get; set; }
         [BindProperty]
         public string InstituteRoadNumber { get; set; }
+        [BindProperty]
+        public Teacher Teacher { get; set; }
+        [BindProperty]
+        public Institution Institution{ get; set; }
 
 
 
@@ -53,6 +57,11 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnGet()
         {
             NeedToRefresh = false;
+            if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
+            {
+                Teacher = _teacherService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
+                Institution = _institutionService.GetByID(Teacher.InstitutionID);
+            }
         }
 
         public void OnPost()
@@ -86,6 +95,12 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnPostCreateInstitute()
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
+        }
+
+        public IActionResult OnPostEditTeacher()
+        {
+            return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
+
         }
     }
 }
