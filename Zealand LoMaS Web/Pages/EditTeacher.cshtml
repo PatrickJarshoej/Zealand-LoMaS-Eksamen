@@ -24,7 +24,7 @@
         <input type="Text" name="FirstName" asp-for="FirstName" value="@Model.Teacher.FirstName" required />
         <input type="Text" name="LastName" asp-for="LastName" value="@Model.Teacher.LastName" required />
         <input type="Text" name="Email" asp-for="Email" value="@Model.Teacher.Email" required />
-        <input type="Text" name="Hours" asp-for="Hours" value="@Model.Teacher.WeeklyHours" required />
+        <input type="Text" name="Hours" asp-for="Hours" value="@Model.Teacher.WeeklyHours.TotalHours" required />
         <input type="Text" name="HasCar" asp-for="HasCar" value="@Model.Teacher.HasCar" required />
         <label for="Location Selection"></label>
         <select id="Location" name="Location" required>
