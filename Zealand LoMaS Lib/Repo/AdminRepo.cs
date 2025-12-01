@@ -84,5 +84,69 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return adminID;
         }
+
+        public string GetPasswordByAdminID(int AdminID)
+        {
+            string adminPassword = "0";
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT Password FROM AdministratorPasswords WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@AdministratorID", AdminID);
+                connection.Open();
+                try
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+
+                        if (reader.Read())
+                        {
+                            adminPassword = (string)reader["Password"];
+                        }
+                        return adminPassword;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo GetPasswordByAdminID");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return adminPassword;
+        }
+
+        public void UpdatePassword(int adminID, string Password)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT Password FROM AdministratorPasswords WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@AdministratorID", AdminID);
+                connection.Open();
+                try
+                {
+                    using (var reader = command.ExecuteNonQuery())
+                    {
+
+                        if (reader.Read())
+                        {
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo GetPasswordByAdminID");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return adminPassword;
+        }
     }
 }

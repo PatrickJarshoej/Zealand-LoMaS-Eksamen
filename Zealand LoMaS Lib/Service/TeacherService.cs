@@ -37,7 +37,7 @@ namespace Zealand_LoMaS_Lib.Service
                 Address address = new Address(region, city, postalCode, roadName, roadNumber);
 
                 Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
-                string password = "Default";
+                string password = Argon2.Hash("NotAdmin");
                 _teacherRepo.Add(teacher, password);
             }
             catch (Exception ex)

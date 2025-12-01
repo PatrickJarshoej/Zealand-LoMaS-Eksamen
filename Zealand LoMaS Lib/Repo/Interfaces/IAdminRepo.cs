@@ -10,5 +10,7 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
     {
         public string GetPasswordByEmail(string Email);
         public int GetAdminIDByEmail(string Email);
+        public string GetPasswordByAdminID(int AdminID);
+        public void UpdatePassword(int adminID, string Password);
     }
 }

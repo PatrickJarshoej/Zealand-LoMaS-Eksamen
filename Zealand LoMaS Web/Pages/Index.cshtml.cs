@@ -87,5 +87,13 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
         }
+        public void OnPostHashAdminPassword()
+        {
+            _adminService.HashThePassword(AdminID);
+        }
+        public void OnPostHashTeacherPassword()
+        {
+            _teacherService.HashThePassword(TeacherID);
+        }
     }
 }

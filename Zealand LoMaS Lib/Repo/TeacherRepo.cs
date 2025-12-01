@@ -514,7 +514,41 @@ namespace Zealand_LoMaS_Lib.Repo
         }
 
 
-        public int GetLogIn(string Email, string Password)
+        //public int GetLogIn(string Email, string Password)
+        //{
+        //    int teacherID = 0;
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
+        //        var command = new SqlCommand("SELECT TeacherID FROM Teachers WHERE Email = @Email", connection);
+        //        command.Parameters.AddWithValue("@Email", Email);
+        //        connection.Open();
+        //        try
+        //        {
+        //            using (var reader = command.ExecuteReader())
+        //            {
+
+        //                if (reader.Read())
+        //                {
+        //                    teacherID = (int)reader["teacherID"];
+        //                }
+        //                return teacherID;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Debug.WriteLine("There is a fault in TeacherRepo GetTeacherIDByEmail");
+        //            Debug.WriteLine(ex);
+        //        }
+        //        finally
+        //        {
+        //            connection.Close();
+        //        }
+        //    }
+        //    return teacherID;
+        //}
+
+        public int GetTeacherIDByEmail(string Email)
         {
             int teacherID = 0;
             using (var connection = new SqlConnection(_connectionString))
@@ -530,14 +564,14 @@ namespace Zealand_LoMaS_Lib.Repo
 
                         if (reader.Read())
                         {
-                            teacherID = (int)reader["teacherID"];
+                            teacherID = (int)reader["AdministratorID"];
                         }
                         return teacherID;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("There is a fault in TeacherRepo GetTeacherIDByEmail");
+                    Debug.WriteLine("There is a fault in AdminRepo GetAdminByEmail");
                     Debug.WriteLine(ex);
                 }
                 finally

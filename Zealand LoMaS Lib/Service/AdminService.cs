@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,19 @@ namespace Zealand_LoMaS_Lib.Service
             {
                 adminID = 0;
                 return adminID;
+            }
+        }
+        public void HashThePassword(int adminID)
+        {
+            string pass = _adminRepo.GetPasswordByAdminID(adminID);
+            if (pass != "0")
+            {
+                pass = Argon2.Hash(pass);
+                _adminRepo.UpdatePassword(adminID, pass);
+            }
+            else
+            {
+                Debug.WriteLine("Failed to find password");
             }
         }
     }
