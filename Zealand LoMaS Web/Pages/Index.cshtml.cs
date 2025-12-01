@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Zealand_LoMaS_Lib.Model;
@@ -94,6 +95,12 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnPostHashTeacherPassword()
         {
             _teacherService.HashThePassword(TeacherID);
+        }
+        public void OnPostLogOut()
+        {
+            HttpContext.Response.Cookies.Append("UserID", "0");
+            HttpContext.Response.Cookies.Append("UserStatus", "false");
+            NeedToRefresh = true;
         }
     }
 }
