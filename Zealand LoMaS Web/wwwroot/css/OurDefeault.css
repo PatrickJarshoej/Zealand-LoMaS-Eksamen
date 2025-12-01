@@ -20,9 +20,10 @@
     align-self: start;
     text-align: left;
     width: 30%;
-    border: solid;
-    border-color: gray;
-    background-color:gray;
+/*    border: solid;*/
+/*    border-color: lightgray;*/
+    padding:1%;
+    background-color:white;
     border-radius: 1em;
     box-shadow: 5px 5px 10px rgba(0,0,0,0.2)
 }

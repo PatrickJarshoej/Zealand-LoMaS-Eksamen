@@ -74,8 +74,6 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private Address GetAddress(int id, SqlConnection connection)
         {
-            //Debug.WriteLine("Get Address!");
-
             Address address = null;
 
             try

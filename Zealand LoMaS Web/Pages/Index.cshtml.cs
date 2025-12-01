@@ -42,7 +42,9 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public Teacher Teacher { get; set; }
         [BindProperty]
-        public Institution Institution{ get; set; }
+        public Institution Institution { get; set; }
+        [BindProperty]
+        public List<Admin> Admins { get; set; }
 
 
 
@@ -61,6 +63,7 @@ namespace Zealand_LoMaS_Web.Pages
             {
                 Teacher = _teacherService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
+                //Admins = _adminService
             }
         }
 

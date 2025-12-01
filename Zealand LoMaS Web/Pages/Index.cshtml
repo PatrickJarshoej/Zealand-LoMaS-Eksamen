@@ -33,9 +33,27 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 				<h2>User Information <br /></h2>
 				<p> <b> Email:</b> <br /> @Model.Teacher.Email</p>
 
-				@* <p>Institut: @Model.Institution.Location.City</p> *@
+				<p> <b>Institution: </b> <br />@Model.Institution.Location.City</p>
+				<p> <b>WeeklyHours: </b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+				<p> <b>Has Car: </b> <br />@Model.Teacher.HasCar</p>
+				<p> <b>Address: </b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
 			</div>
-				<form method="post" asp-page-handler="EditTeacher">
+			@* <div>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Institution</th>
+					</tr>
+					@foreach(var admin in Model.Teacher.AdminIDs)
+					{
+						<tr>
+							<td>@admin</td>
+						</tr>
+					}	
+				</table>
+			</div> *@
+			<form method="post" asp-page-handler="EditTeacher">
 					<input type="submit" value="Edit Profile"/>
 				</form>
 		</div>
