@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Isopoh.Cryptography.Argon2;
+using Microsoft.Data.SqlClient;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
@@ -35,7 +38,7 @@ namespace Zealand_LoMaS_Lib.Service
                 Address address = new Address(region, city, postalCode, roadName, roadNumber);
 
                 Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
-                string password = "Default";
+                string password = Argon2.Hash("NotAdmin");
                 _teacherRepo.Add(teacher, password);
             }
             catch (Exception ex)
@@ -44,10 +47,19 @@ namespace Zealand_LoMaS_Lib.Service
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
-        public int LogIn(string Email, string Password)
+        public int VerifyLogIn(string email, string password)
         {
-            int TeacherLoggedIn = _teacherRepo.GetLogIn(Email, Password);
-            return TeacherLoggedIn;
+            int teacherID = _teacherRepo.GetTeacherIDByEmail(email);
+            string StoredPassword = _teacherRepo.GetPasswordByEmail(email);
+            if (Argon2.Verify( StoredPassword, password))
+            {
+                return teacherID;
+            }
+            else
+            {
+                teacherID = 0;
+                return teacherID;
+            }
         }
         public void Update(int teacherID, int institutionID, string firstName, string lastName, string email, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
@@ -60,6 +72,19 @@ namespace Zealand_LoMaS_Lib.Service
             //Debug.WriteLine("Teacher ID: " + teacherID);
             //Debug.WriteLine("Admins: " + adminIDs[0]);
             _teacherRepo.Update(t);
+        }
+        public void HashThePassword(int teacherID)
+        {
+            string pass = _teacherRepo.GetPasswordByteacherID(teacherID);
+            if (pass != "0")
+            {
+                pass = Argon2.Hash(pass);
+                _teacherRepo.UpdatePassword(teacherID, pass);
+            }
+            else
+            {
+                Debug.WriteLine("Failed to find password");
+            }
         }
     }
 }
