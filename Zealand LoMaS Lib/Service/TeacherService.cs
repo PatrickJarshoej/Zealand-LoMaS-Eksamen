@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
+using System.Diagnostics;
 
 namespace Zealand_LoMaS_Lib.Service
 {
@@ -61,8 +62,16 @@ namespace Zealand_LoMaS_Lib.Service
                 return teacherID;
             }
         }
-        public void Update(Teacher t)
+        public void Update(int teacherID, int institutionID, string firstName, string lastName, string email, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
+            Address address = new(region, city, postalCode, roadName, roadNumber);
+            List<int> transportIDs = new();
+            List<int> classIDs = new();
+            List<Competency> competencies = new();
+
+            Teacher t = new(teacherID, institutionID, firstName, lastName, email, weeklyHours, hasCar, address, adminIDs, transportIDs, classIDs, competencies);
+            //Debug.WriteLine("Teacher ID: " + teacherID);
+            //Debug.WriteLine("Admins: " + adminIDs[0]);
             _teacherRepo.Update(t);
         }
     }

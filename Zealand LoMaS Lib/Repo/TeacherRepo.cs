@@ -438,16 +438,20 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    //var command = new SqlCommand("UPDATE Teachers SET TeacherID=@TeacherID, InstitutionID=@InstitutionID, FirstName=@FirstName, LastName=@LastName, Email=@Email, WeeklyHours=@WeeklyHours, HasCar=@HasCar WHERE TeacherID = @TeacherID ");
-                    //command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                    var command = new SqlCommand("UPDATE Teachers SET Email=@Email, FirstName=@FirstName, LastName=@LastName, HasCar=@HasCar, WeeklyHours=@WeeklyHours WHERE TeacherID = @TeacherID", connection);
+                    command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
                     //command.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
-                    //command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
-                    //command.Parameters.AddWithValue("@LastName", teacher.LastName);
-                    //command.Parameters.AddWithValue("@Email", teacher.Email);
-                    //command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours);
-                    //command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
+                    command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
+                    //Debug.WriteLine("Firs Name: " + teacher.FirstName);
+                    command.Parameters.AddWithValue("@LastName", teacher.LastName);
+                    command.Parameters.AddWithValue("@Email", teacher.Email);
+                    command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours.TotalHours);
+                    command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
                     connection.Open();
+                    command.ExecuteNonQuery();
                     UpdateAdminIDs(teacher.TeacherID, teacher.AdminIDs, connection);
+                    UpdateTeacherInstitution(teacher, connection);
+                    UpdateTeacherAddress(teacher, connection);
 
                 }
                 catch (Exception ex) 
@@ -464,55 +468,71 @@ namespace Zealand_LoMaS_Lib.Repo
 
         private void UpdateAdminIDs(int teacherID, List<int> adminIDs, SqlConnection connection)
         {
+            Debug.WriteLine("TeacherID: "+teacherID);
             try
             {
-                List<int> tempAdmins = new();
-                var command = new SqlCommand("SELECT COUNT(TeacherID) AS NumberOfAdmins FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
+                var command = new SqlCommand("DELETE FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
                 command.Parameters.AddWithValue("@TeacherID", teacherID);
-                var reader = command.ExecuteReader();
-                int count = 0;
-                if (reader.Read())
-                {
-                    count = (int)reader["NumberOfAdmins"];
-                }
-                var command2 = new SqlCommand("Select AdministratorID FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
+                command.ExecuteNonQuery();
+                
+                var command2 = new SqlCommand("INSERT INTO MapAdministratorsTeachers (AdministratorID, TeacherID) VALUES (@AdminID, @TeacherID)", connection);
                 command2.Parameters.AddWithValue("@TeacherID", teacherID);
-                Debug.WriteLine("Count: " + count);
-                //Debug.WriteLine("Admin Count: " + adminIDs.Count());
-                if(adminIDs != null)
+                foreach (var adminID in adminIDs)
                 {
-                    if (count == adminIDs.Count())
-                    {
-                        //Call all admin ids currently connected to the teacher
-                        using (var reader2 = command2.ExecuteReader())
-                        {
-                            while (reader2.Read())
-                            {
-                                tempAdmins.Add((int)reader2["AdministratorID"]);
-                            }
-                            if (adminIDs == tempAdmins)
-                            {
-                                Debug.WriteLine("admin == admin");
-                            }
-                        }
-                    }
-                    else
-                    {
-
-                    }
+                    command2.Parameters.AddWithValue("@AdminID", adminID);
+                    command2.ExecuteNonQuery();
                 }
-                //else if ()
-                //Check what numbers are the same as the 
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error in UpdateAdmin() in TeacherRepo");
+                Debug.WriteLine("Error in UpdateAdminIDs() in TeacherRepo");
                 Debug.WriteLine("Error: " + ex);
             }
-
-
         }
+        private void UpdateTeacherInstitution(Teacher teacher, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM MapInstitutionsTeachers WHERE TeacherID=@TeacherID", connection);
+                command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                command.ExecuteNonQuery();
 
+                var command2 = new SqlCommand("INSERT INTO MapInstitutionsTeachers (InstitutionID, TeacherID) VALUES (@InstitutionID, @TeacherID)", connection);
+                command2.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
+                command2.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                command2.ExecuteNonQuery();
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in UpdateTeacherInstitution() in TeacherRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+        }
+        private void UpdateTeacherAddress(Teacher teacher, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM TeacherAddress WHERE TeacherID=@TeacherID", connection);
+                command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                command.ExecuteNonQuery();
+
+                var command2 = new SqlCommand("INSERT INTO TeacherAddress (TeacherID, Region, City, PostalCode, RoadName, RoadNumber) VALUES (@TeacherID, @Region, @City, @PostalCode, @RoadName, @RoadNumber)", connection);
+                command2.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
+                //Debug.WriteLine("Region: " + teacher.Address.Region);
+                command2.Parameters.AddWithValue("@Region", teacher.Address.Region);
+                command2.Parameters.AddWithValue("@City", teacher.Address.City);
+                command2.Parameters.AddWithValue("@PostalCode", teacher.Address.PostalCode);
+                command2.Parameters.AddWithValue("@RoadName", teacher.Address.RoadName);
+                command2.Parameters.AddWithValue("@RoadNumber", teacher.Address.RoadNumber);
+                command2.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in UpdateTeacherAddress() in TeacherRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+        }
 
         //public int GetLogIn(string Email, string Password)
         //{

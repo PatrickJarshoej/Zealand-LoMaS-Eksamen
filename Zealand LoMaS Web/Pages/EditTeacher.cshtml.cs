@@ -38,6 +38,7 @@ namespace Zealand_LoMaS_Web.Pages
         public List<Institution> Institutions { get; set; }
 
 
+
         public EditTeacherModel(TeacherService ts, InstitutionService iS)
         {
             _teacherService = ts;
@@ -54,7 +55,17 @@ namespace Zealand_LoMaS_Web.Pages
         
         public void OnPostEdit()
         {
-            _teacherService.Update(Teacher);
+
+            Institutions = _institutionService.GetAll();
+            WeeklyHours = TimeSpan.FromHours(Hours);
+            //Console.WriteLine(Location);
+            Region = Institutions[Location].Location.Region;
+            City = Institutions[Location].Location.City;
+            PostalCode = Institutions[Location].Location.PostalCode;
+            RoadName = Institutions[Location].Location.RoadName;
+            RoadNumber = Institutions[Location].Location.RoadNumber;
+
+            _teacherService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
 
         }
     }
