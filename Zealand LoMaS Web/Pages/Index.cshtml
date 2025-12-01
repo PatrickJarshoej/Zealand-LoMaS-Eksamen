@@ -23,6 +23,11 @@
 			<input type="submit" value="Create Institute" />
 		</form>
 	</div>
+	<div>
+		<form method="post" asp-page-handler="LogOut">
+			<input type="submit" value="LogOut" />
+		</form>
+	</div>
 }
 else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
 {
@@ -58,7 +63,11 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 				</form>
 		</div>
 	</div>
-
+	<div>
+		<form method="post" asp-page-handler="LogOut">
+			<input type="submit" value="LogOut" />
+		</form>
+	</div>
 }
 else
 {
