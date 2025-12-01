@@ -22,5 +22,7 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         public bool CheckPassword(int id, string pass);
         public string GetPasswordByEmail(string Email);
         public int GetTeacherIDByEmail(string Email);
+        public string GetPasswordByteacherID(int teacherID);
+        public void UpdatePassword(int teacherID, string Password);
     }
 }

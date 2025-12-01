@@ -61,15 +61,4 @@ else
 			}
 		</form>
 	</div>
-	<div>
-		<h1>Admin passsword fix</h1>
-		<form method="post" asp-page-handler="HashAdminPassword">
-			<input type="text" asp-for="AdminID" placeholder="AdminID" class="form-label" required />
-			<input type="submit" value="Fix Password" />
-		</form>
-		<form method="post" asp-page-handler="HashteacherPassword">
-			<input type="text" asp-for="TeacherID" placeholder="TeacherID" class="form-label" required />
-			<input type="submit" value="Fix Password" />
-		</form>
-	</div>
 }

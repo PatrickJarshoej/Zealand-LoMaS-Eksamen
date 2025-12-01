@@ -49,10 +49,9 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public int VerifyLogIn(string email, string password)
         {
-            string hashedpassword = Argon2.Hash(password);
             int teacherID = _teacherRepo.GetTeacherIDByEmail(email);
             string StoredPassword = _teacherRepo.GetPasswordByEmail(email);
-            if (hashedpassword == StoredPassword && teacherID !=0)
+            if (Argon2.Verify( StoredPassword, password))
             {
                 return teacherID;
             }
@@ -73,6 +72,19 @@ namespace Zealand_LoMaS_Lib.Service
             //Debug.WriteLine("Teacher ID: " + teacherID);
             //Debug.WriteLine("Admins: " + adminIDs[0]);
             _teacherRepo.Update(t);
+        }
+        public void HashThePassword(int teacherID)
+        {
+            string pass = _teacherRepo.GetPasswordByteacherID(teacherID);
+            if (pass != "0")
+            {
+                pass = Argon2.Hash(pass);
+                _teacherRepo.UpdatePassword(teacherID, pass);
+            }
+            else
+            {
+                Debug.WriteLine("Failed to find password");
+            }
         }
     }
 }

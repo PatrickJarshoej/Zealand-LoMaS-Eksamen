@@ -20,10 +20,9 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public int VerifyLogIn(string email, string password)
         {
-            string hashedpassword = Argon2.Hash(password);
             int adminID = _adminRepo.GetAdminIDByEmail(email);
             string StoredPassword = _adminRepo.GetPasswordByEmail(email);
-            if (hashedpassword == StoredPassword)
+            if (Argon2.Verify(StoredPassword, password))
             {
                 return adminID;
             }

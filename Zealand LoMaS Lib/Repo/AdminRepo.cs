@@ -24,7 +24,7 @@ namespace Zealand_LoMaS_Lib.Repo
             using (var connection = new SqlConnection(_connectionString))
             {
                 //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
-                var command = new SqlCommand("SELECT Password FROM AdministratorPasswords WHERE AdministratorID = (Select AdministratorID from Administrators where Email = @Email);", connection);
+                var command = new SqlCommand("SELECT Password FROM AdministratorPasswords WHERE AdministratorID = (Select AdministratorID from Administrators where Email = @Email)", connection);
                 command.Parameters.AddWithValue("@Email", Email);
                 connection.Open();
                 try
@@ -122,23 +122,17 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("SELECT Password FROM AdministratorPasswords WHERE AdministratorID = @AdministratorID", connection);
-                command.Parameters.AddWithValue("@AdministratorID", AdminID);
+                var command = new SqlCommand("Update AdministratorPasswords SET Password = @Password WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@AdministratorID", adminID);
+                command.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
                 {
-                    using (var reader = command.ExecuteNonQuery())
-                    {
-
-                        if (reader.Read())
-                        {
-
-                        }
-                    }
+                    command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("There is a fault in AdminRepo GetPasswordByAdminID");
+                    Debug.WriteLine("There is a fault in AdminRepo UpdatePassword");
                     Debug.WriteLine(ex);
                 }
                 finally
@@ -146,7 +140,6 @@ namespace Zealand_LoMaS_Lib.Repo
                     connection.Close();
                 }
             }
-            return adminPassword;
         }
     }
 }

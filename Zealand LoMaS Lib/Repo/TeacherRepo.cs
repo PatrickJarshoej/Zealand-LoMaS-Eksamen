@@ -573,7 +573,6 @@ namespace Zealand_LoMaS_Lib.Repo
             int teacherID = 0;
             using (var connection = new SqlConnection(_connectionString))
             {
-                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
                 var command = new SqlCommand("SELECT TeacherID FROM Teachers WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", Email);
                 connection.Open();
@@ -584,14 +583,14 @@ namespace Zealand_LoMaS_Lib.Repo
 
                         if (reader.Read())
                         {
-                            teacherID = (int)reader["AdministratorID"];
+                            teacherID = (int)reader["TeacherID"];
                         }
                         return teacherID;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("There is a fault in AdminRepo GetAdminByEmail");
+                    Debug.WriteLine("There is a fault in teacherRepo GetTeacherByEmail");
                     Debug.WriteLine(ex);
                 }
                 finally
@@ -604,10 +603,10 @@ namespace Zealand_LoMaS_Lib.Repo
         public string GetPasswordByEmail(string Email)
         {
             string teacherPass = "0";
+            Debug.WriteLine(Email);
             using (var connection = new SqlConnection(_connectionString))
             {
-                //var command = new SqlCommand("SELECT * FROM Administrators WHERE Email = @Email AND (select AdministratorID FROM Administrators WHERE Email = @Email) = ALL (Select AdministratorID FROM AdministratorPasswords WHERE Password = @Password)", connection);
-                var command = new SqlCommand("SELECT Password FROM TeacherPasswords WHERE TeacherID = (Select TeacherID from TeacherID where Email = @Email);", connection);
+                var command = new SqlCommand("SELECT Password FROM TeacherPasswords WHERE TeacherID = (Select TeacherID FROM Teachers WHERE Email = @Email)", connection);
                 command.Parameters.AddWithValue("@Email", Email);
                 connection.Open();
                 try
@@ -624,7 +623,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("There is a fault in AdminRepo GetPasswordByEmail");
+                    Debug.WriteLine("There is a fault in TeacherRepo GetPasswordByEmail");
                     Debug.WriteLine(ex);
                 }
                 finally
@@ -633,6 +632,63 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
             return teacherPass;
+        }
+
+        public string GetPasswordByteacherID(int teacherID)
+        {
+            string teacherPassword = "0";
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT Password FROM TeacherPasswords WHERE TeacherID = @TeacherID", connection);
+                command.Parameters.AddWithValue("@TeacherID", teacherID);
+                connection.Open();
+                try
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+
+                        if (reader.Read())
+                        {
+                            teacherPassword = (string)reader["Password"];
+                        }
+                        return teacherPassword;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo GetPasswordByTeacherID");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return teacherPassword;
+        }
+
+        public void UpdatePassword(int teacherID, string Password)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("Update TeacherPasswords SET Password = @Password WHERE TeacherID = @TeacherID", connection);
+                command.Parameters.AddWithValue("@TeacherID", teacherID);
+                command.Parameters.AddWithValue("@Password", Password);
+                connection.Open();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in TeacherRepo UpdatePassword");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }
