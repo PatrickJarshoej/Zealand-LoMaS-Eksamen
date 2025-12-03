@@ -18,6 +18,42 @@ namespace Zealand_LoMaS_Lib.Service
         {
             _adminRepo = adminRepo;
         }
+        public void Create(string email, string firstName, string lastName, int institutionID)
+        {
+            throw new NotImplementedException();
+        }
+        public List<Admin> GetAll()
+        {
+            List<Admin> AdminList = new();
+            return AdminList;
+        }
+        public Admin GetByID(int AdminID)
+        {
+            Admin admin = new();
+            return admin;
+        }
+        public Admin GetByEmail(string email)
+        {
+            Admin admin = new();
+            return admin;
+        }
+        public Admin GetBynstItutionID(int institutionID)
+        {
+            Admin admin = new();
+            return admin;
+        }
+        public void Update(string email, string firstName, string lastName, int institutionID)
+        {
+            throw new NotImplementedException();
+        }
+        public void DeleteByID(int AdminID)
+        {
+            throw new NotImplementedException();
+        }
+        public void ChangePassword(int adminID, string oldPassword, string newPassword)
+        {
+            throw new NotImplementedException();
+        }
         public int VerifyLogIn(string email, string password)
         {
             int adminID = _adminRepo.GetAdminIDByEmail(email);

@@ -141,5 +141,45 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
+
+        public void Add(Admin adminObject, string Password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Admin> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetByID(int adminID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Admin> GetByInstitutionID(int instituitonID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Admin> GetAdminsByTeacherID(int instituitonID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Admin adminObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteByID(int adminID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
