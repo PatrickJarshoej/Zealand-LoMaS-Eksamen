@@ -144,7 +144,33 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Add(Admin adminObject, string Password)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("INSERT INTO Administrators (FirstName, LastName, Email, InstitutionID) VALUES (@FirstName, @LastName, @Email, @InstitutionID)", connection);
+                command.Parameters.AddWithValue("@FirstName", adminObject.FirstName);
+                command.Parameters.AddWithValue("@LastName", adminObject.LastName);
+                command.Parameters.AddWithValue("@Email", adminObject.Email);
+                command.Parameters.AddWithValue("@InstitutionID", adminObject.InstitutionID);
+                var command2 = new SqlCommand("INSERT INTO AdministratorPasswords (AdministratorID, Password) VALUES ((SELECT AdministratorID FROM Administrators WHERE Email = @Email), @Password)");
+                command2.Parameters.AddWithValue("@Email", adminObject.Email);
+                command2.Parameters.AddWithValue("@Password", Password);
+                connection.Open();
+                try
+                {
+                    command.ExecuteNonQuery();
+
+                    command2.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo Add()");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         public List<Admin> GetAll()

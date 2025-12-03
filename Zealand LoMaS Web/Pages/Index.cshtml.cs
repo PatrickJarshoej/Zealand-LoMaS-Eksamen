@@ -18,6 +18,10 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public string Email { get; set; }
         [BindProperty]
+        public string FirstName { get; set; }
+        [BindProperty]
+        public string lastName { get; set; }
+        [BindProperty]
         public string Pass { get; set; }
         [BindProperty]
         public string Pass2 { get; set; }
@@ -45,6 +49,8 @@ namespace Zealand_LoMaS_Web.Pages
         public string InstituteRoadName { get; set; }
         [BindProperty]
         public string InstituteRoadNumber { get; set; }
+        [BindProperty]
+        public int InstitutionID { get; set; }
         [BindProperty]
         public Teacher Teacher { get; set; }
         [BindProperty]
@@ -113,6 +119,10 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnPostCreateInstitute()
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
+        }
+        public void OnPostCreateAdmin()
+        {
+            _adminService.Create(Email, FirstName, lastName, InstitutionID);
         }
         public IActionResult OnPostEditTeacherProfile()
         {

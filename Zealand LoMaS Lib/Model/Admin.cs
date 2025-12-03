@@ -23,5 +23,12 @@ namespace Zealand_LoMaS_Lib.Model
         {
             AdministratorID = administratorID;
         }
+        public Admin(string firstName, string lastName, string email, int institutionID)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            InstitutionID = institutionID;
+        }
     }
 }

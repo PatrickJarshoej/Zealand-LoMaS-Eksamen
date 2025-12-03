@@ -20,7 +20,9 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public void Create(string email, string firstName, string lastName, int institutionID)
         {
-            throw new NotImplementedException();
+            Admin admin = new Admin(firstName, lastName, email, institutionID);
+            string defaultPassword = Argon2.Hash("Admin");
+            _adminRepo.Add(admin, defaultPassword);
         }
         public List<Admin> GetAll()
         {
