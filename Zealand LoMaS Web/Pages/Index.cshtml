@@ -13,7 +13,6 @@
 
 	<div class="text-center">
 		<h3 class="display-3">Institutions</h3>
-
 		<form method="post" asp-page-handler="CreateInstitute">
 			<input type="text" asp-for="InstituteRegion" placeholder="Region" class="form-label" required />
 			<input type="text" asp-for="InstituteCity" placeholder="By" class="form-label" required />
@@ -33,12 +32,85 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 {
 	<div class="text-center">
 		<h1 class="display-1">Welcome @Model.Teacher.FirstName @Model.Teacher.LastName </h1>
-		<div class="card">
-			<div class="stat">
-				<h2>User Information <br /></h2>
-				<p> <b> Email:</b> <br /> @Model.Teacher.Email</p>
+		<div class="card container">
+			<div class="d-flex justify-content-between">
+				<div class="stat p-2">
+					<h2>User Information <br /></h2>
+					<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+					<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+					<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+					<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+					@foreach(var i in Model.Institutions)
+					{
+						if (i.InstitutionID == Model.Teacher.InstitutionID)
+						{
+							<p> <b>Institution:</b> <br />@i.Location.City</p>
+						}
+					}
+					<form method="post" asp-page-handler="EditTeacherProfile">
+						<input type="submit" value="Edit Profile" />
+					</form>
+				</div>
+				<div class="stat p-2">
+					<h2>Competencies <br /></h2>
+					@if (Model.Teacher.Competencies != null)
+					{
+						<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+						<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+						<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+						<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+						<p> <b>Institution:</b> <br />@Model.Institution.Location.City</p>
+					}
+					else
+					{
+						<h1><b>You are useless</b></h1>
+					}
+					<form method="post" asp-page-handler="EditTeacherCompetencies">
+						<input type="submit" value="Edit Profile" />
+					</form>
+				</div>
+				<div class="stat p-2">
+					<h2>Upcoming Classes <br /></h2>
+					@if (Model.Teacher.ClassIDs != null)
+					{
+						<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+						<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+						<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+						<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+						<p> <b>Institution:</b>@Model.Institution.Location.City</p>
+					}
+					else
+					{
+						<p>There are no upcoming classes</p>
+					}
+					<form method="post" asp-page-handler="EditTeacherClasses">
+						<input type="submit" value="Edit Classes" />
+					</form>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between">
 
-				@* <p>Institut: @Model.Institution.Location.City</p> *@
+				@foreach(var transport in Model.Transports)
+				{
+					<div class="stat">
+						<h2>Transport</h2>
+						<p>@Model.Teacher.FirstName @Model.Teacher.LastName</p>
+						<p> <b>Transport Hours: </b> <br />@transport.TransportHours.TotalHours</p>
+						<p> <b>Transport Cost: </b> <br />@transport.TransportCost</p>
+						<p> <b>The Date: </b> <br />@transport.TheDate</p>
+						@foreach (var institution in Model.Institutions)
+						{
+							if (transport.InstitueFromID == institution.InstitutionID)
+							{
+								<p> <b>From: </b> <br /> @institution.Location.City</p>
+							}
+							if (transport.InstitueToID == institution.InstitutionID)
+							{
+								<p> <b>From: </b> <br /> @institution.Location.City</p>
+							}
+						}
+					</div>			
+				}
 			</div>
 				<form method="post" asp-page-handler="EditTeacher">
 					<input type="submit" value="Edit Profile"/>

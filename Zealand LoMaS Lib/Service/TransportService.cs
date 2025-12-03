@@ -52,7 +52,7 @@ namespace Zealand_LoMaS_Lib.Service
 
         public List<Transport> GetByTeacherID(int teacherID)
         {
-            throw new NotImplementedException();
+           return _transportRepo.GetByTeacherID(teacherID);
         }
 
         public void Update(int transportID, DateTime date, double newCost)

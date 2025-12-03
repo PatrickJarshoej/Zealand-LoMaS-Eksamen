@@ -12,6 +12,7 @@ namespace Zealand_LoMaS_Web.Pages
         private AdminService _adminService;
         private TeacherService _teacherService;
         private InstitutionService _institutionService;
+        private TransportService _transportService;
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty]
@@ -44,15 +45,20 @@ namespace Zealand_LoMaS_Web.Pages
         public Teacher Teacher { get; set; }
         [BindProperty]
         public Institution Institution{ get; set; }
+        [BindProperty]
+        public List<Institution> Institutions{ get; set; }
+        [BindProperty]
+        public List<Transport> Transports{ get; set; }
 
 
 
-        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService)
+        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService, TransportService tS)
         {
             _logger = logger;
             _adminService = adminService;
             _teacherService = teacherService;
             _institutionService = institutionService;
+            _transportService = tS;
         }
 
         public void OnGet()
@@ -62,6 +68,8 @@ namespace Zealand_LoMaS_Web.Pages
             {
                 Teacher = _teacherService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
+                Institutions = _institutionService.GetAll();
+                Transports = _transportService.GetByTeacherID(Teacher.TeacherID);
             }
         }
 
@@ -78,6 +86,7 @@ namespace Zealand_LoMaS_Web.Pages
                 Debug.WriteLine("Admin er logged in");
                 CookieID = Convert.ToString(AdminID);
                 CookieIsAdmin = "true";
+                OnGet();
                 NeedToRefresh = true;
 
             }
@@ -85,6 +94,7 @@ namespace Zealand_LoMaS_Web.Pages
             {
                 Debug.WriteLine("Lærer er logged in");
                 CookieID = Convert.ToString(TeacherID);
+                OnGet();
                 NeedToRefresh = true;
             }
             else
@@ -97,10 +107,17 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
         }
-        public IActionResult OnPostEditTeacher()
+        public IActionResult OnPostEditTeacherProfile()
         {
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
-
+        }
+        public IActionResult OnPostEditTeacherCompetencies()
+        {
+            return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
+        }
+        public IActionResult OnPostEditTeacherClasses()
+        {
+            return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
         }
         public void OnPostHashAdminPassword()
         {
@@ -110,11 +127,13 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _teacherService.HashThePassword(TeacherID);
         }
-        public void OnPostLogOut()
+        public IActionResult OnPostLogOut()
         {
+            
             HttpContext.Response.Cookies.Append("UserID", "0");
             HttpContext.Response.Cookies.Append("UserStatus", "false");
-            NeedToRefresh = true;
+            //NeedToRefresh = true;
+            return RedirectToPage();
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Zealand_LoMaS_Web.Pages
         public string RoadNumber { get; private set; }
         public List<int> AdminIDs { get; set; }
         public List<Institution> Institutions { get; set; }
+        public Institution Institution { get; set; }
 
 
 
@@ -53,20 +54,21 @@ namespace Zealand_LoMaS_Web.Pages
             Institutions = _institutionService.GetAll();
         }
         
-        public void OnPostEdit()
+        public IActionResult OnPostSave()
         {
 
             Institutions = _institutionService.GetAll();
             WeeklyHours = TimeSpan.FromHours(Hours);
-            //Console.WriteLine(Location);
-            Region = Institutions[Location].Location.Region;
-            City = Institutions[Location].Location.City;
-            PostalCode = Institutions[Location].Location.PostalCode;
-            RoadName = Institutions[Location].Location.RoadName;
-            RoadNumber = Institutions[Location].Location.RoadNumber;
+            Console.WriteLine(Location);
+            Institution = _institutionService.GetByID(Location);
+            Region = Institution.Location.Region;
+            City = Institution.Location.City;
+            PostalCode = Institution.Location.PostalCode;
+            RoadName = Institution.Location.RoadName;
+            RoadNumber = Institution.Location.RoadNumber;
 
             _teacherService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
-
+            return RedirectToPage("/Index");
         }
     }
 
