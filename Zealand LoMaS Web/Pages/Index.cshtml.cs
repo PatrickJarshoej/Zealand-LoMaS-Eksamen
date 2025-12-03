@@ -68,6 +68,8 @@ namespace Zealand_LoMaS_Web.Pages
             {
                 Teacher = _teacherService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
+                Institutions = _institutionService.GetAll();
+                Transports = _transportService.GetByTeacherID(Teacher.TeacherID);
             }
         }
 
