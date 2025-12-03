@@ -12,7 +12,18 @@
 	</div>
 
 	<div class="text-center">
-		<h3 class="display-3">Institutions</h3>
+		<h3 class="display-1"> Create Administrator</h3>
+		<form method="post" asp-page-handler="CreateAdmin">
+			<input type="text" asp-for="FirstName" placeholder="Fornavn" class="form-label" required />
+			<input type="text" asp-for="lastName" placeholder="Efternavn" class="form-label" required />
+			<input type="email" asp-for="Email" placeholder="Email" class="form-label" required />
+			<input type="number" asp-for="InstitutionID" placeholder="institutionID" class="form-label" required />
+			<input type="submit" value="Create Administrator" />
+		</form>
+	</div>
+
+	<div class="text-center">
+		<h3 class="display-1"> Create Institute</h3>
 		<form method="post" asp-page-handler="CreateInstitute">
 			<input type="text" asp-for="InstituteRegion" placeholder="Region" class="form-label" required />
 			<input type="text" asp-for="InstituteCity" placeholder="By" class="form-label" required />
