@@ -86,5 +86,12 @@ namespace Zealand_LoMaS_Lib.Service
                 Debug.WriteLine("Failed to find password");
             }
         }
+
+        public void ChangePass(int id, string pass)
+        {
+            string hashPass = Argon2.Hash(pass);
+
+            _teacherRepo.UpdatePassword(id, pass);
+        }
     }
 }

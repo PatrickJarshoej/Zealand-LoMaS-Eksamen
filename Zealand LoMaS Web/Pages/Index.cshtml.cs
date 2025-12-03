@@ -20,6 +20,8 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public string Pass { get; set; }
         [BindProperty]
+        public string Pass2 { get; set; }
+        [BindProperty]
         public int AdminID { get; set; } = 0;
         [BindProperty]
         public int TeacherID { get; set; } = 0;
@@ -27,6 +29,8 @@ namespace Zealand_LoMaS_Web.Pages
         public bool FailedToLogIn { get; set; } = false;
         [BindProperty]
         public bool NeedToRefresh { get; set; } = false;
+        [BindProperty]
+        public bool FailedToChangePass { get; set; } = false;
         [BindProperty]
         public string CookieID { get; set; } = "0";
         [BindProperty]
@@ -44,11 +48,13 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public Teacher Teacher { get; set; }
         [BindProperty]
-        public Institution Institution{ get; set; }
+        public Institution Institution { get; set; }
         [BindProperty]
-        public List<Institution> Institutions{ get; set; }
+        public List<Institution> Institutions { get; set; }
         [BindProperty]
-        public List<Transport> Transports{ get; set; }
+        public List<Transport> Transports { get; set; }
+        [BindProperty]
+        public bool ChangePasswordModalShow { get; set; } = false;
 
 
 
@@ -96,6 +102,7 @@ namespace Zealand_LoMaS_Web.Pages
                 CookieID = Convert.ToString(TeacherID);
                 OnGet();
                 NeedToRefresh = true;
+                //RedirectToPage();
             }
             else
             {
@@ -134,6 +141,24 @@ namespace Zealand_LoMaS_Web.Pages
             HttpContext.Response.Cookies.Append("UserStatus", "false");
             //NeedToRefresh = true;
             return RedirectToPage();
+        }
+        public void OnPostChangePassword()
+        {
+            Debug.WriteLine("Running ChangePassword");
+            OnGet(); //We need to run this or it will forget who the teacher is...
+            //To create a new password they need to write it twice as a safety measure
+            if (Pass == Pass2)
+            {
+                //_teacherService.ChangePass(TeacherID, Pass);
+                Debug.WriteLine("Passwords match");
+                ChangePasswordModalShow = true;
+            }
+            else
+            {
+                Debug.WriteLine("Passwords do not match");
+                FailedToChangePass = true;
+                ChangePasswordModalShow = true;
+            }
         }
     }
 }
