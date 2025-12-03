@@ -19,7 +19,6 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
-
         private List<Teacher> GetTeachersByCommand(SqlCommand command, SqlConnection connection)
         {
             var teachers = new List<Teacher>();
@@ -27,11 +26,9 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 while (reader.Read())
                 {
-                    //Debug.WriteLine("Hello, World!");
                     Teacher teacher = new Teacher
                     (
                         (int)reader["TeacherID"],
-                        //0,
                         GetInstitutionID((int)reader["TeacherID"], connection),
                         (string)reader["Email"],
                         (string)reader["FirstName"],
@@ -74,16 +71,11 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private Address GetAddress(int id, SqlConnection connection)
         {
-            //Debug.WriteLine("Get Address!");
-
             Address address = null;
-
             try
             {
                 var command = new SqlCommand("SELECT * FROM TeacherAddress WHERE TeacherID = @ID", connection);
                 command.Parameters.AddWithValue("@ID", id);
-
-                //connection.Open();
                 using (var reader3 = command.ExecuteReader())
                 {
                     if (reader3.Read())
@@ -96,6 +88,7 @@ namespace Zealand_LoMaS_Lib.Repo
                             (string)reader3["RoadName"],
                             (string)reader3["RoadNumber"]
                         );
+                        Debug.WriteLine(address);
                     }
                 }
             }
@@ -104,11 +97,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine($"Error in GetAddress() in TeacherRepo");
                 Debug.WriteLine($"Error: {ex.Message}");
             }
-            finally
-            {
-            }
-
-
             return address;
         }
         private List<int> GetAdmins(int id, SqlConnection connection)
@@ -132,10 +120,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine($"Error in GetAdmin() in TeacherRepo");
                 Debug.WriteLine($"Error: {ex.Message}");
             }
-            finally
-            {
-            }
-
             return adminIDs;
         }
         public void Add(Teacher teacher, string password)
@@ -187,12 +171,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine($"Error in AddTeacherAddress() in TeacherRepo");
                 Debug.WriteLine("Error" + ex.Message);
             }
-            finally
-            {
-
-            }
         }
-
         private void AddTeacherAdmins(Teacher teacher, int tID, SqlConnection connection)
         {
             try
@@ -210,11 +189,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine($"Error in AddTeacherAdmins() in TeacherRepo");
                 Debug.WriteLine("Error" + ex.Message);
             }
-            finally
-            {
-            }
         }
-
         private void AddTeacherClasses(Teacher teacher, int tID, SqlConnection connection)
         {
             try
@@ -236,7 +211,6 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
         }
-
         private void AddTeacherCompetencies(Teacher teacher, int tID, SqlConnection connection)
         {
             try
@@ -260,12 +234,10 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
         }
-
         private void AddTeacherPassword(Teacher teacher, int teacherID, string password, SqlConnection connection)
         {
             try
             {
-                
                 var command6 = new SqlCommand("INSERT INTO TeacherPasswords (TeacherID, Password) VALUES (@TeacherID, @Password)", connection);
                 command6.Parameters.AddWithValue("@TeacherID", teacherID);
                 command6.Parameters.AddWithValue("@Password", password);
@@ -275,9 +247,6 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 Debug.WriteLine($"Error in AddTeacherPassword() in TeacherRepo");
                 Debug.WriteLine("Error" + ex.Message);
-            }
-            finally
-            {
             }
         }
         private void AddTeacherInstitution(Teacher teacher, int teacherID, SqlConnection connection)
@@ -294,26 +263,11 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine($"Error in AddTeacherInstitution() in TeacherRepo");
                 Debug.WriteLine("Error" + ex.Message);
             }
-            finally
-            {
-            }
         }
-
-        public void ChangePassword(int id, string newPass, string oldPass)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CheckPassword(int id, string pass)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DeleteByID(int id)
         {
             throw new NotImplementedException();
         }
-
         public List<Teacher> GetAll()
         {
             var teachers = new List<Teacher>();
@@ -331,17 +285,13 @@ namespace Zealand_LoMaS_Lib.Repo
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
-
-
             }
             return teachers;
         }
-
         public List<Teacher> GetByAdminID(int adminID)
         {
             throw new NotImplementedException();
         }
-
         public Teacher GetByClassID(int classID)
         {
             Teacher teacher = new();
@@ -371,7 +321,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacher;
         }
-
         public Teacher GetByID(int id)
         {
             Teacher teacher = new();
@@ -396,12 +345,10 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacher;
         }
-
         public List<Teacher> GetByInstitutionID(int institutionID)
         {
             throw new NotImplementedException();
         }
-
         public Teacher GetByTransportID(int transportID)
         {
             Teacher teacher = new();
@@ -431,7 +378,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacher;
         }
-
         public void Update(Teacher teacher)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -440,9 +386,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     var command = new SqlCommand("UPDATE Teachers SET Email=@Email, FirstName=@FirstName, LastName=@LastName, HasCar=@HasCar, WeeklyHours=@WeeklyHours WHERE TeacherID = @TeacherID", connection);
                     command.Parameters.AddWithValue("@TeacherID", teacher.TeacherID);
-                    //command.Parameters.AddWithValue("@InstitutionID", teacher.InstitutionID);
                     command.Parameters.AddWithValue("@FirstName", teacher.FirstName);
-                    //Debug.WriteLine("Firs Name: " + teacher.FirstName);
                     command.Parameters.AddWithValue("@LastName", teacher.LastName);
                     command.Parameters.AddWithValue("@Email", teacher.Email);
                     command.Parameters.AddWithValue("@WeeklyHours", teacher.WeeklyHours.TotalHours);
@@ -452,7 +396,6 @@ namespace Zealand_LoMaS_Lib.Repo
                     UpdateAdminIDs(teacher.TeacherID, teacher.AdminIDs, connection);
                     UpdateTeacherInstitution(teacher, connection);
                     UpdateTeacherAddress(teacher, connection);
-
                 }
                 catch (Exception ex) 
                 {
@@ -465,7 +408,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
-
         private void UpdateAdminIDs(int teacherID, List<int> adminIDs, SqlConnection connection)
         {
             Debug.WriteLine("TeacherID: "+teacherID);
@@ -533,7 +475,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
-
         //public int GetLogIn(string Email, string Password)
         //{
         //    int teacherID = 0;
@@ -567,7 +508,6 @@ namespace Zealand_LoMaS_Lib.Repo
         //    }
         //    return teacherID;
         //}
-
         public int GetTeacherIDByEmail(string Email)
         {
             int teacherID = 0;
@@ -633,7 +573,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacherPass;
         }
-
         public string GetPasswordByteacherID(int teacherID)
         {
             string teacherPassword = "0";
@@ -666,7 +605,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacherPassword;
         }
-
         public void UpdatePassword(int teacherID, string Password)
         {
             using (var connection = new SqlConnection(_connectionString))

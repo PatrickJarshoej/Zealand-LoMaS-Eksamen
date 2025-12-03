@@ -5,44 +5,92 @@
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
-<div class="card">
-    <form method="post" asp-page-handler="Edit">
-        <label for="Institution Selection"></label>
-        <select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
-            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
-            {
-                if (Model.Teacher.InstitutionID == institution.InstitutionID)
-                {
-                    <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
-                }
-                else
-                {
-                    <option value="@institution.InstitutionID">@institution.Location.City</option>
-                }
-            }
-        </select>
-        <input type="Text" name="FirstName" asp-for="FirstName" value="@Model.Teacher.FirstName" required />
-        <input type="Text" name="LastName" asp-for="LastName" value="@Model.Teacher.LastName" required />
-        <input type="Text" name="Email" asp-for="Email" value="@Model.Teacher.Email" required />
-        <input type="Text" name="Hours" asp-for="Hours" value="@Model.Teacher.WeeklyHours.TotalHours" required />
-        <input type="Text" name="HasCar" asp-for="HasCar" value="@Model.Teacher.HasCar" required />
-        <label for="Location Selection"></label>
-        <select id="Location" name="Location" required>
-            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
-            {
-                if (Model.Teacher.InstitutionID == institution.InstitutionID)
-                {
-                    <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
-                }
-                else
-                {
-                    <option value="@institution.InstitutionID">@institution.Location.City</option>
-                }
-            }
-        </select>
-        <input type="number" name="AdminIDs" asp-for="AdminIDs" value="@Model.Teacher.AdminIDs" required />
-        <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
-        <input type="submit" value="Edit" />
-    </form>
-    <p>@Model.Teacher.InstitutionID</p>
-</div>
+@if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
+{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            <p>
+                <b> Institution:</b> <br />
+                <label for="Institution Selection"></label>
+                <select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
+                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                    {
+                        if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                        {
+                            <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                        }
+                        else
+                        {
+                            <option value="@institution.InstitutionID">@institution.Location.City</option>
+                        }
+                    }
+                </select>
+            </p>
+            <p> <b> FirstName:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" /></p>
+            <p> <b> LastName:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" /></p>
+            <p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Teacher.Email" /></p>
+            <p> <b> Hours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours" </p>
+            <input type="hidden" asp-for="WeeklyHours" name="WeeklyHours" value="@Model.Teacher.WeeklyHours.TotalHours"/>
+            <p> <b> Has Car:</b> <br /><input type="text" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" /></p>
+            <p>
+                <b>Address: </b> <br />
+                <label for="Location Selection"></label>
+                <select id="Location" name="Location" required>
+                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                    {
+                        if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                        {
+                            <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                        }
+                        else
+                        {
+                            <option value="@institution.InstitutionID">@institution.Location.City</option>
+                        }
+                    }
+                </select>
+            </p>
+            <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
+            <input type="submit" value="Save" />
+        </form>
+    </div> 
+}
+else{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            <p>
+                <b> Institution:</b> <br />
+                <label for="Institution Selection"></label>
+                <select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
+                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                    {
+                        if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                        {
+                            <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                        }
+                        else
+                        {
+                            <option value="@institution.InstitutionID">@institution.Location.City</option>
+                        }
+                    }
+                </select>
+            </p>
+            <p> <b> FirstName:</b> <br />@Model.Teacher.FirstName"</p>
+            <p> <b> LastName:</b> <br />@Model.Teacher.LastName"</p>
+            <p> <b> Email:</b> <br />@Model.Teacher.Email"</p>
+            <p> <b> Hours:</b> <br /><input type="text" asp-for="Hours" name="Hours" value="@Model.Teacher.WeeklyHours.TotalHours"/></p>
+            <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar" </p>
+            <p>
+                <b>Address: </b> <br />
+                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                    {
+                        if (Model.Teacher.InstitutionID == institution.InstitutionID)
+                        {
+                            @institution.Location.City
+                        }
+                    }
+            </p>
+            <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
+            <input type="submit" value="Save" />
+        </form>
+    </div> 
+}

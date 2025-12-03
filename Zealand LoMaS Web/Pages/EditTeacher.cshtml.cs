@@ -53,7 +53,7 @@ namespace Zealand_LoMaS_Web.Pages
             Institutions = _institutionService.GetAll();
         }
         
-        public void OnPostEdit()
+        public void OnPostSave()
         {
 
             Institutions = _institutionService.GetAll();
