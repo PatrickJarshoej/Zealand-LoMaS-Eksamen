@@ -18,8 +18,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         public List<Teacher> GetByAdminID(int adminID);
         public List<Teacher> GetByInstitutionID(int institutionID);
         public Teacher GetByClassID(int classID);
-        public void ChangePassword(int id, string newPass, string oldPass);
-        public bool CheckPassword(int id, string pass);
         public string GetPasswordByEmail(string Email);
         public int GetTeacherIDByEmail(string Email);
         public string GetPasswordByteacherID(int teacherID);
