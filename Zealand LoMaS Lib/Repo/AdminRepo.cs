@@ -151,7 +151,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 command.Parameters.AddWithValue("@LastName", adminObject.LastName);
                 command.Parameters.AddWithValue("@Email", adminObject.Email);
                 command.Parameters.AddWithValue("@InstitutionID", adminObject.InstitutionID);
-                var command2 = new SqlCommand("INSERT INTO AdministratorPasswords (AdministratorID, Password) VALUES ((SELECT AdministratorID FROM Administrators WHERE Email = @Email), @Password)");
+                var command2 = new SqlCommand("INSERT INTO AdministratorPasswords (AdministratorID, Password) VALUES ((SELECT AdministratorID FROM Administrators WHERE Email = @Email), @Password)", connection);
                 command2.Parameters.AddWithValue("@Email", adminObject.Email);
                 command2.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
@@ -159,7 +159,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     command.ExecuteNonQuery();
 
-                    command2.ExecuteScalar();
+                    command2.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
