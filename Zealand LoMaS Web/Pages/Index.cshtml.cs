@@ -154,6 +154,15 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _teacherService.HashThePassword(TeacherID);
         }
+        public void OnPostEditAdministrator()
+        {
+            _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
+            AdminID = 0;
+            Email = "";
+            FirstName = "";
+            LastName = "";
+            InstitutionIDs = new List<int>();
+        }
         public IActionResult OnPostLogOut()
         {
             

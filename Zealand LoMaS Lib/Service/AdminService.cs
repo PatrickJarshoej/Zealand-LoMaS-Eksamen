@@ -41,7 +41,7 @@ namespace Zealand_LoMaS_Lib.Service
             Admin admin = new();
             return admin;
         }
-        public Admin GetBynstItutionID(int institutionID)
+        public Admin GetByInstitutionID(int institutionID)
         {
             Admin admin = new();
             return admin;
@@ -49,7 +49,7 @@ namespace Zealand_LoMaS_Lib.Service
         public void Update(int adminID, string email, string firstName, string lastName, List<int> institutionIDs)
         {
             Admin admin = new(adminID, email, firstName, lastName, institutionIDs);
-            _institutionRepo.UpdateMapAdminInstitude(adminID);
+            _institutionRepo.UpdateMapAdminInstitute(adminID, institutionIDs);
             _adminRepo.Update(admin);
         }
         public void DeleteByID(int AdminID)

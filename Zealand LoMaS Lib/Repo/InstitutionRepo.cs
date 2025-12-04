@@ -150,7 +150,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
-        public void UpdateMapAdminInstitude(int adminID)
+        public void UpdateMapAdminInstitute(int adminID, List<int> newInstituteIDs)
         {
             List<int> instituteIDs = GetInstituteIDByAdminID(adminID);
             DeleteByIDs(instituteIDs);
@@ -161,9 +161,9 @@ namespace Zealand_LoMaS_Lib.Repo
                     var command = new SqlCommand("INSERT INTO MapInstitutionsAdministrators (AdministratorID, InstitutionID) VALUES (@AdministratorID, @InstitutionID)", connection);
                     command.Parameters.AddWithValue("@AdministratorID", adminID);
                     connection.Open();
-                    for (int i = 0; i < instituteIDs.Count; i++)
+                    for (int i = 0; i < newInstituteIDs.Count; i++)
                     {
-                        command.Parameters.AddWithValue("@InstitutionID", instituteIDs[i]);
+                        command.Parameters.AddWithValue("@InstitutionID", newInstituteIDs[i]);
                         command.ExecuteNonQuery();
                     }
                 }
