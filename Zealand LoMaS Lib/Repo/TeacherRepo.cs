@@ -88,7 +88,6 @@ namespace Zealand_LoMaS_Lib.Repo
                             (string)reader3["RoadName"],
                             (string)reader3["RoadNumber"]
                         );
-                        Debug.WriteLine(address);
                     }
                 }
             }

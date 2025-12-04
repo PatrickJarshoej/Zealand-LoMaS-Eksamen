@@ -85,7 +85,7 @@ namespace Zealand_LoMaS_Web.Pages
             TeacherID = _teacherService.VerifyLogIn(Email, Pass);
             if (AdminID != 0)
             {
-                Debug.WriteLine("Admin er logged in");
+                //Debug.WriteLine("Admin er logged in");
                 CookieID = Convert.ToString(AdminID);
                 CookieIsAdmin = "true";
                 OnGet();
@@ -94,14 +94,14 @@ namespace Zealand_LoMaS_Web.Pages
             }
             else if (TeacherID != 0)
             {
-                Debug.WriteLine("Lærer er logged in");
+                //Debug.WriteLine("Lærer er logged in");
                 CookieID = Convert.ToString(TeacherID);
                 OnGet();
                 NeedToRefresh = true;
             }
             else
             {
-                Debug.WriteLine("Did not log in");
+                //Debug.WriteLine("Did not log in");
                 FailedToLogIn = true;
             }
         }
@@ -164,28 +164,23 @@ namespace Zealand_LoMaS_Web.Pages
             InstitutionIDs = new List<int>();
         }
         public IActionResult OnPostLogOut()
-        {
-            
-            HttpContext.Response.Cookies.Append("UserID", "0");
+        {   
+            HttpContext.Response.Cookies.Append("UserID", "0"); //If you logout we set your ID to zero
             HttpContext.Response.Cookies.Append("UserStatus", "false");
-            //NeedToRefresh = true;
             return RedirectToPage();
         }
         public void OnPostChangePassword()
         {
-            Debug.WriteLine("Running ChangePassword");
             OnGet(); //We need to run this or it will forget who the teacher is...
             //To create a new password they need to write it twice as a safety measure
             if (Pass == Pass2)
-            {
+            { //If the wrote the same password in both fields we update the password in the DB
                 _teacherService.ChangePass(TeacherID, Pass);
-                Debug.WriteLine("Passwords match");
-                ChangePasswordModalShow = true;
+                ChangePasswordModalShow = true; //When you use an OnPost method it refreshes, but i wan't the modal to stay on screen
             }
             else
-            {
-                Debug.WriteLine("Passwords do not match");
-                FailedToChangePass = true;
+            {   //If both fields are not the same
+                FailedToChangePass = true; //Used to make the red error box
                 ChangePasswordModalShow = true;
             }
         }
