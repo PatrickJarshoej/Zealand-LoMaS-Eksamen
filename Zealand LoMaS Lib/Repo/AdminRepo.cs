@@ -27,13 +27,40 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     Admin admin = new Admin
                     (
-                        //(int)reader["AdministratorID"],
-
+                        (int)reader["AdministratorID"],
+                        (string)reader["FirstName"],
+                        (string)reader["LastName"],
+                        (string)reader["Email"],
+                        GetInstitutions((int)reader["AdministratorID"], connection)
                     );
                     admins.Add(admin);
                 }
             }
-            return (admins);
+            return admins;
+        }
+        public List<int> GetInstitutions(int adminID, SqlConnection connection)
+        {
+            List<int> institutionIDs = new();
+            try
+            {
+                var command = new SqlCommand("SELECT * FROM MapInstitutionsAdministrators WHERE AdministratorID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", adminID);
+                //connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        institutionIDs.Add((int)reader["InstitutionID"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetInstitutions in AdminRepo");
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+
+            return institutionIDs;
         }
         public string GetPasswordByEmail(string Email)
         {
@@ -193,8 +220,22 @@ namespace Zealand_LoMaS_Lib.Repo
         public List<Admin> GetAll()
         {
             List<Admin> admins = new();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Administrators", connection);
+                    connection.Open();
+                    admins = GetAdminsByCommand(command, connection);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in AdminRepo");
+                    Debug.WriteLine("Error: " + ex);
+                }
+                finally { connection.Close(); }
 
-
+            }
             return admins;
         }
 

@@ -28,8 +28,7 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public List<Admin> GetAll()
         {
-            List<Admin> AdminList = new();
-            return AdminList;
+            return _adminRepo.GetAll();
         }
         public Admin GetByID(int AdminID)
         {
