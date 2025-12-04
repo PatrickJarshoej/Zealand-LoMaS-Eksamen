@@ -9,7 +9,7 @@ namespace Zealand_LoMaS_Lib.Model
     public class Admin
     {
         public int AdministratorID { get; private set; }
-        public int InstitutionID { get; private set; }
+        public List<int> InstitutionID { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Email { get; private set; }
@@ -23,8 +23,16 @@ namespace Zealand_LoMaS_Lib.Model
         {
             AdministratorID = administratorID;
         }
-        public Admin(string firstName, string lastName, string email, int institutionID)
+        public Admin(string firstName, string lastName, string email, List<int> institutionID)
         {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            InstitutionID = institutionID;
+        }
+        public Admin(int adminID,string firstName, string lastName, string email, List<int> institutionID)
+        {
+            AdministratorID = adminID;
             FirstName = firstName;
             LastName = lastName;
             Email = email;

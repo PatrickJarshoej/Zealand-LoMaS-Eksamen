@@ -220,7 +220,28 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Update(Admin adminObject)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("Update Administrators SET Firstname = @FirstName, LastName = @LastName, Email = @Email WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@Firstname", adminObject.FirstName);
+                command.Parameters.AddWithValue("@Lastname", adminObject.LastName);
+                command.Parameters.AddWithValue("@Email", adminObject.Email);
+                command.Parameters.AddWithValue("@AdministratorID", adminObject.AdministratorID);
+                connection.Open();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo Update");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         public void DeleteByID(int adminID)
