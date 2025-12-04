@@ -82,6 +82,7 @@ namespace Zealand_LoMaS_Web.Pages
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
                 Institutions = _institutionService.GetAll();
                 Transports = _transportService.GetByTeacherID(Teacher.TeacherID);
+                TeacherID = Teacher.TeacherID;
             }
         }
 
@@ -159,7 +160,7 @@ namespace Zealand_LoMaS_Web.Pages
             //To create a new password they need to write it twice as a safety measure
             if (Pass == Pass2)
             {
-                //_teacherService.ChangePass(TeacherID, Pass);
+                _teacherService.ChangePass(TeacherID, Pass);
                 Debug.WriteLine("Passwords match");
                 ChangePasswordModalShow = true;
             }

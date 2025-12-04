@@ -90,8 +90,8 @@ namespace Zealand_LoMaS_Lib.Service
         public void ChangePass(int id, string pass)
         {
             string hashPass = Argon2.Hash(pass);
-
-            _teacherRepo.UpdatePassword(id, pass);
+            Debug.WriteLine("ChangePass In Service");
+            _teacherRepo.UpdatePassword(id, hashPass);
         }
     }
 }

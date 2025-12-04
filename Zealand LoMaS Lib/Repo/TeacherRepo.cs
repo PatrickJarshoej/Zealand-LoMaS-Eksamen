@@ -609,6 +609,8 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             using (var connection = new SqlConnection(_connectionString))
             {
+                Debug.WriteLine("Running UpdatePassword in TeacherRepo");
+                Debug.WriteLine("TeacherID: " + teacherID);
                 var command = new SqlCommand("Update TeacherPasswords SET Password = @Password WHERE TeacherID = @TeacherID", connection);
                 command.Parameters.AddWithValue("@TeacherID", teacherID);
                 command.Parameters.AddWithValue("@Password", Password);
