@@ -51,5 +51,9 @@ namespace Zealand_LoMaS_Lib.Model
             Address = address;
             AdminIDs = adminIDs;
         }
+        public override string ToString()
+        {
+            return $"Name: {FirstName} {LastName}, Email: {Email}, Address: {Address.City}, Institution: {InstitutionID}, Admins: {AdminIDs[0]}";
+        }
     }
 }
