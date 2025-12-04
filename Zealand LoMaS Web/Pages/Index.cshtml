@@ -47,7 +47,7 @@
         <div class="d-flex justify-content-between">
             <div class="stat p-2">
                 <h2>Create Teacher</h2>
-                <span onclick="document.getElementById('CreateTeacher').style.display='block'">
+                <span onclick="document.getElementById('CreateTeacher').style.display='block'" class="justify-content-center">
                     <button class="btn">Create Teacher</button>
                 </span>
                 <div class="modal text-center" id="CreateTeacher">
@@ -66,9 +66,9 @@
                             </p>
                             <p class=""> <b> First Name: </b> <br /><input type="text" asp-for="FirstName" name="FirstName" placeholder="First Name" required /></p>
                             <p> <b> Last Name: </b> <br /><input type="text" asp-for="LastName" name="LastName" placeholder="Last Name" required /></p>
-                            <p> <b> Email: </b> <br /><input type="text" asp-for="Email" name="Email" placeholder="Email" required /></p>
+                            <p> <b> Email: </b> <br /><input type="email" asp-for="Email" name="Email" placeholder="Email" required /></p>
                             <p> <b> Hours: </b> <br /><input type="text" asp-for="WeeklyHours" name="WeeklyHours" placeholder="Weekly Hours" required /></p>
-                            <p> <b> Has Car: </b> <br /><input type="Text" name="HasCar" asp-for="HasCar" value="true/false" required /> </p>
+                            <p> <b> Has Car: </b> <br /><input type="text" name="HasCar" asp-for="HasCar" value="true/false" required /> </p>
                             <p><b>Address</b> <br />
                                 <label for="Location Selection"></label>
                                 <select id="Location" name="Location" required>
@@ -92,6 +92,7 @@
             </div>
         </div>
     </div>
+    <h1>Teachers</h1>
     <table class="table">
         <tbody>
             <tr>
@@ -108,7 +109,15 @@
             @foreach (var T in Model.Teachers)
             {
                 <tr>
-                    <td>@T.InstitutionID</td>
+                    <td>
+                        @foreach (var I in Model.Institutions)
+                        {
+                            if (I.InstitutionID == T.InstitutionID)
+                            {
+                                <p>@I.Location.RoadName @I.Location.RoadNumber, @I.Location.City</p>
+                            }
+                        }
+                    </td>
                     <td>@T.FirstName @T.LastName</td>
                     <td>@T.Email</td>
                     <td>@T.WeeklyHours.TotalHours</td>
@@ -135,7 +144,7 @@
                     </td>
                     <td>
                         <form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
-                            <input class="no-border" type="submit" value="Delete" />
+                            <input class="no-border" type="submit" value="Remove" />
                         </form>
                     </td>
                 </tr>
@@ -212,12 +221,15 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
                         <p> <b> Email:</b> <br />@Model.Teacher.Email</p>
                         <p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
                         <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
-                        <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        @if (Model.Teacher.Address != null)
+                        {
+                            <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        }
                         <p> <b>Institution:</b> <br />@Model.Institution.Location.City</p>
                     }
                     else
                     {
-                        <h1><b>You are useless</b></h1>
+                        <p>You have no competencies</p>
                     }
                     <form method="post" asp-page-handler="EditTeacherCompetencies">
                         <input type="submit" value="Edit Profile" />
@@ -230,7 +242,10 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
                         <p> <b> Email:</b> <br />@Model.Teacher.Email</p>
                         <p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
                         <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
-                        <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        @if (Model.Teacher.Address != null)
+                        {
+                            <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        }
                         <p> <b>Institution:</b>@Model.Institution.Location.City</p>
                     }
                     else
