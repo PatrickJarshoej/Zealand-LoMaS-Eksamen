@@ -39,7 +39,6 @@ namespace Zealand_LoMaS_Web.Pages
         public int InstitutePostal { get; set; }
         public string InstituteRoadName { get; set; }
         public string InstituteRoadNumber { get; set; }
-        public int InstitutionID { get; set; }
         public List<int> InstitutionIDs { get; set; }
         public Teacher Teacher { get; set; }
         public Institution Institution { get; set; }
@@ -112,7 +111,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostCreateAdmin()
         {
-            _adminService.Create(Email, FirstName, lastName, InstitutionID);
+            _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
         }
         public void OnPostCreateTeacher()
         {
