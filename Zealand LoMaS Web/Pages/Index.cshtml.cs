@@ -50,6 +50,8 @@ namespace Zealand_LoMaS_Web.Pages
         [BindProperty]
         public int InstitutionID { get; set; }
         [BindProperty]
+        public List<int> InstitutionIDs { get; set; }
+        [BindProperty]
         public Teacher Teacher { get; set; }
         [BindProperty]
         public Institution Institution{ get; set; }
@@ -117,7 +119,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostCreateAdmin()
         {
-            _adminService.Create(Email, FirstName, lastName, InstitutionID);
+            _adminService.Create(Email, FirstName, lastName, InstitutionIDs);
         }
         public IActionResult OnPostEditTeacherProfile()
         {

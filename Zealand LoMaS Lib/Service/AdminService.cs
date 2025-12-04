@@ -13,12 +13,14 @@ namespace Zealand_LoMaS_Lib.Service
     public class AdminService
     {
         private IAdminRepo _adminRepo;
+        private IInstitutionRepo _institutionRepo;
 
-        public AdminService(IAdminRepo adminRepo)
+        public AdminService(IAdminRepo adminRepo, IInstitutionRepo institutionRepo)
         {
             _adminRepo = adminRepo;
+            _institutionRepo = institutionRepo;
         }
-        public void Create(string email, string firstName, string lastName, int institutionID)
+        public void Create(string email, string firstName, string lastName, List<int> institutionID)
         {
             Admin admin = new Admin(firstName, lastName, email, institutionID);
             string defaultPassword = Argon2.Hash("Admin");
@@ -44,9 +46,11 @@ namespace Zealand_LoMaS_Lib.Service
             Admin admin = new();
             return admin;
         }
-        public void Update(string email, string firstName, string lastName, int institutionID)
+        public void Update(int adminID, string email, string firstName, string lastName, List<int> institutionIDs)
         {
-            throw new NotImplementedException();
+            Admin admin = new(adminID, email, firstName, lastName, institutionIDs);
+            _institutionRepo.UpdateMapAdminInstitude(adminID);
+            _adminRepo.Update(admin);
         }
         public void DeleteByID(int AdminID)
         {
