@@ -162,45 +162,42 @@
             }
         </tbody>
     </table>
-
+    <h1> </h1>
+    <h1> Administratorer </h1>
     <table class="table">
         <tbody>
             <tr>
-                <th>Institution</th>
+                <th>Institutions</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Edit</th>
                 <th>Remove</th>
             </tr>
-            @foreach (var T in Model.Teachers)
+            @foreach (var T in Model.Admins)
             {
                 <tr>
                     <td>
-                        @foreach (var admin in T.AdminIDs)
+                        @foreach (var I in T.InstitutionIDs)
                         {
-                            foreach (var Admin in Model.Admins)
+                            @foreach (var i in Model.Institutions)
                             {
-                                if (admin == Admin.AdministratorID)
+                                if (I == i.InstitutionID)
                                 {
-                                    <p>@Admin.FirstName @Admin.LastName</p>
+                                    <p> @i.Location.RoadName @i.Location.RoadNumber, @i.Location.City </p>
                                 }
-
                             }
                         }
                     </td>
                     <td>@T.FirstName @T.LastName</td>
                     <td>@T.Email</td>
-                    <td>@T.WeeklyHours.TotalHours</td>
-                    <td>@T.HasCar</td>
-                    <td>@T.Address.RoadName @T.Address.RoadNumber, @T.Address.City</td>
                     <td>
-                        <form method="post" asp-page-handler="EditTeacherProfile" class="btn padding-none">
-                            <input type="hidden" asp-for="TeacherID" value="@T.TeacherID" />
+                        <form method="post" asp-page-handler="EditAdminProfile" class="btn padding-none">
+                            <input type="hidden" asp-for="AdminID" value="@T.AdministratorID" />
                             <input class="no-border" type="submit" value="Edit" />
                         </form>
                     </td>
                     <td>
-                        <form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
+                        <form method="post" asp-page-handler="DeleteAdmin" class="btn padding-none">
                             <input class="no-border" type="submit" value="Delete" />
                         </form>
                     </td>
