@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,12 +40,31 @@ namespace Zealand_LoMaS_Lib.Service
 
         public Institution GetByID(int id)
         {
+            //Debug.WriteLine("ID: " + id);
+            //return null;
             return _institutionRepo.GetByID(id);
         }
 
-        public void Update(Institution institution)
+        public void Update(int institutionID, string region, int postalCode, string city, string roadName, string roadNumber, string admins, List<int> classIDs)
         {
-            throw new NotImplementedException();
+            List<int> adminIDs = new();
+            if (admins != "")
+            {
+                List<string> aID = admins.Split(',').ToList<string>();
+                foreach (var i in aID)
+                {
+                    adminIDs.Add(Convert.ToInt32(i));
+                }
+            }
+            else
+            {
+                Debug.WriteLine("No admins found");
+            }
+            Address location = new(region, city, postalCode, roadName, roadNumber);
+
+            Institution institution = new(institutionID, location, adminIDs, classIDs);
+
+            _institutionRepo.Update(institution);
         }
     }
 }

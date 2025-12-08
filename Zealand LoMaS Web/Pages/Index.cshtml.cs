@@ -131,12 +131,16 @@ namespace Zealand_LoMaS_Web.Pages
 
         }
         public IActionResult OnPostEditTeacherProfile()
-        {
+        {   //This is the method used when a teacher edits themselves
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
         }
         public IActionResult OnPostEditTeacher()
         {
             return RedirectToPage("/EditTeacher", new { teacherID = TeacherID });
+        }
+        public IActionResult OnPostEditInstitution()
+        {
+            return RedirectToPage("/EditInstitution", new { institutionID = InstitutionID});
         }
         public IActionResult OnPostEditTeacherCompetencies()
         {
