@@ -1,0 +1,23 @@
+﻿@page
+@model EditAdministratorModel
+@{
+    ViewData["Title"] = "EditAdministrator";
+}
+<link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
+<h1>@ViewData["Title"]</h1>
+@if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false" && Model.AdminID == Convert.ToInt32(HttpContext.Request.Cookies["UserID"]))
+{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+}
+else
+{
+    <div class="card">
+        <form method="post" asp-page-handler="Save">
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+}

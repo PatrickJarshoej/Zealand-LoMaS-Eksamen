@@ -154,6 +154,10 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _teacherService.HashThePassword(TeacherID);
         }
+        public IActionResult OnPostEditAdminProfile()
+        {
+            return RedirectToPage("/EditAdministrator", new { AdminID = HttpContext.Request.Cookies["UserID"] });
+        }
         public void OnPostEditAdministrator()
         {
             _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
