@@ -1,0 +1,29 @@
+﻿@page
+@model EditInstitutionModel
+@{
+    ViewData["Title"] = "Transports";
+}
+<link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
+<h1>@ViewData["Title"]</h1>
+@if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "true")
+{
+    <div class="card container">
+        <form method="post" asp-page-handler="Save">
+            <div class="d-flex justify-content-around">
+                <div class="border">
+                    <p> <b> Region:</b> <br /><input type="text" asp-for="Region" name="Region" value="@Model.Institution.Location.Region" /></p>
+                    <p> <b> Postal Code:</b> <br /><input type="number" asp-for="PostalCode" name="PostalCode" value="@Model.Institution.Location.PostalCode" /></p>
+                    <p> <b> City:</b> <br /><input type="text" asp-for="City" name="City" value="@Model.Institution.Location.City" /></p>
+                    <p> <b> Road Name:</b> <br /><input type="text" asp-for="RoadName" name="RoadName" value="@Model.Institution.Location.RoadName" /></p>
+                    <p> <b> Road Number:</b> <br /><input type="text" asp-for="RoadNumber" name="RoadNumber" value="@Model.Institution.Location.RoadNumber" /></p>
+                </div>
+                <div class="border">
+                    <p>Write the connected admins with comma seperation using their IDs</p> <br />
+                    <input type="text" asp-for="Admins" name="Admins" value="@Model.Admins"/>
+                    <input type="hidden" asp-for="InstitutionID" name="InstitutionID" value="@Model.Institution.InstitutionID" />
+                </div>
+            </div>
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+}

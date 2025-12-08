@@ -7,6 +7,7 @@ using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
 {
+    [BindProperties]
     public class IndexModel : PageModel
     {
         private AdminService _adminService;
@@ -15,42 +16,37 @@ namespace Zealand_LoMaS_Web.Pages
         private TransportService _transportService;
         private readonly ILogger<IndexModel> _logger;
 
-        [BindProperty]
         public string Email { get; set; }
-        [BindProperty]
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int InstitutionID { get; set; }
+        public double Hours { get; set; }
+        public TimeSpan WeeklyHours { get; set; }
+        public bool HasCar { get; set; } = false;
+        public int Location { get; set; }
+        public List<int> AdminIDs { get; set; }
         public string Pass { get; set; }
-        [BindProperty]
+        public string Pass2 { get; set; }
         public int AdminID { get; set; } = 0;
-        [BindProperty]
         public int TeacherID { get; set; } = 0;
-        [BindProperty]
         public bool FailedToLogIn { get; set; } = false;
-        [BindProperty]
         public bool NeedToRefresh { get; set; } = false;
-        [BindProperty]
+        public bool FailedToChangePass { get; set; } = false;
         public string CookieID { get; set; } = "0";
-        [BindProperty]
         public string CookieIsAdmin { get; set; } = "false";
-        [BindProperty]
         public string InstituteRegion { get; set; }
-        [BindProperty]
         public string InstituteCity { get; set; }
-        [BindProperty]
         public int InstitutePostal { get; set; }
-        [BindProperty]
         public string InstituteRoadName { get; set; }
-        [BindProperty]
         public string InstituteRoadNumber { get; set; }
-        [BindProperty]
+        public List<int> InstitutionIDs { get; set; }
         public Teacher Teacher { get; set; }
-        [BindProperty]
-        public Institution Institution{ get; set; }
-        [BindProperty]
-        public List<Institution> Institutions{ get; set; }
-        [BindProperty]
-        public List<Transport> Transports{ get; set; }
-
-
+        public Institution Institution { get; set; }
+        public List<Institution> Institutions { get; set; }
+        public List<Transport> Transports { get; set; }
+        public List<Teacher> Teachers { get; set; }
+        public List<Admin> Admins { get; set; }
+        public bool ChangePasswordModalShow { get; set; } = false;
 
         public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService, TransportService tS)
         {
@@ -70,9 +66,15 @@ namespace Zealand_LoMaS_Web.Pages
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
                 Institutions = _institutionService.GetAll();
                 Transports = _transportService.GetByTeacherID(Teacher.TeacherID);
+                TeacherID = Teacher.TeacherID;
+            }
+            if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "true")
+            {
+                Institutions = _institutionService.GetAll();
+                Teachers = _teacherService.GetAll();
+                Admins = _adminService.GetAll();
             }
         }
-
         public void OnPost()
         {
             Debug.WriteLine("Du kører den forkerte on post");
@@ -83,7 +85,7 @@ namespace Zealand_LoMaS_Web.Pages
             TeacherID = _teacherService.VerifyLogIn(Email, Pass);
             if (AdminID != 0)
             {
-                Debug.WriteLine("Admin er logged in");
+                //Debug.WriteLine("Admin er logged in");
                 CookieID = Convert.ToString(AdminID);
                 CookieIsAdmin = "true";
                 OnGet();
@@ -92,14 +94,14 @@ namespace Zealand_LoMaS_Web.Pages
             }
             else if (TeacherID != 0)
             {
-                Debug.WriteLine("Lærer er logged in");
+                //Debug.WriteLine("Lærer er logged in");
                 CookieID = Convert.ToString(TeacherID);
                 OnGet();
                 NeedToRefresh = true;
             }
             else
             {
-                Debug.WriteLine("Did not log in");
+                //Debug.WriteLine("Did not log in");
                 FailedToLogIn = true;
             }
         }
@@ -107,9 +109,38 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
         }
-        public IActionResult OnPostEditTeacherProfile()
+        public void OnPostCreateAdmin()
         {
+            _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
+        }
+        public void OnPostCreateTeacher()
+        {
+            Institution i = _institutionService.GetByID(InstitutionID);
+
+            string Region = i.Location.Region;
+            string City = i.Location.City;
+            int PostalCode = i.Location.PostalCode;
+            string RoadName = i.Location.RoadName;
+            string RoadNumber = i.Location.RoadNumber;
+            _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
+            OnGet();
+            Email = "";
+            FirstName = "";
+            LastName = "";
+            InstitutionID = 0;
+
+        }
+        public IActionResult OnPostEditTeacherProfile()
+        {   //This is the method used when a teacher edits themselves
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
+        }
+        public IActionResult OnPostEditTeacher()
+        {
+            return RedirectToPage("/EditTeacher", new { teacherID = TeacherID });
+        }
+        public IActionResult OnPostEditInstitution()
+        {
+            return RedirectToPage("/EditInstitution", new { institutionID = InstitutionID});
         }
         public IActionResult OnPostEditTeacherCompetencies()
         {
@@ -127,13 +158,35 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _teacherService.HashThePassword(TeacherID);
         }
-        public IActionResult OnPostLogOut()
+        public void OnPostEditAdministrator()
         {
-            
-            HttpContext.Response.Cookies.Append("UserID", "0");
+            _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
+            AdminID = 0;
+            Email = "";
+            FirstName = "";
+            LastName = "";
+            InstitutionIDs = new List<int>();
+        }
+        public IActionResult OnPostLogOut()
+        {   
+            HttpContext.Response.Cookies.Append("UserID", "0"); //If you logout we set your ID to zero
             HttpContext.Response.Cookies.Append("UserStatus", "false");
-            //NeedToRefresh = true;
             return RedirectToPage();
+        }
+        public void OnPostChangePassword()
+        {
+            OnGet(); //We need to run this or it will forget who the teacher is...
+            //To create a new password they need to write it twice as a safety measure
+            if (Pass == Pass2)
+            { //If the wrote the same password in both fields we update the password in the DB
+                _teacherService.ChangePass(TeacherID, Pass);
+                ChangePasswordModalShow = true; //When you use an OnPost method it refreshes, but i wan't the modal to stay on screen
+            }
+            else
+            {   //If both fields are not the same
+                FailedToChangePass = true; //Used to make the red error box
+                ChangePasswordModalShow = true;
+            }
         }
     }
 }

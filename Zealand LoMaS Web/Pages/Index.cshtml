@@ -1,158 +1,417 @@
 ﻿@page
 @model IndexModel
 @{
-	ViewData["Title"] = "Log-in";
+    ViewData["Title"] = "Log-in";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 
 @if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "true")
 {
-	<div class="text-center">
-		<h1 class="display-1">Admin</h1>
-	</div>
+    <div class="text-center">
+        <h1 class="display-1">Admin</h1>
+    </div>
+    <div class="card container">
+        <div class="d-flex justify-content-between">
+            <div class="stat p-2">
+                <h2>Create Teacher</h2>
+                <span onclick="document.getElementById('CreateTeacher').style.display='block'">
+                    <button class="btn">Create Teacher</button>
+                </span>
+                <div class="modal text-center" id="CreateTeacher">
+                    <div class="modal-content" display="none">
+                        <span onclick="document.getElementById('CreateTeacher').style.display='none'" class="btn-close display-topright"></span>
+                        <h1>Create Teacher</h1>
+                        <form method="post" asp-page-handler="CreateTeacher">
+                            <p>
+                                <b>Institution: </b> <br />
+                                <label for="Institution Selection"></label>
+                                <select id="InstitutionID" name="InstitutionID" required>
+                                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                                    {
+                                        <option value="@institution.InstitutionID">@institution.Location.City</option>
+                                    }
+                                </select>
+                            </p>
+                            <p class=""> <b> First Name: </b> <br /><input type="text" asp-for="FirstName" name="FirstName" placeholder="First Name" required /></p>
+                            <p> <b> Last Name: </b> <br /><input type="text" asp-for="LastName" name="LastName" placeholder="Last Name" required /></p>
+                            <p> <b> Email: </b> <br /><input type="text" asp-for="Email" name="Email" placeholder="Email" required /></p>
+                            <p> <b> Hours: </b> <br /><input type="text" asp-for="WeeklyHours" name="WeeklyHours" placeholder="Weekly Hours" required /></p>
+                            <p> <b> Has Car: </b> <br /><input type="Text" name="HasCar" asp-for="HasCar" value="true/false" required /> </p>
+                            <p>
+                                <b>Address</b> <br />
+                                <label for="Location Selection"></label>
+                                <select id="Location" name="Location" required>
+                                    @foreach (var institution in Model.Institutions)
+                                    {
+                                        <option value="@institution.InstitutionID">@institution.Location.City</option>
+                                    }
+                                </select>
+                            </p>
+                            <input type="hidden" name="AdminIDs" asp-for="AdminIDs" value="@Convert.ToInt32(HttpContext.Request.Cookies["UserID"])" required />
+                            <input type="submit" value="Create" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="stat p-2">
+                <h2>Create Administrator</h2>
+                <span onclick="document.getElementById('CreateAdmin').style.display='block'">
+                    <button class="btn">Create Admin</button>
+                </span>
+                <div class="modal text-center" id="CreateAdmin">
+                    <div class="modal-content" display="none">
+                        <span onclick="document.getElementById('CreateAdmin').style.display='none'" class="btn-close display-topright"></span>
+                        <h1>Create Admin</h1>
+                        <form method="post" asp-page-handler="CreateAdmin">
+                            <p class=""> <b> First Name: </b> <br /><input type="text" asp-for="FirstName" name="FirstName" placeholder="First Name" required /></p>
+                            <p> <b> Last Name: </b> <br /><input type="text" asp-for="LastName" name="LastName" placeholder="Last Name" required /></p>
+                            <p> <b> Email: </b> <br /><input type="email" asp-for="Email" name="Email" placeholder="Email" required /></p>
+                            <p>
+                                <b>Institution: </b> <br />
+                                <label for="Institution Selection"></label>
+                                <select id="InstitutionID" name="InstitutionID" required>
+                                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+                                    {
+                                        <option value="@institution.InstitutionID">@institution.Location.City</option>
+                                    }
+                                </select>
+                            </p>
+                            <input type="submit" value="Create" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="stat p-2">
+                <h2>Create institute</h2>
+                <span onclick="document.getElementById('CreateInstitute').style.display='block'">
+                    <button class="btn">Create Institute</button>
+                </span>
+                <div class="modal text-center" id="CreateInstitute">
+                    <div class="modal-content" display="none">
+                        <span onclick="document.getElementById('CreateInstitute').style.display='none'" class="btn-close display-topright"></span>
+                        <h1>Create Institute</h1>
+                        <form method="post" asp-page-handler="CreateInstitute">
+                            <p class=""> <b> Institute Region: </b> <br /><input type="text" asp-for="InstituteRegion" name="InstituteRegion" placeholder="InstituteRegion" required /></p>
+                            <p> <b> Institute By: </b> <br /><input type="text" asp-for="InstituteCity" name="InstituteCity" placeholder="Institute By" required /></p>
+                            <p> <b> Institute PostNummer </b> <br /><input type="number" asp-for="InstitutePostal" name="InstitutePostal" placeholder="Institute Postnummer" required /></p>
+                            <p> <b> Institute Vejnavn </b> <br /><input type="text" asp-for="InstituteRoadName" name="InstituteRoadName" placeholder="Institute Vejnavn" required /></p>
+                            <p> <b> Institute Vejnummer </b> <br /><input type="text" asp-for="InstituteRoadNumber" name="InstituteRoadNumber" placeholder="Institute Vejnummer" required /></p>
+                            <input type="submit" value="Create" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1> Teachers </h1>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th> Institution </th>
+                <th> Name </th>
+                <th> Email </th>
+                <th> Weekly Hours </th>
+                <th> Car </th>
+                <th> Address </th>
+                <th> Admins </th>
+                <th> Edit </th>
+                <th> Remove </th>
+            </tr>
+            @foreach (var T in Model.Teachers)
+            {
+                <tr>
+                    <td>
+                        @foreach (var I in Model.Institutions)
+                        {
+                            if (I.InstitutionID == T.InstitutionID)
+                            {
+                                <p> @I.Location.RoadName @I.Location.RoadNumber, @I.Location.City </p>
+                            }
+                        }
+                        </td >
+                    <td> @T.FirstName @T.LastName </td>
+                    <td> @T.Email </td>
+                    <td> @T.WeeklyHours.TotalHours </td>
+                    <td> @T.HasCar </td>
+                    <td> @T.Address.RoadName @T.Address.RoadNumber, @T.Address.City </td>
+                    <td>
+                        @foreach (var admin in T.AdminIDs)
+                        {
+                            foreach (var Admin in Model.Admins)
+                            {
+                                if (admin == Admin.AdministratorID)
+                                {
+                                    <p> @Admin.FirstName @Admin.LastName </p>
+                                }
 
-	<div class="text-center">
-		<h3 class="display-3">Institutions</h3>
-		<form method="post" asp-page-handler="CreateInstitute">
-			<input type="text" asp-for="InstituteRegion" placeholder="Region" class="form-label" required />
-			<input type="text" asp-for="InstituteCity" placeholder="By" class="form-label" required />
-			<input type="number" asp-for="InstitutePostal" placeholder="Postnummer" class="form-label" required />
-			<input type="text" asp-for="InstituteRoadName" placeholder="Vejnavn" class="form-label" required />
-			<input type="text" asp-for="InstituteRoadNumber" placeholder="Vejnummer" class="form-label" required />
-			<input type="submit" value="Create Institute" />
-		</form>
-	</div>
-	<div>
-		<form method="post" asp-page-handler="LogOut">
-			<input type="submit" value="LogOut" />
-		</form>
-	</div>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="EditTeacher" class="btn padding-none">
+                            <input type="hidden" asp -for="TeacherID" value="@T.TeacherID">
+                            <input class="no-border" type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
+                            <input class="no-border" type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+   <h1>Institutions</h1>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>City</th>
+                <th>Postal Code</th>
+                <th>Road</th>
+                <th>Administrators</th>
+                <th>Region</th>
+                <th>Edit</th>
+                <th>Remove</th>
+           </tr>
+            @foreach (var institution in Model.Institutions)
+            {
+                <tr>
+                    <td>@institution.Location.City</td>
+                    <td>@institution.Location.PostalCode</td>
+                    <td>@institution.Location.RoadName @institution.Location.RoadNumber</td>
+                    <td>
+                        @foreach (var admin in institution.AdminIDs)
+                        {
+                            foreach (var Admin in Model.Admins)
+                            {
+                                if (admin == Admin.AdministratorID)
+                                {
+                                    <p> @Admin.FirstName @Admin.LastName </p>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>@institution.Location.Region</td>
+                    <td>
+                        <form method="post" asp-page-handler="EditInstitution" class="btn padding-none">
+                            <input type="hidden" asp-for="InstitutionID" value="@institution.InstitutionID">
+                            <input class="no-border" type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="DeleteInstitution" class="btn padding-none">
+                            <input class="no-border" type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h1> </h1>
+    <h1> Administratorer </h1>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Institutions</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Edit</th>
+                <th>Remove</th>
+            </tr>
+            @foreach (var T in Model.Admins)
+            {
+                <tr>
+                    <td>
+                        @foreach (var I in T.InstitutionIDs)
+                        {
+                            @foreach (var i in Model.Institutions)
+                            {
+                                if (I == i.InstitutionID)
+                                {
+                                    <p> @i.Location.RoadName @i.Location.RoadNumber, @i.Location.City </p>
+                                }
+                            }
+                        }
+                    </td>
+                    <td>@T.FirstName @T.LastName</td>
+                    <td>@T.Email</td>
+                    <td>
+                        <form method="post" asp-page-handler="EditAdminProfile" class="btn padding-none">
+                            <input type="hidden" asp-for="AdminID" value="@T.AdministratorID" />
+                            <input class="no-border" type="submit" value="Edit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-page-handler="DeleteAdmin" class="btn padding-none">
+                            <input class="no-border" type="submit" value="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
 {
-	<div class="text-center">
-		<h1 class="display-1">Welcome @Model.Teacher.FirstName @Model.Teacher.LastName </h1>
-		<div class="card container">
-			<div class="d-flex justify-content-between">
-				<div class="stat p-2">
-					<h2>User Information <br /></h2>
-					<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
-					<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
-					<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
-					<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
-					@foreach(var i in Model.Institutions)
-					{
-						if (i.InstitutionID == Model.Teacher.InstitutionID)
-						{
-							<p> <b>Institution:</b> <br />@i.Location.City</p>
-						}
-					}
-					<form method="post" asp-page-handler="EditTeacherProfile">
-						<input type="submit" value="Edit Profile" />
-					</form>
-				</div>
-				<div class="stat p-2">
-					<h2>Competencies <br /></h2>
-					@if (Model.Teacher.Competencies != null)
-					{
-						<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
-						<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
-						<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
-						<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
-						<p> <b>Institution:</b> <br />@Model.Institution.Location.City</p>
-					}
-					else
-					{
-						<h1><b>You are useless</b></h1>
-					}
-					<form method="post" asp-page-handler="EditTeacherCompetencies">
-						<input type="submit" value="Edit Profile" />
-					</form>
-				</div>
-				<div class="stat p-2">
-					<h2>Upcoming Classes <br /></h2>
-					@if (Model.Teacher.ClassIDs != null)
-					{
-						<p> <b> Email:</b> <br />@Model.Teacher.Email</p>
-						<p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
-						<p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
-						<p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
-						<p> <b>Institution:</b>@Model.Institution.Location.City</p>
-					}
-					else
-					{
-						<p>There are no upcoming classes</p>
-					}
-					<form method="post" asp-page-handler="EditTeacherClasses">
-						<input type="submit" value="Edit Classes" />
-					</form>
-				</div>
-			</div>
-			<div class="d-flex justify-content-between">
 
-				@foreach(var transport in Model.Transports)
-				{
-					<div class="stat">
-						<h2>Transport</h2>
-						<p>@Model.Teacher.FirstName @Model.Teacher.LastName</p>
-						<p> <b>Transport Hours: </b> <br />@transport.TransportHours.TotalHours</p>
-						<p> <b>Transport Cost: </b> <br />@transport.TransportCost</p>
-						<p> <b>The Date: </b> <br />@transport.TheDate</p>
-						@foreach (var institution in Model.Institutions)
-						{
-							if (transport.InstitueFromID == institution.InstitutionID)
-							{
-								<p> <b>From: </b> <br /> @institution.Location.City</p>
-							}
-							if (transport.InstitueToID == institution.InstitutionID)
-							{
-								<p> <b>From: </b> <br /> @institution.Location.City</p>
-							}
-						}
-					</div>			
-				}
-			</div>
-				<form method="post" asp-page-handler="EditTeacher">
-					<input type="submit" value="Edit Profile"/>
-				</form>
-		</div>
-	</div>
-	<div>
-		<form method="post" asp-page-handler="LogOut">
-			<input type="submit" value="LogOut" />
-		</form>
-	</div>
+    <div class="text-center">
+        <h1 class="display-1">Welcome @Model.Teacher.FirstName @Model.Teacher.LastName </h1>
+        <div class="card container">
+            <div class="d-flex justify-content-between">
+                <div class="stat p-2">
+                    <h2>User Information <br /></h2>
+                    <p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+                    <p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+                    <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+                    @if (Model.Teacher.Address != null)
+                    {
+                        <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                    }
+                    @foreach (var i in Model.Institutions)
+                    {
+                        if (i.InstitutionID == Model.Teacher.InstitutionID)
+                        {
+                            <p> <b>Institution:</b> <br />@i.Location.City</p>
+                        }
+                    }
+
+                    <div class="d-flex justify-content-between">
+                        <form method="post" asp-page-handler="EditTeacherProfile" class="btn padding-none">
+                            <input class="no-border" type="submit" value="Edit Profile" />
+                        </form>
+                        <span onclick="document.getElementById('ChangePassword').style.display='block'">
+                            <button class="btn">Change Password</button>
+                        </span>
+                        <div class="modal" id="ChangePassword">
+                            <div class="modal-content" display="none">
+                                <span onclick="document.getElementById('ChangePassword').style.display='none'" class="btn-close display-topright"></span>
+                                <h1>Change Password</h1>
+                                <form method="post" asp-page-handler="ChangePassword">
+                                    <input type="password" asp-for="Pass" name="Pass" value="" required />
+                                    <input type="password" asp-for="Pass2" name="Pass2" value="" required />
+                                    <input type="submit" value="Change" />
+                                </form>
+                                @if (Model.FailedToChangePass == true)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        Passwords do not match
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        @if (Model.ChangePasswordModalShow == true)
+                        {
+                            <script>
+                                document.getElementById("ChangePassword").style.display="block"
+
+                            </script>
+                        }
+                    </div>
+                </div>
+                <div class="stat p-2">
+                    <h2>Competencies <br /></h2>
+                    @if (Model.Teacher.Competencies != null)
+                    {
+                        <p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+                        <p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+                        <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+                        <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        <p> <b>Institution:</b> <br />@Model.Institution.Location.City</p>
+                    }
+                    else
+                    {
+                        <h1><b>You are useless</b></h1>
+                    }
+                    <form method="post" asp-page-handler="EditTeacherCompetencies">
+                        <input type="submit" value="Edit Profile" />
+                    </form>
+                </div>
+                <div class="stat p-2">
+                    <h2>Upcoming Classes <br /></h2>
+                    @if (Model.Teacher.ClassIDs != null)
+                    {
+                        <p> <b> Email:</b> <br />@Model.Teacher.Email</p>
+                        <p> <b> WeeklyHours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours</p>
+                        <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar</p>
+                        <p> <b> Address:</b> <br />@Model.Teacher.Address.RoadName @Model.Teacher.Address.RoadNumber, @Model.Teacher.Address.City</p>
+                        <p> <b>Institution:</b>@Model.Institution.Location.City</p>
+                    }
+                    else
+                    {
+                        <p>There are no upcoming classes</p>
+                    }
+                    <form method="post" asp-page-handler="EditTeacherClasses">
+                        <input type="submit" value="Edit Classes" />
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+
+                @foreach (var transport in Model.Transports)
+                {
+                    <div class="stat">
+                        <h2>Transport</h2>
+                        <p>@Model.Teacher.FirstName @Model.Teacher.LastName</p>
+                        <p> <b>Transport Hours: </b> <br />@transport.TransportHours.TotalHours</p>
+                        <p> <b>Transport Cost: </b> <br />@transport.TransportCost</p>
+                        <p> <b>The Date: </b> <br />@transport.TheDate</p>
+                        @foreach (var institution in Model.Institutions)
+                        {
+                            if (transport.InstitueFromID == institution.InstitutionID)
+                            {
+                                <p> <b>From: </b> <br /> @institution.Location.City</p>
+                            }
+                            if (transport.InstitueToID == institution.InstitutionID)
+                            {
+                                <p> <b>From: </b> <br /> @institution.Location.City</p>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+            <form method="post" asp-page-handler="EditTeacher">
+                <input type="submit" value="Edit Profile" />
+            </form>
+        </div>
+    </div>
+    <div>
+        <form method="post" asp-page-handler="LogOut">
+            <input type="submit" value="LogOut" />
+        </form>
+    </div>
 }
 else
 {
-	<div class="text-center">
-		<h1 class="display-1">LoMaS</h1>
-		<form method="post" asp-page-handler="LogIn">
-			<div class="mb-3 mt-3">
-				<h3 class="display-6">Email</h3>
-				<input type="email" asp-for="Email" class="form-label" required />
-			</div>
-			<div class="mb-3 mt-3">
-				<h3 class="display-6">Password</h3>
-				<input type="password" asp-for="Pass" class="form-label" required />
-			</div>
-			<input type="submit" value="Log-in" />
-			<h1></h1>
-			@if (Model.FailedToLogIn == true)
-			{
-				<div class="alert alert-danger" role="alert">
-					Email or Password incorrect
-				</div>
-			}
-			@if (Model.FailedToLogIn == false)
-			{
-				HttpContext.Response.Cookies.Append("UserID", Model.CookieID);
-				HttpContext.Response.Cookies.Append("UserStatus", Model.CookieIsAdmin);
-			}
-			@if(Model.NeedToRefresh == true)
-			{
-				<script>window.location.reload()</script>;
-			}
-		</form>
-	</div>
+    <div class="text-center">
+        <h1 class="display-1">LoMaS</h1>
+        <form method="post" asp-page-handler="LogIn">
+            <div class="mb-3 mt-3">
+                <h3 class="display-6">Email</h3>
+                <input type="email" asp-for="Email" class="form-label" required />
+            </div>
+            <div class="mb-3 mt-3">
+                <h3 class="display-6">Password</h3>
+                <input type="password" asp-for="Pass" class="form-label" required />
+            </div>
+            <input type="submit" value="Log-in" />
+            <h1></h1>
+            @if (Model.FailedToLogIn == true)
+            {
+                <div class="alert alert-danger" role="alert">
+                    Email or Password incorrect
+                </div>
+            }
+            @if (Model.FailedToLogIn == false)
+            {
+                HttpContext.Response.Cookies.Append("UserID", Model.CookieID);
+                HttpContext.Response.Cookies.Append("UserStatus", Model.CookieIsAdmin);
+            }
+            @if (Model.NeedToRefresh == true)
+            {
+                <script>window.location.reload()</script>
+                ;
+            }
+        </form>
+    </div>
 }

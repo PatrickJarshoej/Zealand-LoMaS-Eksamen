@@ -9,7 +9,6 @@ using Microsoft.Data.SqlClient;
 using Zealand_LoMaS_Lib.Model;
 using Zealand_LoMaS_Lib.Repo;
 using Zealand_LoMaS_Lib.Repo.Interfaces;
-using System.Diagnostics;
 
 namespace Zealand_LoMaS_Lib.Service
 {
@@ -21,7 +20,6 @@ namespace Zealand_LoMaS_Lib.Service
         {
             _teacherRepo = tRepo;
         }
-
         public List<Teacher> GetAll()
         {
             return _teacherRepo.GetAll();
@@ -30,7 +28,6 @@ namespace Zealand_LoMaS_Lib.Service
         {
             return _teacherRepo.GetByID(ID);
         }
-
         public void CreateTeacher(int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
             try
@@ -39,6 +36,7 @@ namespace Zealand_LoMaS_Lib.Service
 
                 Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
                 string password = Argon2.Hash("NotAdmin");
+                //Debug.WriteLine(teacher.ToString());
                 _teacherRepo.Add(teacher, password);
             }
             catch (Exception ex)
@@ -85,6 +83,13 @@ namespace Zealand_LoMaS_Lib.Service
             {
                 Debug.WriteLine("Failed to find password");
             }
+        }
+
+        public void ChangePass(int id, string pass)
+        {
+            string hashPass = Argon2.Hash(pass);
+            //Debug.WriteLine("ChangePass In Service");
+            _teacherRepo.UpdatePassword(id, hashPass);
         }
     }
 }

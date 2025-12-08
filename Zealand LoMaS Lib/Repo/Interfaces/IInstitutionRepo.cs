@@ -20,5 +20,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         void Update(Institution institution);
 
         void DeleteByID(int id);
+        public void UpdateMapAdminInstitute(int adminID, List<int> newInstituteIDs);
     }
 }
