@@ -69,7 +69,25 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+
+                    var command = new SqlCommand("Cascade Delete * FROM Institution WHERE InstitutionID=@InstitutionID", connection);
+                    command.Parameters.AddWithValue("@InstitutionID", id);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in DeleteByID() in InstitutionRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+            }
         }
 
         public List<Institution> GetAll()
@@ -97,8 +115,38 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Institution GetByAdminID(int id)
         {
-            throw new NotImplementedException();
+            var institution = new Institution();
+            int institutionID = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    
+                    var command = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsAdministrators WHERE AdminID=@AdminID", connection);
+                    command.Parameters.AddWithValue("@AdminID", id);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            institutionID = (int)reader["InstitutionID"];
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByID() in InstitutionRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+                institution = GetByID(institutionID);
+
+            }
+            return institution;
         }
+
+
 
         public Institution GetByID(int id)
         {

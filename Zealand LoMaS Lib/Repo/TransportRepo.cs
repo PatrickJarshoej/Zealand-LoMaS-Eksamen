@@ -49,7 +49,25 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void DeleteByID(int transportID)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("DELETE FROM Transport WHERE TransportID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", transportID);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error: in DeleteBy in TransportRepo");
+                    Debug.WriteLine($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         public List<Transport> GetAll()
@@ -203,7 +221,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE Transports SET Cost=@cost,WHERE TransportID=@TransportID  ", connection);
+                    var command = new SqlCommand("UPDATE Transports SET Cost=@cost WHERE TransportID=@TransportID  ", connection);
                     command.Parameters.AddWithValue("@cost", transport.TransportCost);
                     connection.Open();
                     command.ExecuteNonQuery();
