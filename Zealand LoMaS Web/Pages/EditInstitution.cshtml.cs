@@ -17,6 +17,8 @@ namespace Zealand_LoMaS_Web.Pages
     {
         TeacherService _teacherService;
         InstitutionService _institutionService;
+        InstitutionRelationService _relationService;
+        public List<InstitutionRelation> InstitutionRelations { get; set; }
         public int InstitutionID { get; set; }
         public int Location { get; set; }
         public string Region { get; set; }
@@ -27,18 +29,22 @@ namespace Zealand_LoMaS_Web.Pages
         public List<int> AdminIDs { get; set; }
         public List<Institution> Institutions { get; set; }
         public Institution Institution { get; set; }
+        public Institution OtherInstitution { get; set; }
         public string Admins { get; set; }
 
 
-        public EditInstitutionModel(TeacherService ts, InstitutionService iS)
+        public EditInstitutionModel(TeacherService ts, InstitutionService iS, InstitutionRelationService rS)
         {
             _teacherService = ts;
             _institutionService = iS;
+            _relationService = rS;
         }
 
         public void OnGet(int institutionID)
         {
             Institution = _institutionService.GetByID(institutionID);
+            Institutions= _institutionService.GetAll();
+            var OtherInstitutions = Institutions.Where(x => x != Institution).OrderBy(x=>x.InstitutionID).ToList();
             Admins = "";
             if (Institution.AdminIDs != null)
             {
@@ -47,6 +53,9 @@ namespace Zealand_LoMaS_Web.Pages
                     Admins += a.ToString() + ", ";
                 }
             }
+            InstitutionRelations=_relationService.GetByID(institutionID);
+            
+            
         }
         
         //public IActionResult OnPostSave()

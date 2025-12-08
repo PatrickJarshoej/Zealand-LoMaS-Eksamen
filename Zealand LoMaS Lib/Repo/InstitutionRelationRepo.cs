@@ -21,17 +21,19 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private List<InstitutionRelation> GetInstitutionsRelationsByCommand(SqlCommand command)
         {
+            var relation = new InstitutionRelation();
             var institutionRelations = new List<InstitutionRelation>();
-            List<int> institutionIDs= new List<int>();
+
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
+                    List<int> institutionIDs = new List<int>();
                     institutionIDs.Add((int)reader["InstituteFromID"]);
                     institutionIDs.Add((int)reader["InstituteToID"]);
-                    var relation = new InstitutionRelation(
+                    relation = new InstitutionRelation(
                         (TimeSpan)reader["TransportHours"],
-                        (double)reader["Cost"],
+                        Decimal.ToDouble((decimal)reader["Cost"]),
                         institutionIDs
                         );
                     institutionRelations.Add(relation);
@@ -41,7 +43,30 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public void Add(InstitutionRelation institutionRelation)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("INSERT INTO " +
+                        "InstitutionsRelations(InstituteFromID, InstituteToID, Cost , TransportHours) " +
+                        "VALUES (@InstituteFromID, @InstituteToID, @Cost , @TransportHours)", connection);
+                    command.Parameters.AddWithValue("@InstituteFromID", institutionRelation.InstitutionIDs[0]);
+                    command.Parameters.AddWithValue("@InstituteToID", institutionRelation.InstitutionIDs[1]);
+                    command.Parameters.AddWithValue("@Cost", institutionRelation.Cost);
+                    command.Parameters.AddWithValue("@TransportHours", institutionRelation.Time);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in Add() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         public void DeleteByID(int institutionid)
@@ -80,10 +105,11 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
 
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteFromID", connection);
-                    command.Parameters.AddWithValue("@InstituteFromID", id);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteID", connection);
+                    command.Parameters.AddWithValue("@InstituteID", id);
                     connection.Open();
-                    institutionRelations.Add(GetInstitutionsRelationsByCommand(command)[0]);
+                    var newRelations = GetInstitutionsRelationsByCommand(command);
+                    foreach (var r in newRelations) { institutionRelations.Add(r); }
                 }
                 catch (Exception ex)
                 {
@@ -99,10 +125,11 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
 
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteToID", connection);
-                    command.Parameters.AddWithValue("@InstituteFromID", id);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteToID=@InstituteID", connection);
+                    command.Parameters.AddWithValue("@InstituteID", id);
                     connection.Open();
-                    institutionRelations.Add(GetInstitutionsRelationsByCommand(command)[0]);
+                    var newRelations = GetInstitutionsRelationsByCommand(command);
+                    foreach (var r in newRelations) { institutionRelations.Add(r); }
                 }
                 catch (Exception ex)
                 {

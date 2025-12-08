@@ -15,7 +15,7 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
 
 
         InstitutionRelation GetByInstitutionIDs(int id1, int id2);
-
+        List<InstitutionRelation> GetByInstitutionID(int id);
         void Update(InstitutionRelation institutionRelation);
 
         void DeleteByID(int id);

@@ -11,11 +11,15 @@ namespace Zealand_LoMaS_Lib.Service
     public class InstitutionRelationService
     {
         private IInstitutionRelationRepo _institutionRelationRepo;
-        public InstitutionRelationService(IInstitutionRelationRepo institutionRelationRepo) 
+        private InstitutionService _institutionService;
+        public InstitutionRelationService(IInstitutionRelationRepo institutionRelationRepo, InstitutionService institutionService) 
         { 
-        _institutionRelationRepo = institutionRelationRepo;
+            _institutionRelationRepo = institutionRelationRepo;
+            _institutionService=institutionService;
+            EnsureRelationsExist();
+
         }
-        public void Create(int id1, int id2, double cost, TimeSpan time)
+        public void Create(int id1, int id2, TimeSpan time=default(TimeSpan), double cost=0)
         {
             List<int> ids= new List<int>();
             ids.Add(id1);
@@ -28,6 +32,43 @@ namespace Zealand_LoMaS_Lib.Service
                 ids
                 );
             _institutionRelationRepo.Add(institutionRelation);
+        }
+        private void EnsureRelationsExist()
+        {
+            //gets all institutions
+            var institutions = _institutionService.GetAll();
+            //gets all relations
+            var allRelations = GetAll();
+            //counts
+            int rAmount = allRelations.Count;
+            int iAmount= institutions.Count;
+            //this is the expected amount of relations, i derived via the binomial coefficient
+            //where C(n,K)=n!/k!*(n-k)!, where n=amount of institutions and k, is 2 because they get paired up
+            //this there fore simplifies to n*(n-1)/2
+            int expectedRelations = iAmount * (iAmount - 1) / 2;
+            if (allRelations.Count != expectedRelations)
+            {
+                for (int i = 0; i < iAmount; i++)
+                { 
+                    var institution1=institutions[i];
+                    var relations = GetByID(institution1.InstitutionID);
+                    //every institute should have exactly one relation with every other institute,
+                    //so therefore, if the amount of relations equal the amount of institutes-1 we don't need to run it
+                    if (relations.Count != (iAmount - 1))
+                    {
+                        for(int j=i+1; j<iAmount; j++)
+                        {
+                            var institution2 = institutions[j];
+                            if (!relations.Any(r => r.InstitutionIDs.Contains(institution2.InstitutionID)))
+                            {
+                                Create(institution1.InstitutionID, institution2.InstitutionID, TimeSpan.Zero);
+                                rAmount++;
+                            }
+                            if (rAmount == expectedRelations) { return; }
+                        }
+                    }
+                }
+            }
         }
 
         public void DeleteByID(int id)
@@ -57,6 +98,10 @@ namespace Zealand_LoMaS_Lib.Service
                 }
             }
             return institutionRelation;
+        }
+        public List<InstitutionRelation> GetByID(int id)
+        {
+            return _institutionRelationRepo.GetByInstitutionID(id);
         }
 
         public void Update(Institution institution)

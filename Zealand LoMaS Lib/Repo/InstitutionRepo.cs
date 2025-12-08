@@ -165,7 +165,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
 
             }
-            return institutions;
+            return institutionIDs;
         }
 
         public Institution GetByAdminID(int id)
@@ -200,8 +200,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return institution;
         }
-            return institutionIDs;
-        }
+
         private void DeleteByIDs(List<int> instituteIDs)
         {
             {
@@ -334,9 +333,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
-        public Institution GetByAdminID(int id)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
