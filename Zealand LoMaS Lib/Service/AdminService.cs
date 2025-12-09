@@ -45,9 +45,22 @@ namespace Zealand_LoMaS_Lib.Service
             Admin admin = new();
             return admin;
         }
-        public void Update(int adminID, string email, string firstName, string lastName, List<int> institutionIDs)
+        public void Update(int adminID, string firstName, string lastName, string email, string institutionsIDs)
         {
-            Admin admin = new(adminID, email, firstName, lastName, institutionIDs);
+            List<int> institutionIDs = new();
+            if (institutionsIDs != "")
+            {
+                List<string> iID = institutionsIDs.Split(',').ToList<string>();
+                foreach (var i in iID)
+                {
+                    if (i != " ")
+                    {
+                        institutionIDs.Add(Convert.ToInt32(i));
+
+                    }
+                }
+            }
+            Admin admin = new(adminID, firstName, lastName, email, institutionIDs);
             _institutionRepo.UpdateMapAdminInstitute(adminID, institutionIDs);
             _adminRepo.Update(admin);
         }

@@ -1,24 +1,50 @@
 ﻿@page
 @model EditAdministratorModel
 @{
-    ViewData["Title"] = "EditAdministrator";
+	ViewData["Title"] = "EditAdministrator";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
-@if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false" && Model.AdminID == Convert.ToInt32(HttpContext.Request.Cookies["UserID"]))
-{
-    <div class="card">
-        <form method="post" asp-page-handler="Save">
-
-            <input type="submit" value="Save" />
-        </form>
-    </div>
+<div class="card">
+	<form method="post" asp-page-handler="Save">
+		<div class="border">
+			<p>Write the connected institution with comma seperation using their IDs</p> <br />
+			<input type="text" asp-for="InstitutionsIDs" name="InstitutionsIDs" value="@Model.InstitutionsIDs" />
+		</div>
+		<p> <b> FirstName:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Admin.FirstName" /></p>
+		<p> <b> LastName:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Admin.LastName" /></p>
+		<p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Admin.Email" /></p>
+		<input type="hidden" name="AdminID" asp-for="AdminID" value="@Model.Admin.AdministratorID" required />
+		<input type="submit" value="Save" />
+	</form>
+</div>
 }
-else
+@* else
 {
-    <div class="card">
-        <form method="post" asp-page-handler="Save">
-            <input type="submit" value="Save" />
-        </form>
-    </div>
+<div class="card">
+	<form method="post" asp-page-handler="Save">
+		<p>
+			<b> Institution:</b> <br />
+			<label for="Institution Selection"></label>
+			<select id="InstitutionID" name="InstitutionID" selected="@Model.Teacher.InstitutionID" required>
+				@foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+				{
+					if (Model.Teacher.InstitutionID == institution.InstitutionID)
+					{
+						<option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+					}
+					else
+					{
+						<option value="@institution.InstitutionID">@institution.Location.City</option>
+					}
+				}
+			</select>
+		</p>
+		<p> <b> FirstName:</b> <br />@Model.Admin.FirstName"</p>
+		<p> <b> LastName:</b> <br />@Model.Admin.LastName"</p>
+		<p> <b> Email:</b> <br />@Model.Admin.Email"</p>
+		<input type="hidden" name="AdminID" asp-for="AdminID" value="@Model.Admin.AdministratorID" required />
+		<input type="submit" value="Save" />
+	</form>
+</div> *@
 }

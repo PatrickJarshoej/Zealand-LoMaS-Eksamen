@@ -165,7 +165,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostEditAdminProfile()
         {
-            return RedirectToPage("/EditAdministrator", new { AdminID = HttpContext.Request.Cookies["UserID"] });
+            return RedirectToPage("/EditAdministrator", new { adminID = AdminID });
         }
         //public void OnPostEditAdministrator()
         //{

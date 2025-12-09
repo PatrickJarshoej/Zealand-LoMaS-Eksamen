@@ -258,7 +258,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    
+
                     var command = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsAdministrators WHERE AdminID=@AdminID", connection);
                     command.Parameters.AddWithValue("@AdminID", id);
                     connection.Open();
@@ -282,7 +282,7 @@ namespace Zealand_LoMaS_Lib.Repo
             return institution;
         }
 
-        private void DeleteByIDs(List<int> instituteIDs)
+        private void DeleteMapByAdminID(int adminID)
         {
             {
                 using (var connection = new SqlConnection(_connectionString))
@@ -290,16 +290,13 @@ namespace Zealand_LoMaS_Lib.Repo
                     try
                     {
                         var command = new SqlCommand("DELETE FROM MapInstitutionsAdministrators WHERE AdministratorID = @AdministratorID", connection);
+                        command.Parameters.AddWithValue("@AdministratorID", adminID);
                         connection.Open();
-                        for (int i = 0; i < instituteIDs.Count; i++)
-                        {
-                            command.Parameters.AddWithValue("@AdministratorID", instituteIDs[i]);
-                            command.ExecuteNonQuery();
-                        }
+                        command.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("Error in DeleteByIDs in InstitutionRepo");
+                        Debug.WriteLine("Error in DeleteByAdminID in InstitutionRepo");
                         Debug.WriteLine($"Error: {ex}");
                     }
                     finally { connection.Close(); }
@@ -308,17 +305,16 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public void UpdateMapAdminInstitute(int adminID, List<int> newInstituteIDs)
         {
-            List<int> instituteIDs = GetInstituteIDByAdminID(adminID);
-            DeleteByIDs(instituteIDs);
+            DeleteMapByAdminID(adminID);
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
                 {
-                    var command = new SqlCommand("INSERT INTO MapInstitutionsAdministrators (AdministratorID, InstitutionID) VALUES (@AdministratorID, @InstitutionID)", connection);
-                    command.Parameters.AddWithValue("@AdministratorID", adminID);
                     connection.Open();
                     for (int i = 0; i < newInstituteIDs.Count; i++)
                     {
+                    var command = new SqlCommand("INSERT INTO MapInstitutionsAdministrators (AdministratorID, InstitutionID) VALUES (@AdministratorID, @InstitutionID)", connection);
+                    command.Parameters.AddWithValue("@AdministratorID", adminID);
                         command.Parameters.AddWithValue("@InstitutionID", newInstituteIDs[i]);
                         command.ExecuteNonQuery();
                     }

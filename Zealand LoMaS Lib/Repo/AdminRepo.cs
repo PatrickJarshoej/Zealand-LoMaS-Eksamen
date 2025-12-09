@@ -241,49 +241,16 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public Admin GetByID(int adminID)
         {
-            Admin adminEmpty = new();
+            Admin admin = new();
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("SELECT * FROM Administrators WHERE AdministratorID = @AdministratorID", connection);
-                command.Parameters.AddWithValue("@AdministratorID", adminID);
-                var command2 = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsAdministrators WHERE AdministratorID = @AdministratorID", connection);
-                command2.Parameters.AddWithValue("@AdministratorID", adminID);
-                connection.Open();
                 try
                 {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        using (var reader2 = command2.ExecuteReader())
-                        {
+                var command = new SqlCommand("SELECT * FROM Administrators WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@AdministratorID", adminID);
+                connection.Open();
+                admin = GetAdminsByCommand(command, connection)[0];
 
-                            if (reader.Read())
-                            {
-                                var adminTemp = new Admin(
-
-                                    (int)reader["AdministratorID"],
-                                    (string)reader["FirstName"],
-                                    (string)reader["LastName"],
-                                    (string)reader["Email"],
-                                    new List<int>()
-
-                                    );
-                                List<int> institutionIDsTemp = new();
-                                while (reader2.Read())
-                                {
-                                    institutionIDsTemp.Add((int)reader2["InstitutionID"]);
-                                }
-                                Admin admin = new Admin(
-                                    adminTemp.AdministratorID,
-                                    adminTemp.FirstName,
-                                    adminTemp.LastName,
-                                    adminTemp.Email,
-                                    institutionIDsTemp
-                                    );
-                                return admin;
-                            }
-                        }
-
-                    }
 
                 }
                 catch (Exception ex)
@@ -295,8 +262,8 @@ namespace Zealand_LoMaS_Lib.Repo
                 {
                     connection.Close();
                 }
-                return adminEmpty;
             }
+            return admin;
         }
 
         public List<Admin> GetByInstitutionID(int instituitonID)
