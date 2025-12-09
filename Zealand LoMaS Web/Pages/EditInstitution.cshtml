@@ -23,7 +23,7 @@
                     {
                      <p>
 
-                            @r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)
+                            @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
 
                      </p>   
                     }
