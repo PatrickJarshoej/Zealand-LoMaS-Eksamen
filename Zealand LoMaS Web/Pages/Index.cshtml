@@ -149,7 +149,7 @@
                     </td>
                     <td>
                         <form method="post" asp-page-handler="EditTeacher" class="btn padding-none">
-                            <input type="hidden" asp -for="TeacherID" value="@T.TeacherID">
+                            <input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
                             <input class="no-border" type="submit" value="Edit">
                         </form>
                     </td>
@@ -202,6 +202,7 @@
                     <td>
                         <form method="post" asp-page-handler="DeleteInstitution" class="btn padding-none">
                             <input class="no-border" type="submit" value="Remove">
+                            <input type="hidden" asp-for="InstitutionID" value="@institution.InstitutionID">
                         </form>
                     </td>
                 </tr>
