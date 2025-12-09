@@ -23,9 +23,6 @@ namespace Zealand_LoMaS_Web.Pages
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public List<int> TeacherIDs { get; set; }
-        public List<Institution> Institutions { get; set; }
-        public Institution Institution { get; set; }
 
 
 
@@ -39,16 +36,16 @@ namespace Zealand_LoMaS_Web.Pages
         {
             AdminID = adminID;
             Admin = _adminService.GetByID(adminID);
-            //Teachers = _teacherService.GetAll();
-            Institutions = _institutionService.GetAll();
+            FirstName = Admin.FirstName;
+            LastName = Admin.LastName;
+            Email = Admin.Email;
+            InstitutionIDs = Admin.InstitutionIDs;
+
         }
         
         public IActionResult OnPostSave()
         {
-
-            Institutions = _institutionService.GetAll();
-
-            //_adminService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
+            _adminService.Update(AdminID,Email,FirstName,LastName,InstitutionIDs);
             return RedirectToPage("/Index");
         }
     }

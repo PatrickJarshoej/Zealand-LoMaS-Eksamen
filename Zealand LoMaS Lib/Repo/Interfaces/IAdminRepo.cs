@@ -11,7 +11,7 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
     {
         public void Add(Admin adminObject, string Password);
         public List<Admin> GetAll();
-        public int GetByID(int adminID);
+        public Admin GetByID(int adminID);
         public List<Admin> GetByInstitutionID(int instituitonID);
         public List<Admin> GetAdminsByTeacherID(int instituitonID);
         public string GetByEmail(string email);

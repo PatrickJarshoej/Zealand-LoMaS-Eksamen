@@ -239,9 +239,64 @@ namespace Zealand_LoMaS_Lib.Repo
             return admins;
         }
 
-        public int GetByID(int adminID)
+        public Admin GetByID(int adminID)
         {
-            throw new NotImplementedException();
+            Admin adminEmpty = new();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM Administrators WHERE AdministratorID = @AdministratorID", connection);
+                command.Parameters.AddWithValue("@AdministratorID", adminID);
+                var command2 = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsAdministrators WHERE AdministratorID = @AdministratorID", connection);
+                command2.Parameters.AddWithValue("@AdministratorID", adminID);
+                connection.Open();
+                try
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        using (var reader2 = command2.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+                                var adminTemp = new Admin(
+
+                                    (int)reader["AdministratorID"],
+                                    (string)reader["FirstName"],
+                                    (string)reader["LastName"],
+                                    (string)reader["Email"],
+                                    new List<int>()
+
+                                    );
+                                List<int> institutionIDsTemp = new();
+                                while (reader2.Read())
+                                {
+                                    institutionIDsTemp.Add((int)reader2["InstitutionID"]);
+                                }
+                                Admin admin = new Admin(
+                                    adminTemp.AdministratorID,
+                                    adminTemp.FirstName,
+                                    adminTemp.LastName,
+                                    adminTemp.Email,
+                                    institutionIDsTemp
+                                    );
+                                return admin;
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There is a fault in AdminRepo GetByID");
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                return adminEmpty;
+            }
         }
 
         public List<Admin> GetByInstitutionID(int instituitonID)

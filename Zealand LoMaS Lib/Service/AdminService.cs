@@ -32,7 +32,7 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public Admin GetByID(int AdminID)
         {
-            Admin admin = new();
+            Admin admin = _adminRepo.GetByID(AdminID);
             return admin;
         }
         public Admin GetByEmail(string email)

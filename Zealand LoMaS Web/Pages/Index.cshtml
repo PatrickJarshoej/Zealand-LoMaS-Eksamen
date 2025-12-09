@@ -237,8 +237,8 @@
                     <td>@T.FirstName @T.LastName</td>
                     <td>@T.Email</td>
                     <td>
-                        <form method="post" asp-page-handler="EditAdministrator" class="btn padding-none">
-                            <input type="hidden" asp-for="AdminID" value="@T.AdministratorID" />
+                        <form method="post" asp-page-handler="EditAdminProfile" class="btn padding-none">
+                            @* <input type="hidden" asp-for="AdminID" value="@T.AdministratorID" /> *@
                             <input class="no-border" type="submit" value="Edit" />
                         </form>
                     </td>

@@ -162,15 +162,15 @@ namespace Zealand_LoMaS_Web.Pages
         {
             return RedirectToPage("/EditAdministrator", new { AdminID = HttpContext.Request.Cookies["UserID"] });
         }
-        public void OnPostEditAdministrator()
-        {
-            _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
-            AdminID = 0;
-            Email = "";
-            FirstName = "";
-            LastName = "";
-            InstitutionIDs = new List<int>();
-        }
+        //public void OnPostEditAdministrator()
+        //{
+        //    _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
+        //    AdminID = 0;
+        //    Email = "";
+        //    FirstName = "";
+        //    LastName = "";
+        //    InstitutionIDs = new List<int>();
+        //}
         public IActionResult OnPostLogOut()
         {   
             HttpContext.Response.Cookies.Append("UserID", "0"); //If you logout we set your ID to zero
