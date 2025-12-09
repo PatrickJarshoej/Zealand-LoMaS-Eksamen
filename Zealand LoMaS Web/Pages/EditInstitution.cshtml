@@ -22,7 +22,8 @@
                     @foreach (var r in Model.InstitutionRelations)
                     {
                      <p>
-                         @r.InstitutionIDs[0]
+
+                            @r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)
 
                      </p>   
                     }
