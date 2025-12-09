@@ -31,7 +31,8 @@ namespace Zealand_LoMaS_Web.Pages
         public Institution Institution { get; set; }
         public Institution OtherInstitution { get; set; }
         public string Admins { get; set; }
-
+        
+        public List<int> IDs { get; set; }
 
         public EditInstitutionModel(TeacherService ts, InstitutionService iS, InstitutionRelationService rS)
         {
@@ -45,7 +46,7 @@ namespace Zealand_LoMaS_Web.Pages
             Institution = _institutionService.GetByID(institutionID);
             Institutions= _institutionService.GetAll();
             var OtherInstitutions = Institutions.Where(x => x != Institution).OrderBy(x=>x.InstitutionID).ToList();
-            Admins = "";
+            //Admins = "";
             if (Institution.AdminIDs != null)
             {
                 foreach(var a in Institution.AdminIDs)
@@ -57,15 +58,18 @@ namespace Zealand_LoMaS_Web.Pages
             
             
         }
-        
-        //public IActionResult OnPostSave()
-        public void OnPostSave()
+        public IActionResult OnPostEditRelations()
         {
-            //Debug.WriteLine("Region: " + Region);
+            Debug.WriteLine(IDs.Count);
+
+            return RedirectToPage("/EditRelations", new { ids = IDs });
+        }
+        //public IActionResult OnPostSave()
+        public IActionResult OnPostSave()
+        {
             _institutionService.Update(InstitutionID, Region, PostalCode, City, RoadName, RoadNumber, Admins, new List<int>());
-            OnGet(InstitutionID);
-            Admins = "";
-            //return RedirectToPage("/Index");
+            //Admins = "";
+            return RedirectToPage("/Index");
         }
     }
 

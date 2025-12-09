@@ -128,7 +128,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return adminID;
         }
-
         public string GetPasswordByAdminID(int AdminID)
         {
             string adminPassword = "0";

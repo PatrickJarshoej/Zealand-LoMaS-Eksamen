@@ -11,11 +11,11 @@ namespace Zealand_LoMaS_Lib.Service
     public class InstitutionRelationService
     {
         private IInstitutionRelationRepo _institutionRelationRepo;
-        private InstitutionService _institutionService;
-        public InstitutionRelationService(IInstitutionRelationRepo institutionRelationRepo, InstitutionService institutionService) 
+        private IInstitutionRepo _institutionRepo;
+        public InstitutionRelationService(IInstitutionRelationRepo institutionRelationRepo, IInstitutionRepo institutionRepo) 
         { 
             _institutionRelationRepo = institutionRelationRepo;
-            _institutionService=institutionService;
+            _institutionRepo=institutionRepo;
             EnsureRelationsExist();
 
         }
@@ -36,7 +36,7 @@ namespace Zealand_LoMaS_Lib.Service
         private void EnsureRelationsExist()
         {
             //gets all institutions
-            var institutions = _institutionService.GetAll();
+            var institutions = _institutionRepo.GetAll();
             //gets all relations
             var allRelations = GetAll();
             //counts

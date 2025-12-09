@@ -1,7 +1,7 @@
 ﻿@page
 @model EditInstitutionModel
 @{
-    ViewData["Title"] = "Transports";
+    ViewData["Title"] = "Institution";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
@@ -17,16 +17,6 @@
                     <p> <b> Road Name:</b> <br /><input type="text" asp-for="RoadName" name="RoadName" value="@Model.Institution.Location.RoadName" /></p>
                     <p> <b> Road Number:</b> <br /><input type="text" asp-for="RoadNumber" name="RoadNumber" value="@Model.Institution.Location.RoadNumber" /></p>
                 </div>
-                <div>
-                    <h2>TransportRelationer</h2>
-                    @foreach (var r in Model.InstitutionRelations)
-                    {
-                     <p>
-                         @r.InstitutionIDs[0]
-
-                     </p>   
-                    }
-                </div>
                 <div class="border">
                     <p>Write the connected admins with comma seperation using their IDs</p> <br />
                     <input type="text" asp-for="Admins" name="Admins" value="@Model.Admins"/>
@@ -35,5 +25,23 @@
             </div>
             <input type="submit" value="Save" />
         </form>
+        <div class="card container">
+            <h2>TransportRelationer</h2>
+            @foreach (var r in Model.InstitutionRelations)
+            {
+
+                <p>
+                    <form method="post" asp-page-handler="EditRelations" class="btn padding-none">
+                        By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
+                        Pris: @r.Cost
+                        Tid: @r.Time
+                        <input type="hidden" asp-for="@Model.IDs" name="@Model.IDs" value="@r.InstitutionIDs">
+                        <input class="no-border" type="submit" value="Edit">
+                    </form>
+                </p>
+
+
+            }
+        </div>
     </div>
 }
