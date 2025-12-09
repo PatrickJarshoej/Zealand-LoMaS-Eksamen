@@ -65,7 +65,7 @@ namespace Zealand_LoMaS_Web.Pages
             return RedirectToPage("/EditRelations", new { ids = IDs });
         }
         //public IActionResult OnPostSave()
-        public void OnPostSave()
+        public IActionResult OnPostSave()
         {
             _institutionService.Update(InstitutionID, Region, PostalCode, City, RoadName, RoadNumber, Admins, new List<int>());
             //Admins = "";
