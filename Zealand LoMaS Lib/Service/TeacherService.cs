@@ -59,12 +59,30 @@ namespace Zealand_LoMaS_Lib.Service
                 return teacherID;
             }
         }
-        public void Update(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
+        public void Update(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, string admins)
         {
             Address address = new(region, city, postalCode, roadName, roadNumber);
             List<int> transportIDs = new();
             List<int> classIDs = new();
             List<Competency> competencies = new();
+            List<int> adminIDs = new();
+            if (admins != "")
+            {
+                List<string> aID = admins.Split(',').ToList<string>();
+                foreach (var i in aID)
+                {
+                    if (i != " ")
+                    {
+                        adminIDs.Add(Convert.ToInt32(i));
+                    }
+                }
+            }
+            else
+            {
+                Debug.WriteLine("No admins found");
+            }
+
+
             Teacher t = new(teacherID, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs, transportIDs, classIDs, competencies);
             _teacherRepo.Update(t);
         }

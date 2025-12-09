@@ -34,7 +34,8 @@ namespace Zealand_LoMaS_Web.Pages
         public int PostalCode { get; private set; }
         public string RoadName { get; private set; }
         public string RoadNumber { get; private set; }
-        public List<int> AdminIDs { get; set; }
+        //public List<int> AdminIDs { get; set; }
+        public string AdminIDs { get; set; }
         public List<Institution> Institutions { get; set; }
         public Institution Institution { get; set; }
 
@@ -52,6 +53,13 @@ namespace Zealand_LoMaS_Web.Pages
             Teacher = _teacherService.GetByID(teacherID);
             //Teachers = _teacherService.GetAll();
             Institutions = _institutionService.GetAll();
+            if (Institution.AdminIDs != null)
+            {
+                foreach (var a in Institution.AdminIDs)
+                {
+                    AdminIDs += a.ToString() + ", ";
+                }
+            }
         }
         
         public IActionResult OnPostSave()
