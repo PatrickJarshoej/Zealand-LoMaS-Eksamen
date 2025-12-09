@@ -54,7 +54,10 @@ namespace Zealand_LoMaS_Lib.Service
                 List<string> aID = admins.Split(',').ToList<string>();
                 foreach (var i in aID)
                 {
-                    adminIDs.Add(Convert.ToInt32(i));
+                    if (i != " ")
+                    {
+                        adminIDs.Add(Convert.ToInt32(i));
+                    }
                 }
             }
             else

@@ -324,8 +324,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
                     {
                         <h1><b>You are useless</b></h1>
                     }
-                    <form method="post" asp-page-handler="EditTeacherCompetencies">
-                        <input type="submit" value="Edit Profile" />
+                    <form method="post" asp-page-handler="EditTeacherCompetencies" class="btn padding-none">
+                        <input type="submit" value="Edit Profile" class="no-border" />
                     </form>
                 </div>
                 <div class="stat p-2">
@@ -342,8 +342,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
                     {
                         <p>There are no upcoming classes</p>
                     }
-                    <form method="post" asp-page-handler="EditTeacherClasses">
-                        <input type="submit" value="Edit Classes" />
+                    <form method="post" asp-page-handler="EditTeacherClasses" class="btn padding-none">
+                        <input type="submit" value="Edit Classes" class="no-border" />
                     </form>
                 </div>
             </div>
