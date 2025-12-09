@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -96,7 +97,105 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public void DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+
+                    var command = new SqlCommand("Cascade Delete * FROM Institution WHERE InstitutionID=@InstitutionID", connection);
+                    command.Parameters.AddWithValue("@InstitutionID", id);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in DeleteByID() in InstitutionRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+
+            }
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("DELETE FROM Institutions WHERE InstitutionID = @ID", connection);
+                    command.Parameters.AddWithValue("@ID", id);
+                    connection.Open();
+                    DeleteAdmins(id, connection);
+                    DeleteClasses(id, connection);
+                    DeleteTransports(id, connection);
+                    DeleteRelatitons(id, connection);
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error: in DeleteBy in DomicileRepo");
+                    Debug.WriteLine($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            //throw new NotImplementedException();
+        }
+        private void DeleteAdmins(int id, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM MapInstitutionsAdministrators WHERE InstitutionID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in DeleteAdmins() in InstitutionRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+        }
+        private void DeleteClasses(int id, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM MapInstitutionsClasses WHERE InstitutionID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in DeleteClasses() in InstitutionRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+        }
+        private void DeleteTransports(int id, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM Transports WHERE InstituteFromID = @ID or InstituteToID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in DeleteTransports() in InstitutionRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
+        }
+        private void DeleteRelatitons(int id, SqlConnection connection)
+        {
+            try
+            {
+                var command = new SqlCommand("DELETE FROM InstitutionsRelations WHERE InstituteFromID = @ID or InstituteToID = @ID", connection);
+                command.Parameters.AddWithValue("@ID", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in DeleteRelatitons() in InstitutionRepo");
+                Debug.WriteLine("Error: " + ex);
+            }
         }
         public List<Institution> GetAll()
         {
@@ -149,6 +248,40 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return institutionIDs;
         }
+
+        public Institution GetByAdminID(int id)
+        {
+            var institution = new Institution();
+            int institutionID = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    
+                    var command = new SqlCommand("SELECT InstitutionID FROM MapInstitutionsAdministrators WHERE AdminID=@AdminID", connection);
+                    command.Parameters.AddWithValue("@AdminID", id);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            institutionID = (int)reader["InstitutionID"];
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetByID() in InstitutionRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+                institution = GetByID(institutionID);
+
+            }
+            return institution;
+        }
+
         private void DeleteByIDs(List<int> instituteIDs)
         {
             {
@@ -196,6 +329,8 @@ namespace Zealand_LoMaS_Lib.Repo
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
+
+
 
 
             }
@@ -279,9 +414,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
-        public Institution GetByAdminID(int id)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

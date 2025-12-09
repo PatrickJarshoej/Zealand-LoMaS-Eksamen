@@ -25,7 +25,8 @@ namespace Zealand_LoMaS_Lib.Service
 
         public void DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            //Debug.WriteLine("ID: " + id);
+            _institutionRepo.DeleteByID(id);
         }
 
         public List<Institution> GetAll()
