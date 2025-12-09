@@ -46,7 +46,7 @@ namespace Zealand_LoMaS_Web.Pages
             Institution = _institutionService.GetByID(institutionID);
             Institutions= _institutionService.GetAll();
             var OtherInstitutions = Institutions.Where(x => x != Institution).OrderBy(x=>x.InstitutionID).ToList();
-            Admins = "";
+            //Admins = "";
             if (Institution.AdminIDs != null)
             {
                 foreach(var a in Institution.AdminIDs)
@@ -67,11 +67,9 @@ namespace Zealand_LoMaS_Web.Pages
         //public IActionResult OnPostSave()
         public void OnPostSave()
         {
-            //Debug.WriteLine("Region: " + Region);
             _institutionService.Update(InstitutionID, Region, PostalCode, City, RoadName, RoadNumber, Admins, new List<int>());
-            OnGet(InstitutionID);
-            Admins = "";
-            //return RedirectToPage("/Index");
+            //Admins = "";
+            return RedirectToPage("/Index");
         }
     }
 
