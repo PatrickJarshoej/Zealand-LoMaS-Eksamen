@@ -23,8 +23,10 @@
                     {
                      <p>
 
-                            @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
-
+                           By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
+                           Pris: @r.Cost
+                           Tid: @r.Time
+                            <input type="submit" value="Save" />
                      </p>   
                     }
                 </div>
