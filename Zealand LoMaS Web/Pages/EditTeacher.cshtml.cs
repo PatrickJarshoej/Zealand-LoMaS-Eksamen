@@ -67,6 +67,7 @@ namespace Zealand_LoMaS_Web.Pages
             RoadName = Institution.Location.RoadName;
             RoadNumber = Institution.Location.RoadNumber;
 
+            Debug.WriteLine(FirstName);
             _teacherService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
             return RedirectToPage("/Index");
         }

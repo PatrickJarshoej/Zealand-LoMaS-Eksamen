@@ -59,16 +59,13 @@ namespace Zealand_LoMaS_Lib.Service
                 return teacherID;
             }
         }
-        public void Update(int teacherID, int institutionID, string firstName, string lastName, string email, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
+        public void Update(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, List<int> adminIDs)
         {
             Address address = new(region, city, postalCode, roadName, roadNumber);
             List<int> transportIDs = new();
             List<int> classIDs = new();
             List<Competency> competencies = new();
-
-            Teacher t = new(teacherID, institutionID, firstName, lastName, email, weeklyHours, hasCar, address, adminIDs, transportIDs, classIDs, competencies);
-            //Debug.WriteLine("Teacher ID: " + teacherID);
-            //Debug.WriteLine("Admins: " + adminIDs[0]);
+            Teacher t = new(teacherID, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs, transportIDs, classIDs, competencies);
             _teacherRepo.Update(t);
         }
         public void HashThePassword(int teacherID)
