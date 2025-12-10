@@ -64,9 +64,9 @@ namespace Zealand_LoMaS_Lib.Service
             _institutionRepo.UpdateMapAdminInstitute(adminID, institutionIDs);
             _adminRepo.Update(admin);
         }
-        public void DeleteByID(int AdminID)
+        public void DeleteByID(int adminID)
         {
-            throw new NotImplementedException();
+            _adminRepo.DeleteByID(adminID);
         }
         public bool ChangePassword(int adminID, string Password, string PasswordControl)
         {

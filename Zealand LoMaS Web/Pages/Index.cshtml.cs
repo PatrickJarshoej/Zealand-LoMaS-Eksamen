@@ -153,6 +153,11 @@ namespace Zealand_LoMaS_Web.Pages
             _institutionService.DeleteByID(InstitutionID);
             OnGet();
         }
+        public void OnPostDeleteAdmin()
+        {
+            _adminService.DeleteByID(AdminID);
+            OnGet();
+        }
         public IActionResult OnPostEditInstitution()
         {
             return RedirectToPage("/EditInstitution", new { institutionID = InstitutionID});
