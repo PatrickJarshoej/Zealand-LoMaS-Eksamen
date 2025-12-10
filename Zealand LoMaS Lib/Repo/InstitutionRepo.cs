@@ -101,86 +101,21 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-
-                    var command = new SqlCommand("Cascade Delete * FROM Institution WHERE InstitutionID=@InstitutionID", connection);
-                    command.Parameters.AddWithValue("@InstitutionID", id);
-                    connection.Open();
-                    command.ExecuteNonQuery();
-
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Error in DeleteByID() in InstitutionRepo");
-                    Debug.WriteLine($"Error: {ex}");
-                }
-                finally { connection.Close(); }
-
-            }
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                try
-                {
                     var command = new SqlCommand("DELETE FROM Institutions WHERE InstitutionID = @ID", connection);
                     command.Parameters.AddWithValue("@ID", id);
                     connection.Open();
-                    DeleteAdmins(id, connection);
-                    DeleteClasses(id, connection);
-                    DeleteTransports(id, connection);
                     DeleteRelatitons(id, connection);
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Error: in DeleteBy in DomicileRepo");
+                    Debug.WriteLine($"Error: in DeleteBy in InstitutionRepo");
                     Debug.WriteLine($"Error: {ex.Message}");
                 }
                 finally
                 {
                     connection.Close();
                 }
-            }
-            //throw new NotImplementedException();
-        }
-        private void DeleteAdmins(int id, SqlConnection connection)
-        {
-            try
-            {
-                var command = new SqlCommand("DELETE FROM MapInstitutionsAdministrators WHERE InstitutionID = @ID", connection);
-                command.Parameters.AddWithValue("@ID", id);
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in DeleteAdmins() in InstitutionRepo");
-                Debug.WriteLine("Error: " + ex);
-            }
-        }
-        private void DeleteClasses(int id, SqlConnection connection)
-        {
-            try
-            {
-                var command = new SqlCommand("DELETE FROM MapInstitutionsClasses WHERE InstitutionID = @ID", connection);
-                command.Parameters.AddWithValue("@ID", id);
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in DeleteClasses() in InstitutionRepo");
-                Debug.WriteLine("Error: " + ex);
-            }
-        }
-        private void DeleteTransports(int id, SqlConnection connection)
-        {
-            try
-            {
-                var command = new SqlCommand("DELETE FROM Transports WHERE InstituteFromID = @ID or InstituteToID = @ID", connection);
-                command.Parameters.AddWithValue("@ID", id);
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in DeleteTransports() in InstitutionRepo");
-                Debug.WriteLine("Error: " + ex);
             }
         }
         private void DeleteRelatitons(int id, SqlConnection connection)

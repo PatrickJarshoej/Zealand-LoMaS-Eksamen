@@ -265,7 +265,23 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         public void DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            //Debug.WriteLine(id);
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("Delete FROM Teachers WHERE TeacherID=@TeacherID", connection);
+                    command.Parameters.AddWithValue("@TeacherID", id);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in DeleteByID() in TeacherRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+            }
         }
         public List<Teacher> GetAll()
         {

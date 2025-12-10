@@ -143,10 +143,20 @@ namespace Zealand_LoMaS_Web.Pages
         {
             return RedirectToPage("/EditTeacher", new { teacherID = TeacherID });
         }
+        public void OnPostDeleteTeacher()
+        {
+            _teacherService.DeleteByID(TeacherID);
+            OnGet();
+        }
         public void OnPostDeleteInstitution()
         {
-            OnGet();
             _institutionService.DeleteByID(InstitutionID);
+            OnGet();
+        }
+        public void OnPostDeleteAdmin()
+        {
+            _adminService.DeleteByID(AdminID);
+            OnGet();
         }
         public IActionResult OnPostEditInstitution()
         {

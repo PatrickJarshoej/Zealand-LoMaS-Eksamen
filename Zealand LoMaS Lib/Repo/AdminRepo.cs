@@ -314,7 +314,22 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void DeleteByID(int adminID)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("Delete FROM Administrators WHERE AdministratorID=@AdministratorID", connection);
+                    command.Parameters.AddWithValue("@AdministratorID", adminID);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in DeleteByID() in AdminRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally { connection.Close(); }
+            }
         }
     }
 }
