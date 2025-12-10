@@ -120,7 +120,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
 
             }
-          
+            return institutionRelations;
         }
         public InstitutionRelation GetByInstitutionIDs(int id1, int id2)
         {
