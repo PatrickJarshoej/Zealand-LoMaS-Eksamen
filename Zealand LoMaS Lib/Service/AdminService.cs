@@ -68,9 +68,20 @@ namespace Zealand_LoMaS_Lib.Service
         {
             throw new NotImplementedException();
         }
-        public void ChangePassword(int adminID, string oldPassword, string newPassword)
+        public bool ChangePassword(int adminID, string Password, string PasswordControl)
         {
-            throw new NotImplementedException();
+            bool WasItSuccess = false;
+            if(Password == PasswordControl)
+            {
+                Debug.WriteLine("Password Succeeded verification");
+                _adminRepo.UpdatePassword(adminID, Argon2.Hash(Password));
+                return WasItSuccess = true;
+            }
+            else
+            {
+                Debug.WriteLine("Password failed verification");
+                return WasItSuccess;
+            }
         }
         public int VerifyLogIn(string email, string password)
         {

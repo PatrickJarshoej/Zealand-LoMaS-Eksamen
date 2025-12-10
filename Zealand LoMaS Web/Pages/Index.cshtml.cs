@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace Zealand_LoMaS_Web.Pages
         private TransportService _transportService;
         private readonly ILogger<IndexModel> _logger;
 
+        public Admin Admin { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -70,6 +72,7 @@ namespace Zealand_LoMaS_Web.Pages
             }
             if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "true")
             {
+                Admin = _adminService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
                 Institutions = _institutionService.GetAll();
                 Teachers = _teacherService.GetAll();
                 Admins = _adminService.GetAll();
@@ -194,6 +197,21 @@ namespace Zealand_LoMaS_Web.Pages
             else
             {   //If both fields are not the same
                 FailedToChangePass = true; //Used to make the red error box
+                ChangePasswordModalShow = true;
+            }
+        }
+        public void OnPostChangeAdminPassword()
+        {
+            OnGet();
+            bool WasItSuccessfuld = _adminService.ChangePassword(Admin.AdministratorID, Pass, Pass2);
+            if (WasItSuccessfuld == true)
+            {
+                FailedToChangePass = false;
+                ChangePasswordModalShow = true;
+            }
+            else
+            {
+                FailedToChangePass = true;
                 ChangePasswordModalShow = true;
             }
         }
