@@ -17,30 +17,22 @@
                     <input type="hidden" asp-for="InstitutionID" name="InstitutionID" value="@i.InstitutionID" />
                 }
             }
-            <p> <b> Fornavn:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" /></p>
-            <p> <b> Efternavn:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" /></p>
-            <p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Teacher.Email" /></p>
+            <p> <b> Fornavn:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" required /></p>
+            <p> <b> Efternavn:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" required /></p>
+            <p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Teacher.Email" required /></p>
             <p> <b> Timer:</b> <br />@Model.Teacher.WeeklyHours.TotalHours </p>
-            <input type="hidden" asp-for="WeeklyHours" name="WeeklyHours" value="@Model.Teacher.WeeklyHours.TotalHours" />
-            <p> <b> Har Bil?:</b> <br /><input type="text" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" /></p>
+            <input type="hidden" asp-for="WeeklyHours" name="WeeklyHours" value="@Model.Teacher.WeeklyHours.TotalHours" required />
+            <p> <b> Har Bil?:</b> <br /><input type="text" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" required /></p>
             <p>
                 <b>Addresse: </b> <br />
-                <label for="Location Selection"></label>
-                <select id="Location" name="Lokation" required>
-                    @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
-                    {
-                        if (Model.Teacher.Address.City == institution.Location.City)
-                        {
-                            <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
-                            @* <input type="hidden" asp-for="Location" name="Location" value="@institution.InstitutionID"/> *@
-                        }
-                        else
-                        {
-                            <option value="@institution.InstitutionID">@institution.Location.City</option>
-                        }
-                    }
-                </select>
+
+                <input type="Text" asp-for="Region" name="Region" value="@Model.Teacher.Address.Region" required />
+                <input type="Text" asp-for="City" name="City" value="@Model.Teacher.Address.City" required />
+                <input type="number" asp-for="PostalCode" name="PostalCode" value="@Model.Teacher.Address.PostalCode" required />
+                <input type="text" asp-for="RoadName" name="RoadName" value="@Model.Teacher.Address.RoadName" required />
+                <input type="text" asp-for="RoadNumber" name="RoadNumber" value="@Model.Teacher.Address.RoadNumber" required/>
             </p>
+            <input type="hidden" name="AdminIDs" asp-for="AdminIDs" value="@Model.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
             <input type="submit" value="Gem" />
         </form>
@@ -78,15 +70,13 @@ else
             <input type="hidden" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" />
             <p>
                 <b>Addresse: </b> <br />
-                @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
-                {
-                    if (Model.Teacher.InstitutionID == institution.InstitutionID)
-                    {
-                        @institution.Location.City
-                        <input type="hidden" asp-for="Location" name="Location" value="@institution.InstitutionID" />
-                    }
-                }
+                <input type="hidden" asp-for="Region" name="Region" value="@Model.Teacher.Address.Region" />
+                <input type="hidden" asp-for="City" name="City" value="@Model.Teacher.Address.City" />
+                <input type="hidden" asp-for="PostalCode" name="PostalCode" value="@Model.Teacher.Address.PostalCode" />
+                <input type="hidden" asp-for="RoadName" name="RoadName" value="@Model.Teacher.Address.RoadName" />
+                <input type="hidden" asp-for="RoadNumber" name="RoadNumber" value="@Model.Teacher.Address.RoadNumber" />
             </p>
+            <p>Admin IDs</p>
             <input type="text" name="AdminIDs" asp-for="AdminIDs" value="@Model.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
             <input type="submit" value="Gem" />

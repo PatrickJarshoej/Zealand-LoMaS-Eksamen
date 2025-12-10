@@ -41,7 +41,7 @@ namespace Zealand_LoMaS_Lib.Service
 
         public Institution GetByID(int id)
         {
-            //Debug.WriteLine("ID: " + id);
+            Debug.WriteLine("ID: " + id);
             //return null;
             return _institutionRepo.GetByID(id);
         }
