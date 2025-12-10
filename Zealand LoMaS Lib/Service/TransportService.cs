@@ -29,7 +29,7 @@ namespace Zealand_LoMaS_Lib.Service
         }
         public void DeleteByID(int transportID)
         {
-            throw new NotImplementedException();
+            _transportRepo.DeleteByID(transportID);
         }
 
         public List<Transport> GetAll()

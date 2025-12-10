@@ -9,16 +9,9 @@
 {
     <div class="card">
         <h1>
-            Domicile Id: @Model.SpecificTransport.TransportID
+            Transport fra @Model.Institutions.First(a => a.InstitutionID == Model.SpecificTransport.InstitueToID).Location.City
+            til @Model.Institutions.First(a => a.InstitutionID == Model.SpecificTransport.InstitueFromID).Location.City
         </h1>
-
-        <p>
-            InstitueFromID: @Model.SpecificTransport.InstitueFromID
-        </p>
-
-        <p>
-            InstitueToID: @Model.SpecificTransport.InstitueToID
-        </p>
 
         <p>
             TeacherID:@Model.SpecificTransport.TeacherID

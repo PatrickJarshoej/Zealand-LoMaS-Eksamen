@@ -49,6 +49,11 @@ namespace Zealand_LoMaS_Web.Pages
             SpecificTransport=_transportService.GetByID(transportID);
             TempID = transportID;
         }
+        public IActionResult OnPostDelete()
+        {
+            _institutionService.DeleteByID(TempID);
+            return RedirectToPage("Index");
+        }
         public void OnPostEdit()
         {
             Debug.WriteLine("Temp Domicile ID: " + TempID);

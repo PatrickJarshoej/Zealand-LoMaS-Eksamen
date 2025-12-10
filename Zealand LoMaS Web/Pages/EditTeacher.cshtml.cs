@@ -45,7 +45,6 @@ namespace Zealand_LoMaS_Web.Pages
         public int TempTransportID { get; set; }
 
 
-
         public EditTeacherModel(TeacherService ts, InstitutionService iS, TransportService transportService)
         {
             _teacherService = ts;
@@ -92,6 +91,12 @@ namespace Zealand_LoMaS_Web.Pages
             Debug.WriteLine(InstitutionFromID);
             _transportService.Create(TeacherID, DateTime.Now, InstitutionFromID, InstitutionToID);
             OnGet(TeacherID);
+        }
+
+        public IActionResult OnPostEditTransport()
+        {
+            Debug.WriteLine("Temp Transport ID: " + TempTransportID);
+            return RedirectToPage("/Transport", new { TransportID = TempTransportID });
         }
     }
 

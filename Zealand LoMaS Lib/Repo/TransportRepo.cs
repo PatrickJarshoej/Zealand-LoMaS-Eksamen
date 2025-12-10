@@ -53,7 +53,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("DELETE FROM Transport WHERE TransportID = @ID", connection);
+                    var command = new SqlCommand("DELETE FROM Transports WHERE TransportID = @ID", connection);
                     command.Parameters.AddWithValue("@ID", transportID);
                     connection.Open();
                     command.ExecuteNonQuery();

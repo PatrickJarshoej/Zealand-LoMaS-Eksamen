@@ -129,7 +129,7 @@ else
         </div>
         <div>
             <!--This button runs the OnPostShow method and defines a temporary booking id we can send over -->
-            <form method="post" asp-page-handler="Show">
+            <form method="post" asp-page-handler="EditTransport">
                 <!--to the next page -->
                 <input type="hidden" name="TempTransportID" asp-for="TempTransportID" value="@transport.TransportID" />
                 <input type="submit" value="Open Transport" />
