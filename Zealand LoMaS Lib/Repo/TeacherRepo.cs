@@ -416,10 +416,10 @@ namespace Zealand_LoMaS_Lib.Repo
                 command.Parameters.AddWithValue("@TeacherID", teacherID);
                 command.ExecuteNonQuery();
                 
-                var command2 = new SqlCommand("INSERT INTO MapAdministratorsTeachers (AdministratorID, TeacherID) VALUES (@AdminID, @TeacherID)", connection);
-                command2.Parameters.AddWithValue("@TeacherID", teacherID);
                 foreach (var adminID in adminIDs)
                 {
+                    var command2 = new SqlCommand("INSERT INTO MapAdministratorsTeachers (AdministratorID, TeacherID) VALUES (@AdminID, @TeacherID)", connection);
+                    command2.Parameters.AddWithValue("@TeacherID", teacherID);
                     command2.Parameters.AddWithValue("@AdminID", adminID);
                     command2.ExecuteNonQuery();
                 }

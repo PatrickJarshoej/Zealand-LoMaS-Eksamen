@@ -41,7 +41,6 @@
                     }
                 </select>
             </p>
-            <input type="text" name="AdminIDs" asp-for="AdminIDs" value="@Model.Teacher.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
             <input type="submit" value="Save" />
         </form>
@@ -88,6 +87,7 @@ else
                     }
                 }
             </p>
+            <input type="text" name="AdminIDs" asp-for="AdminIDs" value="@Model.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
             <input type="submit" value="Save" />
         </form>
