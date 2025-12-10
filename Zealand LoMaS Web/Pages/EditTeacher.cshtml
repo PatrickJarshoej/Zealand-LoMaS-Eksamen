@@ -32,6 +32,7 @@
                         if (Model.Teacher.Address.City == institution.Location.City)
                         {
                             <option value="@institution.InstitutionID" selected>@institution.Location.City</option>
+                            @* <input type="hidden" asp-for="Location" name="Location" value="@institution.InstitutionID"/> *@
                         }
                         else
                         {
@@ -40,6 +41,7 @@
                     }
                 </select>
             </p>
+            <input type="text" name="AdminIDs" asp-for="AdminIDs" value="@Model.Teacher.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
             <input type="submit" value="Save" />
         </form>
@@ -67,10 +69,14 @@ else
                 </select>
             </p>
             <p> <b> FirstName:</b> <br />@Model.Teacher.FirstName"</p>
+            <input type="hidden" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" />
             <p> <b> LastName:</b> <br />@Model.Teacher.LastName"</p>
+            <input type="hidden" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" />
             <p> <b> Email:</b> <br />@Model.Teacher.Email"</p>
+            <input type="hidden" asp-for="Email" name="Email" value="@Model.Teacher.Email" />
             <p> <b> Hours:</b> <br /><input type="text" asp-for="Hours" name="Hours" value="@Model.Teacher.WeeklyHours.TotalHours" /></p>
             <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar" </p>
+            <input type="hidden" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" />
             <p>
                 <b>Address: </b> <br />
                 @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
@@ -78,6 +84,7 @@ else
                     if (Model.Teacher.InstitutionID == institution.InstitutionID)
                     {
                         @institution.Location.City
+                        <input type="hidden" asp-for="Location" name="Location" value="@institution.InstitutionID" />
                     }
                 }
             </p>
