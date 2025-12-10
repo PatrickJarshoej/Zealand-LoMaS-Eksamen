@@ -187,7 +187,7 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             try
             {
-                var command = new SqlCommand("DELETE FROM InstitutionsRelations WHERE InstituteFromID = @ID or InstituteToID = @ID", connection);
+                var command = new SqlCommand("DELETE FROM InstitutionsRelations WHERE InstituteFromID = @ID OR InstituteToID = @ID", connection);
                 command.Parameters.AddWithValue("@ID", id);
                 command.ExecuteNonQuery();
             }
