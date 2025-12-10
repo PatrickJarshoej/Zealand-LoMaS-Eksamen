@@ -1,18 +1,18 @@
 ﻿@page
 @model EditAdministratorModel
 @{
-	ViewData["Title"] = "EditAdministrator";
+	ViewData["Title"] = "RedigerAdministrator";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
 <div class="card">
 	<form method="post" asp-page-handler="Save">
 		<div class="border">
-			<p>Write the connected institution with comma seperation using their IDs</p> <br />
+			<p>Skriv de tilhørende institutter med et komma der seperer deres ID'er'</p> <br />
 			<input type="text" asp-for="InstitutionsIDs" name="InstitutionsIDs" value="@Model.InstitutionsIDs" />
 		</div>
-		<p> <b> FirstName:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Admin.FirstName" /></p>
-		<p> <b> LastName:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Admin.LastName" /></p>
+		<p> <b> Fornavn:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Admin.FirstName" /></p>
+		<p> <b> EfterNavn:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Admin.LastName" /></p>
 		<p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Admin.Email" /></p>
 		<input type="hidden" name="AdminID" asp-for="AdminID" value="@Model.Admin.AdministratorID" required />
 		<input type="submit" value="Save" />

@@ -1,7 +1,7 @@
 ﻿@page
 @model EditTeacherModel
 @{
-    ViewData["Title"] = "Teacher";
+    ViewData["Title"] = "Rediger Lærer";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
@@ -17,16 +17,16 @@
                     <input type="hidden" asp-for="InstitutionID" name="InstitutionID" value="@i.InstitutionID" />
                 }
             }
-            <p> <b> FirstName:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" /></p>
-            <p> <b> LastName:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" /></p>
+            <p> <b> Fornavn:</b> <br /><input type="text" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" /></p>
+            <p> <b> Efternavn:</b> <br /><input type="text" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" /></p>
             <p> <b> Email:</b> <br /><input type="text" asp-for="Email" name="Email" value="@Model.Teacher.Email" /></p>
-            <p> <b> Hours:</b> <br />@Model.Teacher.WeeklyHours.TotalHours </p>
+            <p> <b> Timer:</b> <br />@Model.Teacher.WeeklyHours.TotalHours </p>
             <input type="hidden" asp-for="WeeklyHours" name="WeeklyHours" value="@Model.Teacher.WeeklyHours.TotalHours" />
-            <p> <b> Has Car:</b> <br /><input type="text" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" /></p>
+            <p> <b> Har Bil?:</b> <br /><input type="text" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" /></p>
             <p>
-                <b>Address: </b> <br />
+                <b>Addresse: </b> <br />
                 <label for="Location Selection"></label>
-                <select id="Location" name="Location" required>
+                <select id="Location" name="Lokation" required>
                     @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
                     {
                         if (Model.Teacher.Address.City == institution.Location.City)
@@ -42,7 +42,7 @@
                 </select>
             </p>
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
-            <input type="submit" value="Save" />
+            <input type="submit" value="Gem" />
         </form>
     </div>
 }
@@ -67,17 +67,17 @@ else
                     }
                 </select>
             </p>
-            <p> <b> FirstName:</b> <br />@Model.Teacher.FirstName"</p>
+            <p> <b> Fornavn:</b> <br />@Model.Teacher.FirstName"</p>
             <input type="hidden" asp-for="FirstName" name="FirstName" value="@Model.Teacher.FirstName" />
-            <p> <b> LastName:</b> <br />@Model.Teacher.LastName"</p>
+            <p> <b> Efternavn:</b> <br />@Model.Teacher.LastName"</p>
             <input type="hidden" asp-for="LastName" name="LastName" value="@Model.Teacher.LastName" />
             <p> <b> Email:</b> <br />@Model.Teacher.Email"</p>
             <input type="hidden" asp-for="Email" name="Email" value="@Model.Teacher.Email" />
-            <p> <b> Hours:</b> <br /><input type="text" asp-for="Hours" name="Hours" value="@Model.Teacher.WeeklyHours.TotalHours" /></p>
-            <p> <b> Has Car:</b> <br />@Model.Teacher.HasCar" </p>
+            <p> <b> Timer:</b> <br /><input type="text" asp-for="Hours" name="Hours" value="@Model.Teacher.WeeklyHours.TotalHours" /></p>
+            <p> <b> Har bil?:</b> <br />@Model.Teacher.HasCar" </p>
             <input type="hidden" asp-for="HasCar" name="HasCar" value="@Model.Teacher.HasCar" />
             <p>
-                <b>Address: </b> <br />
+                <b>Addresse: </b> <br />
                 @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
                 {
                     if (Model.Teacher.InstitutionID == institution.InstitutionID)
@@ -89,7 +89,7 @@ else
             </p>
             <input type="text" name="AdminIDs" asp-for="AdminIDs" value="@Model.AdminIDs" required />
             <input type="hidden" name="TeacherID" asp-for="TeacherID" value="@Model.Teacher.TeacherID" required />
-            <input type="submit" value="Save" />
+            <input type="submit" value="Gem" />
         </form>
     </div>
 }
