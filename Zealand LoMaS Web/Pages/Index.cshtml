@@ -297,6 +297,11 @@
 			}
 		</tbody>
 	</table>
+	<div>
+		<form method="post" asp-page-handler="LogOut">
+			<input type="submit" value="LogOut" />
+		</form>
+	</div>
 }
 else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
 {
