@@ -36,8 +36,6 @@
                     By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
                     Pris: @r.Cost
                     Tid: @r.Time
-                    IDs: @r.InstitutionIDs[0]
-                    @r.InstitutionIDs[1]
                     <input type="hidden" asp-for="ID1" name="ID1" value="@r.InstitutionIDs[0]">
                     <input type="hidden" asp-for="ID2" name="ID2" value="@r.InstitutionIDs[1]">
                     <input class="no-border" type="submit" value="Edit">
