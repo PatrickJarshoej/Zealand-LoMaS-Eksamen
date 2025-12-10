@@ -106,5 +106,9 @@ namespace Zealand_LoMaS_Lib.Service
             //Debug.WriteLine("ChangePass In Service");
             _teacherRepo.UpdatePassword(id, hashPass);
         }
+        public void DeleteByID(int id)
+        {
+            _teacherRepo.DeleteByID(id);
+        }
     }
 }
