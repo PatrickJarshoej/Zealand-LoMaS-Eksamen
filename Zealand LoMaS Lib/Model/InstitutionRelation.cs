@@ -16,12 +16,11 @@ namespace Zealand_LoMaS_Lib.Model
 
 
         public InstitutionRelation() { }
-        public InstitutionRelation(TimeSpan time, double cost, List<int> institutionIDs, int institutionRelationID=0)
+        public InstitutionRelation(TimeSpan time, double cost, List<int> institutionIDs)
         {
             InstitutionIDs = institutionIDs;
             Time = time;
             Cost = cost;
-            InstitutionRelationID = institutionRelationID;
         }
        
 

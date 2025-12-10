@@ -169,7 +169,29 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Update(InstitutionRelation institutionRelation)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("UPDATE InstitutionsRelations SET Cost=@Cost, TransportHours=@Time WHERE InstituteFromID = @InstitutionFromID AND InstituteToID = @InstitutionToID ", connection);
+                    command.Parameters.AddWithValue("@InstitutionFromID", institutionRelation.InstitutionIDs[0]);
+                    command.Parameters.AddWithValue("@InstitutionToID", institutionRelation.InstitutionIDs[1]);
+                    command.Parameters.AddWithValue("@Cost", institutionRelation.Cost);
+                    command.Parameters.AddWithValue("@Time", institutionRelation.Time);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("There was an error in Update() in InstitutionRelationRepo");
+                    Debug.WriteLine("Error: " + ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }

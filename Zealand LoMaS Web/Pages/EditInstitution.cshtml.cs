@@ -31,7 +31,8 @@ namespace Zealand_LoMaS_Web.Pages
         public Institution Institution { get; set; }
         public Institution OtherInstitution { get; set; }
         public string Admins { get; set; }
-        
+        public int ID1 { get; set; }
+        public int ID2 { get; set; }
         public List<int> IDs { get; set; }
 
         public EditInstitutionModel(TeacherService ts, InstitutionService iS, InstitutionRelationService rS)
@@ -60,8 +61,8 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostEditRelations()
         {
-            Debug.WriteLine(IDs.Count);
-
+            IDs.Add(ID1);
+            IDs.Add(ID2);
             return RedirectToPage("/EditRelations", new { ids = IDs });
         }
         //public IActionResult OnPostSave()

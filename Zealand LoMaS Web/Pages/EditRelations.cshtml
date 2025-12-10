@@ -5,25 +5,16 @@
 }
 <link rel="stylesheet" href="~/css/OurDefeault.css" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
-@if (Model.Edit == false)
-{
-    <div class="card">
-        <div>
-            <form method="post" asp-page-handler="Edit">
-                <input type="hidden" name="Ids" asp-for="Ids" value="@Model.TheRelation.InstitutionIDs" />
-                <input type="hidden" name="Edit" asp-for="Edit" value="true" />
-                <input type="submit" value="Edit" />
-            </form>
-        </div>
-    </div>
-}
-else if (Model.Edit == true)
-{
-    <div class="card">
-        <form method="post" asp-page-handler="Save">
-            <p> <b> Cost:</b> <br /><input type="number" asp-for="Cost" name="Cost" value="@Model.TheRelation.Cost" /></p>
-            <p> <b> Time:</b> <br /><input type="number" asp-for="TimeNumber" name="TimeNumber" value="@Model.TheRelation.Time.Hours" /></p>
-        </form>
-    </div>
 
-}
+<div class="card">
+    <form method="post" asp-page-handler="Save">
+        <p>Institutions: @Model.Institution1.Location.City
+       , @Model.Institution2.Location.City</p>
+        <input type="hidden" asp-for="ID1" name="ID1" value="@Model.Ids[0]">
+        <input type="hidden" asp-for="ID2" name="ID2" value="@Model.Ids[1]">
+        <p> <b> Cost:</b> <br /><input type="number" asp-for="Cost" name="Cost" value="@Model.TheRelation.Cost" /></p>
+        <p> <b> Time:</b> <br /><input type="number" asp-for="TimeNumber" name="TimeNumber" value="@Model.TheRelation.Time.Hours" /></p>
+        <input type="submit" value="Save" />
+    </form>
+</div>
+

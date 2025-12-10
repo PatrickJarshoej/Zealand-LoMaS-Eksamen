@@ -25,23 +25,26 @@
             </div>
             <input type="submit" value="Save" />
         </form>
-        <div class="card container">
-            <h2>TransportRelationer</h2>
-            @foreach (var r in Model.InstitutionRelations)
-            {
+    </div>
+    <div class="card container">
+        <h2>TransportRelationer</h2>
+        @foreach (var r in Model.InstitutionRelations)
+        {
 
-                <p>
-                    <form method="post" asp-page-handler="EditRelations" class="btn padding-none">
-                        By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
-                        Pris: @r.Cost
-                        Tid: @r.Time
-                        <input type="hidden" asp-for="@Model.IDs" name="@Model.IDs" value="@r.InstitutionIDs">
-                        <input class="no-border" type="submit" value="Edit">
-                    </form>
-                </p>
+            <p>
+                <form method="post" asp-page-handler="EditRelations" class="btn padding-none">
+                    By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
+                    Pris: @r.Cost
+                    Tid: @r.Time
+                    IDs: @r.InstitutionIDs[0]
+                    @r.InstitutionIDs[1]
+                    <input type="hidden" asp-for="ID1" name="ID1" value="@r.InstitutionIDs[0]">
+                    <input type="hidden" asp-for="ID2" name="ID2" value="@r.InstitutionIDs[1]">
+                    <input class="no-border" type="submit" value="Edit">
+                </form>
+            </p>
 
 
-            }
-        </div>
+        }
     </div>
 }
