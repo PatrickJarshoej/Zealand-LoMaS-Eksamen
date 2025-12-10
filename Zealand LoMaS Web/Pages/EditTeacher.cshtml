@@ -93,3 +93,43 @@ else
         </form>
     </div>
 }
+<div class="card">
+    <form method="post" asp-page-handler="Create">
+        Lære:
+        <select id="TeacherID" name="TeacherID" required>
+            <option value="@Model.Teacher.TeacherID">@Model.Teacher.Email</option>
+        </select>
+        Rejse Til Institut:
+        <select id="InstituteToID" name="InstituteToID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+            {
+                <option value="@institution.InstitutionID">@institution.Location.City</option>
+            }
+        </select>
+        Rejse Fra Institut:
+        <select id="InstituteFromID" name="InstituteFromID" required>
+            @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+            {
+                <option value="@institution.InstitutionID">@institution.Location.City</option>
+            }
+        </select>
+        <input type="submit" value="Create" />
+    </form>
+</div>
+@foreach (Zealand_LoMaS_Lib.Model.Transport transport in Model.Transports)
+{
+    <div class="card">
+        <h1>
+            Transport Id: @transport.TransportID
+        </h1>
+        <div>
+            <!--This button runs the OnPostShow method and defines a temporary booking id we can send over -->
+            <form method="post" asp-page-handler="Show">
+                <!--to the next page -->
+                <input type="hidden" name="TempTransportID" asp-for="TempTransportID" value="@transport.TransportID" />
+                <input type="submit" value="Open Transport" />
+            </form>
+        </div>
+    </div>
+
+}
