@@ -200,6 +200,7 @@
 					</td>
 					<td>
 						<form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
+							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
 							<input class="no-border" type="submit" value="Fjern">
 						</form>
 					</td>
