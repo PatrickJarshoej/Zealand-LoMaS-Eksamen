@@ -100,14 +100,14 @@ else
             <option value="@Model.Teacher.TeacherID">@Model.Teacher.Email</option>
         </select>
         Rejse Til Institut:
-        <select id="InstituteToID" name="InstituteToID" required>
+        <select id="InstitutionToID" name="InstitutionToID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
             {
                 <option value="@institution.InstitutionID">@institution.Location.City</option>
             }
         </select>
         Rejse Fra Institut:
-        <select id="InstituteFromID" name="InstituteFromID" required>
+        <select id="InstitutionFromID" name="InstitutionFromID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
             {
                 <option value="@institution.InstitutionID">@institution.Location.City</option>

@@ -69,11 +69,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
-        public void DeleteByID(int institutionid)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<InstitutionRelation> GetAll()
         {
             var institutionRelations = new List<InstitutionRelation>();

@@ -22,6 +22,8 @@ namespace Zealand_LoMaS_Web.Pages
         public Teacher Teacher { get; set; }
         public int TeacherID { get; set; }
         public int InstitutionID { get; set; }
+        public int InstitutionToID { get; set; }
+        public int InstitutionFromID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -84,6 +86,12 @@ namespace Zealand_LoMaS_Web.Pages
             Debug.WriteLine(FirstName);
             _teacherService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
             return RedirectToPage("/Index");
+        }
+        public void OnPostCreate()
+        {
+            Debug.WriteLine(InstitutionFromID);
+            _transportService.Create(TeacherID, DateTime.Now, InstitutionFromID, InstitutionToID);
+            OnGet(TeacherID);
         }
     }
 
