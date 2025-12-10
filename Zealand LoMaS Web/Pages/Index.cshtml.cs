@@ -114,7 +114,9 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostCreateAdmin()
         {
+            InstitutionIDs.Add(InstitutionID);
             _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
+            OnGet();
         }
         public void OnPostCreateTeacher()
         {
