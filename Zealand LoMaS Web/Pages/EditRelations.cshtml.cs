@@ -29,7 +29,8 @@ namespace Zealand_LoMaS_Web.Pages
         public int ID2 { get; set; }
 
 
-        public int TimeNumber { get; set; }
+        public double TimeMinute { get; set; }
+        public double TimeHours { get; set; }
 
         public bool Edit { get; set; }
         
@@ -57,6 +58,7 @@ namespace Zealand_LoMaS_Web.Pages
             Ids.Add(ID1);
             Ids.Add(ID2);
             OnGet(Ids);
+            Time = TimeSpan.FromMinutes(TimeMinute)+TimeSpan.FromHours(TimeHours);
             _institutionRelationService.Update(Ids[0], Ids[1],Cost, Time);
             //Admins = "";
             return RedirectToPage("/Index");
