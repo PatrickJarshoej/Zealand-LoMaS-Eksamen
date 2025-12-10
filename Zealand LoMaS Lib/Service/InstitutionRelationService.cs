@@ -104,9 +104,13 @@ namespace Zealand_LoMaS_Lib.Service
             return _institutionRelationRepo.GetByInstitutionID(id);
         }
 
-        public void Update(Institution institution)
+        public void Update(int id1, int id2, double cost, TimeSpan time )
         {
-            throw new NotImplementedException();
+            var ids = new List<int>();
+            ids.Add(id1);
+            ids.Add(id2);
+            var institutionRelation = new InstitutionRelation(time, cost, ids);
+            _institutionRelationRepo.Update(institutionRelation);
         }
     }
 }

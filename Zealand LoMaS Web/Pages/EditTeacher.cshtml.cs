@@ -53,9 +53,9 @@ namespace Zealand_LoMaS_Web.Pages
             Teacher = _teacherService.GetByID(teacherID);
             //Teachers = _teacherService.GetAll();
             Institutions = _institutionService.GetAll();
-            if (Institution.AdminIDs != null)
+            if (Teacher.AdminIDs != null)
             {
-                foreach (var a in Institution.AdminIDs)
+                foreach (var a in Teacher.AdminIDs)
                 {
                     AdminIDs += a.ToString() + ", ";
                 }
