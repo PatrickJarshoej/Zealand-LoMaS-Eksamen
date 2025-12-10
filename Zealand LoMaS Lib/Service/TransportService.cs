@@ -11,13 +11,20 @@ namespace Zealand_LoMaS_Lib.Service
     public class TransportService
     {
         private ITransportRepo _transportRepo;
-        public TransportService(ITransportRepo transportRepo)
+        private IInstitutionRelationRepo _relationRepo;
+        public TransportService(ITransportRepo transportRepo, IInstitutionRelationRepo relationRepo)
         {
             _transportRepo = transportRepo;
+            _relationRepo = relationRepo;
         }
         public void Create(int teacherID, DateTime date, int instituteFromID, int instituteToID)
         {
-            Transport aTransport= new Transport(teacherID,date,instituteFromID,instituteToID);
+            List<int> ids= new List<int>();
+            ids.Add(instituteToID);
+            ids.Add(instituteFromID);
+            ids.Sort();
+            InstitutionRelation relation = _relationRepo.GetByInstitutionIDs(ids[0], ids[1]);
+            Transport aTransport= new Transport(teacherID,date,instituteFromID,instituteToID, relation.Time, relation.Cost);
             _transportRepo.Add(aTransport);
         }
         public void DeleteByID(int transportID)

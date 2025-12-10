@@ -114,7 +114,9 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostCreateAdmin()
         {
+            InstitutionIDs.Add(InstitutionID);
             _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
+            OnGet();
         }
         public void OnPostCreateTeacher()
         {
@@ -190,7 +192,7 @@ namespace Zealand_LoMaS_Web.Pages
             HttpContext.Response.Cookies.Append("UserStatus", "false");
             return RedirectToPage();
         }
-        public void OnPostChangePassword()
+        public void OnPostChangeTeacherPassword()
         {
             OnGet(); //We need to run this or it will forget who the teacher is...
             //To create a new password they need to write it twice as a safety measure

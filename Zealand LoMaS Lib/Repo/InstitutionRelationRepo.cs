@@ -105,7 +105,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
 
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteID", connection);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteID or InstituteToID=@InstituteID", connection);
                     command.Parameters.AddWithValue("@InstituteID", id);
                     connection.Open();
                     var newRelations = GetInstitutionsRelationsByCommand(command);
@@ -120,27 +120,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
 
             }
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                try
-                {
-
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteToID=@InstituteID", connection);
-                    command.Parameters.AddWithValue("@InstituteID", id);
-                    connection.Open();
-                    var newRelations = GetInstitutionsRelationsByCommand(command);
-                    foreach (var r in newRelations) { institutionRelations.Add(r); }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Error in GetByID() in InstitutionRelationRepo");
-                    Debug.WriteLine($"Error: {ex}");
-                }
-                finally { connection.Close(); }
-
-
-            }
-            return institutionRelations;
+          
         }
         public InstitutionRelation GetByInstitutionIDs(int id1, int id2)
         {

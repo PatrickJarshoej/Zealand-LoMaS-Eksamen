@@ -189,20 +189,26 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand("INSERT INTO Administrators (FirstName, LastName, Email, InstitutionID) VALUES (@FirstName, @LastName, @Email, @InstitutionID)", connection);
-                command.Parameters.AddWithValue("@FirstName", adminObject.FirstName);
-                command.Parameters.AddWithValue("@LastName", adminObject.LastName);
-                command.Parameters.AddWithValue("@Email", adminObject.Email);
-                command.Parameters.AddWithValue("@InstitutionID", adminObject.InstitutionIDs);
-                var command2 = new SqlCommand("INSERT INTO AdministratorPasswords (AdministratorID, Password) VALUES ((SELECT AdministratorID FROM Administrators WHERE Email = @Email), @Password)", connection);
-                command2.Parameters.AddWithValue("@Email", adminObject.Email);
-                command2.Parameters.AddWithValue("@Password", Password);
                 connection.Open();
                 try
                 {
-                    command.ExecuteNonQuery();
+                    var command = new SqlCommand("INSERT INTO Administrators (FirstName, LastName, Email) OUTPUT Inserted.AdministratorID VALUES (@FirstName, @LastName, @Email)", connection);
+                    command.Parameters.AddWithValue("@FirstName", adminObject.FirstName);
+                    command.Parameters.AddWithValue("@LastName", adminObject.LastName);
+                    command.Parameters.AddWithValue("@Email", adminObject.Email);
+                    int AdminID = (int)command.ExecuteScalar();
 
+                    var command2 = new SqlCommand("INSERT INTO AdministratorPasswords (AdministratorID, Password) VALUES (@AdministratorID, @Password)", connection);
+                    command2.Parameters.AddWithValue("@AdministratorID", AdminID);
+                    command2.Parameters.AddWithValue("@Password", Password);
                     command2.ExecuteNonQuery();
+
+                    var command3 = new SqlCommand("INSERT INTO MapInstitutionsAdministrators (InstitutionID, AdministratorID) VALUES (@InstitutionID, @AdministratorID)", connection);
+                    command3.Parameters.AddWithValue("@AdministratorID", AdminID);
+                    command3.Parameters.AddWithValue("@InstitutionID", adminObject.InstitutionIDs[0]);
+                    command3.ExecuteNonQuery();
+
+
                 }
                 catch (Exception ex)
                 {
@@ -245,10 +251,10 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                var command = new SqlCommand("SELECT * FROM Administrators WHERE AdministratorID = @AdministratorID", connection);
-                command.Parameters.AddWithValue("@AdministratorID", adminID);
-                connection.Open();
-                admin = GetAdminsByCommand(command, connection)[0];
+                    var command = new SqlCommand("SELECT * FROM Administrators WHERE AdministratorID = @AdministratorID", connection);
+                    command.Parameters.AddWithValue("@AdministratorID", adminID);
+                    connection.Open();
+                    admin = GetAdminsByCommand(command, connection)[0];
 
 
                 }

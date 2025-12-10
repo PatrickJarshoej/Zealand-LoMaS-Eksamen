@@ -17,6 +17,8 @@ namespace Zealand_LoMaS_Web.Pages
     {
         TeacherService _teacherService;
         InstitutionService _institutionService;
+        TransportService _transportService;
+        public List<Transport> Transports { get; set; }
         public Teacher Teacher { get; set; }
         public int TeacherID { get; set; }
         public int InstitutionID { get; set; }
@@ -38,18 +40,22 @@ namespace Zealand_LoMaS_Web.Pages
         public string AdminIDs { get; set; }
         public List<Institution> Institutions { get; set; }
         public Institution Institution { get; set; }
+        public int TempTransportID { get; set; }
 
 
 
-        public EditTeacherModel(TeacherService ts, InstitutionService iS)
+        public EditTeacherModel(TeacherService ts, InstitutionService iS, TransportService transportService)
         {
             _teacherService = ts;
             _institutionService = iS;
+            _transportService = transportService;
         }
 
         public void OnGet(int teacherID)
         {
+
             TeacherID = teacherID;
+            Transports = _transportService.GetByTeacherID(teacherID);
             Teacher = _teacherService.GetByID(teacherID);
             //Teachers = _teacherService.GetAll();
             Institutions = _institutionService.GetAll();
