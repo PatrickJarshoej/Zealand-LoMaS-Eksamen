@@ -32,17 +32,20 @@ namespace Zealand_LoMaS_Web.Pages
         public TransportModel(TransportService ts, TeacherService teacherService,InstitutionService iS)
         {
             _transportService = ts;
-            Transports = ts.GetAll();
+
             _teacherService = teacherService;
-            Teachers=_teacherService.GetAll();
+
             _institutionService = iS;
-            Institutions=_institutionService.GetAll();
+
         }
 
         public void OnGet(int transportID)
         {
             SpecificTransport=_transportService.GetByID(transportID);
             TempID = transportID;
+            Institutions = _institutionService.GetAll();
+            Teachers = _teacherService.GetAll();
+            Transports = _transportService.GetAll();
         }
         public IActionResult OnPostDelete()
         {
