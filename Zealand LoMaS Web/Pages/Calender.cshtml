@@ -1,11 +1,13 @@
 ﻿@page
-@model EditAdministratorModel
+@model CalenderModel
 @{
 	ViewData["Title"] = "Kalender";
 }
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
-
+<div class="align-content-center">
+    <h1 class="display-1">Kalender for @Model.Teacher.FirstName @Model.Teacher.LastName</h1>
+</div>
 
 <table class="table">
     <tr>
