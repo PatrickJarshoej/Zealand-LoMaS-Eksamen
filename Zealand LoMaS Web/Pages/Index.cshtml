@@ -15,14 +15,16 @@
 			<div class="stat p-2">
 				<h2>Bruger Information <br /></h2>
 				<p> <b> Email:</b> <br />@Model.Admin.Email</p>
-				<p> <b> Institutions:</b>
-				@foreach (var i in Model.Institutions)
-				{
-					if (i.AdminIDs.Contains(Model.Admin.AdministratorID))
+				<p>
+					<b> Institutions:</b>
+					@foreach (var i in Model.Institutions)
 					{
-						<br />@i.Location.City
+						if (i.AdminIDs.Contains(Model.Admin.AdministratorID))
+						{
+							<br />
+							@i.Location.City
+						}
 					}
-				}
 				</p>
 				<div class="d-flex justify-content-between">
 					<form method="post" asp-page-handler="EditAdminProfile" class="btn padding-none">
@@ -141,6 +143,30 @@
 							<p> <b> Institutets Postnummer: </b> <br /><input type="number" asp-for="InstitutePostal" name="InstitutePostal" placeholder="Institutets Postnummer" required /></p>
 							<p> <b> Institutets Vejnavn: </b> <br /><input type="text" asp-for="InstituteRoadName" name="InstituteRoadName" placeholder="Institutets Vejnavn" required /></p>
 							<p> <b> Institutets Vejnummer: </b> <br /><input type="text" asp-for="InstituteRoadNumber" name="InstituteRoadNumber" placeholder="Institutets Vejnummer" required /></p>
+							<input type="submit" value="Opret" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="d-flex justify-content-between">
+			<div class="stat p-2">
+				<h2>Lav ny lektion<br /></h2>
+				<span onclick="document.getElementById('CreateAClass').style.display='block'">
+					<button class="btn">Opret Lektion</button>
+				</span>
+				<div class="modal text-center" id="CreateAClass">
+					<div class="modal-content" display="none">
+						<span onclick="document.getElementById('CreateAClass').style.display='none'" class="btn-close display-topright"></span>
+						<h1>Opret lektion</h1>
+						<form method="post" asp-page-handler="CreateAClass">
+							<p class=""> <b> Asnvarlig læres ID: </b> <br /><input type="number" asp-for="TeacherID" name="TeacherID" placeholder="Ansvarlig LæreID" required /></p>
+							<p> <b> Tilhørende instituts ID: </b> <br /><input type="number" asp-for="InstitutionID" name="InstitutionID" placeholder="Tilhørende institut" required /></p>
+							<p> <b> Tilhørende Administrators ID: </b> <br /><input type="number" asp-for="AdminID" name="AdminID" placeholder="Tilhørende Administrators ID" required /></p>
+							<p> <b> Lektionens starttidspunkt: </b> <br /><input type="datetime" asp-for="ClassStart" name="ClassStart" placeholder="Lektions starttidspunk" required /></p>
+							<p> <b> Lektionens Sluttidspunkt: </b> <br /><input type="datetime" asp-for="ClassDuration" name="ClassDuration" placeholder=" Lektionens Sluttidspunkt" required /></p>
+							<p> <b> Lektionens Emne: </b> <br /><input type="text" asp-for="ClassSubject" name="ClassSubject" placeholder=" Lektionens Emne" required /></p>
+							<p> <b> Lektionens Beskrivelse: </b> <br /><input type="text" asp-for="ClassDescription" name="ClassDescription" placeholder=" Lektionens Beskrivelse" required /></p>
 							<input type="submit" value="Opret" />
 						</form>
 					</div>
