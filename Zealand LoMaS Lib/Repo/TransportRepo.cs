@@ -217,8 +217,7 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Update(Transport transport)
         {
-            Debug.WriteLine("This is the ID of the transport you tried to update:");
-            Debug.WriteLine(transport.TransportID);
+            Debug.WriteLine("This is the ID of the transport you tried to update:"+transport.TransportID);
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
