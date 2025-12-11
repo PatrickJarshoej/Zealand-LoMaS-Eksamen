@@ -53,6 +53,7 @@ namespace Zealand_LoMaS_Web.Pages
         {
             SpecificTransport = _transportService.GetByID(TempID);
             _transportService.Update(TempID, DateTime.Now, Cost);
+            OnGet(TempID);
         }
     }
 

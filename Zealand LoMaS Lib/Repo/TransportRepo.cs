@@ -217,11 +217,13 @@ namespace Zealand_LoMaS_Lib.Repo
 
         public void Update(Transport transport)
         {
+            Debug.WriteLine("This is the ID of the transport you tried to update:");
+            Debug.WriteLine(transport.TransportID);
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE Transports SET TransportCost=@cost WHERE TransportID=@TransportID  ", connection);
+                    var command = new SqlCommand("UPDATE Transports SET TransportCost = @cost WHERE TransportID = @TransportID  ", connection);
                     command.Parameters.AddWithValue("@cost", transport.TransportCost);
                     command.Parameters.AddWithValue("@TransportID", transport.TransportID);
                     connection.Open();
