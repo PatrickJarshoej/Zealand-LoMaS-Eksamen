@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,7 @@ namespace Zealand_LoMaS_Lib.Service
         public void Update(int transportID, DateTime date, double newCost)
         {
             var earlierTransport=GetByID(transportID);
+            Debug.WriteLine(newCost);
             var updatedTransport = new Transport(
                 earlierTransport.TeacherID,
                 date,

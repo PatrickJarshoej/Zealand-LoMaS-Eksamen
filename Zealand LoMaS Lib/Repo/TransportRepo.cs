@@ -227,6 +227,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     command.Parameters.AddWithValue("@TransportID", transport.TransportID);
                     connection.Open();
                     command.ExecuteNonQuery();
+                    Debug.WriteLine("it runs the try");
                 }
                 catch (Exception ex)
                 {

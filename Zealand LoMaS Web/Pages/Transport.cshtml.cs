@@ -54,7 +54,7 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostEdit()
         {
-            SpecificTransport = _transportService.GetByID(TempID);
+            Debug.WriteLine(Cost);
             _transportService.Update(TempID, DateTime.Now, Cost);
             OnGet(TempID);
         }
