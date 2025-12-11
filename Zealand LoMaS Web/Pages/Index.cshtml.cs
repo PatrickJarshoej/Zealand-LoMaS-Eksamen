@@ -15,6 +15,7 @@ namespace Zealand_LoMaS_Web.Pages
         private TeacherService _teacherService;
         private InstitutionService _institutionService;
         private TransportService _transportService;
+        private AClassService _aClassService;
         private readonly ILogger<IndexModel> _logger;
 
         public Admin Admin { get; set; }
@@ -49,14 +50,19 @@ namespace Zealand_LoMaS_Web.Pages
         public List<Teacher> Teachers { get; set; }
         public List<Admin> Admins { get; set; }
         public bool ChangePasswordModalShow { get; set; } = false;
+        public DateTime ClassStart { get; set; }
+        public DateTime ClassDuration { get; set; }
+        public string ClassSubject { get; set; }
+        public string ClassDescription { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService, TransportService tS)
+        public IndexModel(ILogger<IndexModel> logger, AdminService adminService, TeacherService teacherService, InstitutionService institutionService, TransportService tS, AClassService acs)
         {
             _logger = logger;
             _adminService = adminService;
             _teacherService = teacherService;
             _institutionService = institutionService;
             _transportService = tS;
+            _aClassService = acs;
         }
 
         public void OnGet()
@@ -226,6 +232,12 @@ namespace Zealand_LoMaS_Web.Pages
                 FailedToChangePass = true;
                 ChangePasswordModalShow = true;
             }
+        }
+        public void OnPostCreateAClass()
+        {
+            TimeSpan duration = ClassDuration - ClassStart;
+            _aClassService.Create(TeacherID, AdminID, InstitutionID, ClassStart, duration, ClassSubject, ClassDescription);
+            OnGet();
         }
     }
 }
