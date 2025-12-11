@@ -63,7 +63,7 @@ namespace Zealand_LoMaS_Lib.Service
            return _transportRepo.GetByTeacherID(teacherID);
         }
 
-        public void Update(int transportID, DateTime date, double newCost)
+        public void Update(int transportID, DateTime date, double newCost, TimeSpan time)
         {
             var earlierTransport=GetByID(transportID);
             Debug.WriteLine(newCost);
@@ -72,6 +72,7 @@ namespace Zealand_LoMaS_Lib.Service
                 date,
                 earlierTransport.InstitueFromID,
                 earlierTransport.InstitueToID,
+                time,
                 newCost,
                 transportID
                 );

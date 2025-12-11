@@ -54,8 +54,9 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostEdit()
         {
+            TimeSpan theTimeSpan=TimeSpan.FromHours(TimeHours)+TimeSpan.FromMinutes(TimeMinute);
             Debug.WriteLine(Cost);
-            _transportService.Update(TempID, DateTime.Now, Cost);
+            _transportService.Update(TempID, Date, Cost, theTimeSpan);
             OnGet(TempID);
         }
     }

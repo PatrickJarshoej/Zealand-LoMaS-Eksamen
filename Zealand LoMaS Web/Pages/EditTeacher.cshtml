@@ -85,10 +85,6 @@ else
 }
 <div class="card">
     <form method="post" asp-page-handler="Create">
-        Lære:
-        <select id="TeacherID" name="TeacherID" required>
-            <option value="@Model.Teacher.TeacherID">@Model.Teacher.Email</option>
-        </select>
         Rejse Til Institut:
         <select id="InstitutionToID" name="InstitutionToID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
@@ -103,6 +99,7 @@ else
                 <option value="@institution.InstitutionID">@institution.Location.City</option>
             }
         </select>
+        <p> <b> Dato:</b> <br /><input type="date" asp-for="Date" value="@DateTime.Now.Date.ToString("dd-MM-yyyy")" /></p>
         <input type="submit" value="Create" />
     </form>
 </div>
@@ -116,6 +113,7 @@ else
         <div>
             <p>Pris: @transport.TransportCost</p>
             <p>Tid: @transport.TransportHours</p>
+            <p>Dato:@transport.TheDate.Date.ToString("dd-MM-yyyy")</p>
         </div>
         <div>
             <!--This button runs the OnPostShow method and defines a temporary booking id we can send over -->
