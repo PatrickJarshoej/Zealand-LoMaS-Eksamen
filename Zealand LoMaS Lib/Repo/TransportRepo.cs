@@ -221,14 +221,15 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE Transports SET Cost=@cost WHERE TransportID=@TransportID  ", connection);
+                    var command = new SqlCommand("UPDATE Transports SET TransportCost=@cost WHERE TransportID=@TransportID  ", connection);
                     command.Parameters.AddWithValue("@cost", transport.TransportCost);
+                    command.Parameters.AddWithValue("@TransportID", transport.TransportID);
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in Add() in DomicileRepo");
+                    Debug.WriteLine("Error in Update() in TransportRepo");
                     Debug.WriteLine($"Error: {ex.Message}");
                 }
                 finally

@@ -23,7 +23,9 @@
         <div>
             <form method="post" asp-page-handler="Edit">
                 <input type="hidden" name="TempID" asp-for="TempID" value="@Model.SpecificTransport.TransportID" />
-                <input type="hidden" name="Edit" asp-for="Edit" value="true" />
+                <p> <b> Cost:</b> <br /><input type="number" asp-for="Cost" name="Cost" value="@Model.SpecificTransport.TransportCost" /></p>
+                <p> <b> Minutes:</b> <br /><input type="number" asp-for="TimeMinute" name="TimeMinute" value="@Model.SpecificTransport.TransportHours.Minutes" /></p>
+                <p> <b> Hours:</b> <br /><input type="number" asp-for="TimeHours" name="TimeHours" value="@Model.SpecificTransport.TransportHours.Hours" /></p>
                 <input type="submit" value="Edit" />
             </form>
         </div>

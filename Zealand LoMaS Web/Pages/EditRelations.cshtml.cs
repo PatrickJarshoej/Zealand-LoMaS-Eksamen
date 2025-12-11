@@ -29,6 +29,8 @@ namespace Zealand_LoMaS_Web.Pages
         public int ID2 { get; set; }
 
 
+
+
         public double TimeMinute { get; set; }
         public double TimeHours { get; set; }
 

@@ -10,30 +10,25 @@ using Zealand_LoMaS_Lib.Service;
 
 namespace Zealand_LoMaS_Web.Pages
 {
+    [BindProperties]
     public class TransportModel : PageModel
     {
         TransportService _transportService;
         TeacherService _teacherService;
         InstitutionService _institutionService;
         public List<Transport> Transports { get; set; }
-        [BindProperty]
         public List<Teacher> Teachers { get; set; }
-        [BindProperty]
         public List<Institution> Institutions { get; set; }
-        [BindProperty]
         public int TeacherID { get; set; }
-        [BindProperty]
         public DateTime Date { get; set; }
-        [BindProperty]
         public int InstituteToID { get; set; }
-        [BindProperty]
         public int TempID { get; set; }
-        [BindProperty]
         public Transport SpecificTransport { get; set; }
-        [BindProperty]
         public bool Edit { get; set; }
-        [BindProperty]
         public int InstituteFromID { get; set; }
+        public double TimeMinute { get; set; }
+        public double TimeHours { get; set; }
+        public double Cost { get; set; }
         public TransportModel(TransportService ts, TeacherService teacherService,InstitutionService iS)
         {
             _transportService = ts;
@@ -51,14 +46,13 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public IActionResult OnPostDelete()
         {
-            _institutionService.DeleteByID(TempID);
+            _transportService.DeleteByID(TempID);
             return RedirectToPage("Index");
         }
         public void OnPostEdit()
         {
-            Debug.WriteLine("Temp Domicile ID: " + TempID);
-            Edit = true;
             SpecificTransport = _transportService.GetByID(TempID);
+            _transportService.Update(TempID, DateTime.Now, Cost);
         }
     }
 
