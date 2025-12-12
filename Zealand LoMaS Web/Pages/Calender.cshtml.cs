@@ -29,10 +29,6 @@ namespace Zealand_LoMaS_Web.Pages
         }
 
 
-        public void OnGet()
-        {
-
-        }
         public void OnGet(int teacherID)
         {
             if(HttpContext.Request.Cookies["UserStatus"] == "false" && HttpContext.Request.Cookies["UserID"] != "0")
@@ -47,7 +43,7 @@ namespace Zealand_LoMaS_Web.Pages
             }
             else
             {
-
+                RedirectToPage("/Index");
             }
         }
         
