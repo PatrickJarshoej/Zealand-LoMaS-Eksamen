@@ -85,6 +85,7 @@ else
 }
 <div class="card">
     <form method="post" asp-page-handler="Create">
+        <input type="hidden" asp-for="TeacherID" />
         Rejse Til Institut:
         <select id="InstitutionToID" name="InstitutionToID" required>
             @foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)

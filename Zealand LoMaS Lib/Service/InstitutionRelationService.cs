@@ -56,6 +56,7 @@ namespace Zealand_LoMaS_Lib.Service
                     //so therefore, if the amount of relations equal the amount of institutes-1 we don't need to run it
                     if (relations.Count != (iAmount - 1))
                     {
+                        //we only need to check each pair once, as we only expect one relation for each pair
                         for(int j=i+1; j<iAmount; j++)
                         {
                             var institution2 = institutions[j];
