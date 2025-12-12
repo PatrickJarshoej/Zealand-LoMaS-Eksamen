@@ -43,6 +43,7 @@ namespace Zealand_LoMaS_Web.Pages
         public List<Institution> Institutions { get; set; }
         public Institution Institution { get; set; }
         public int TempTransportID { get; set; }
+        public DateTime Date {  get; set; }
 
 
         public EditTeacherModel(TeacherService ts, InstitutionService iS, TransportService transportService)
@@ -84,7 +85,7 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnPostCreate()
         {
             Debug.WriteLine(InstitutionFromID);
-            _transportService.Create(TeacherID, DateTime.Now, InstitutionFromID, InstitutionToID);
+            _transportService.Create(TeacherID, Date, InstitutionFromID, InstitutionToID);
             OnGet(TeacherID);
         }
 

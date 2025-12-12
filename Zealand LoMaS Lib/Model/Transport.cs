@@ -34,6 +34,7 @@ namespace Zealand_LoMaS_Lib.Model
             TheDate = theDate;
             InstitueFromID = institueFromID;
             InstitueToID = institueToID;
+            TransportCost = transportCost;
         }
         public Transport(int teacherID, DateTime theDate, int institueFromID, int institueToID, TimeSpan transportHours, double transportCost = 0, int transportID = 0)
         {
@@ -43,6 +44,7 @@ namespace Zealand_LoMaS_Lib.Model
             TheDate = theDate;
             InstitueFromID = institueFromID;
             InstitueToID = institueToID;
+            TransportCost = transportCost;
         }
     }
 }
