@@ -20,7 +20,7 @@ namespace Zealand_LoMaS_Lib.Repo
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
         private List<Teacher> GetTeachersByCommand(SqlCommand command, SqlConnection connection)
-        {
+        {//This is a single method that all our get methods can use, saves a lot of code
             var teachers = new List<Teacher>();
             using (var reader = command.ExecuteReader())
             {
@@ -71,7 +71,7 @@ namespace Zealand_LoMaS_Lib.Repo
         }
         private Address GetAddress(int id, SqlConnection connection)
         {
-            Address address = null;
+            Address address = new();
             try
             {
                 var command = new SqlCommand("SELECT * FROM TeacherAddress WHERE TeacherID = @ID", connection);
@@ -106,11 +106,11 @@ namespace Zealand_LoMaS_Lib.Repo
                 var command = new SqlCommand("SELECT * FROM MapAdministratorsTeachers WHERE TeacherID = @ID", connection);
                 command.Parameters.AddWithValue("@ID", id);
                 //connection.Open();
-                using (var reader4 = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
-                    while (reader4.Read())
+                    while (reader.Read())
                     {
-                        adminIDs.Add((int)reader4["AdministratorID"]);
+                        adminIDs.Add((int)reader["AdministratorID"]);
                     }
                 }
             }
@@ -135,8 +135,9 @@ namespace Zealand_LoMaS_Lib.Repo
                     command.Parameters.AddWithValue("@HasCar", teacher.HasCar);
                     connection.Open();
                     int teacherID = (int)command.ExecuteScalar();
-
-                    AddTeacherAddress(teacher, teacherID, connection);
+                    //Since the database generates the id and we need to use it as a foreign key
+                    //We use ExecuteScalar() to pull out the ID element from the inputted row
+                    AddTeacherAddress(teacher, teacherID, connection); //Then we use this ID as our foreign key
                     AddTeacherAdmins(teacher, teacherID, connection);
                     AddTeacherInstitution(teacher, teacherID, connection);
                     AddTeacherPassword(teacher, teacherID, password, connection);
@@ -190,7 +191,12 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
         private void AddTeacherClasses(Teacher teacher, int tID, SqlConnection connection)
-        {
+        {   /*
+                This was created along with creater teacher but is no longer in use as 
+                adding classes to a teacher should be done after creating the teacher, 
+                not at the same time, but we never got around to doing this as it wasn't a priority
+             */
+            
             try
             {
                 foreach (var classID in teacher.ClassIDs)
@@ -211,7 +217,7 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
         private void AddTeacherCompetencies(Teacher teacher, int tID, SqlConnection connection)
-        {
+        {   //Same as the method above
             try
             {
                 foreach (var competency in teacher.Competencies)
@@ -347,6 +353,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     command.Parameters.AddWithValue("@ID", id);
                     connection.Open();
                     teacher = GetTeachersByCommand(command, connection)[0];
+                    //Here we use the GetTeachersByCommand, but it returns a list so we only grab the first index
                 }
                 catch (Exception ex)
                 {
@@ -427,7 +434,8 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             Debug.WriteLine("TeacherID: "+teacherID);
             try
-            {
+            {   //When updating Maps we decided it was easier and quicker to just delete all the 
+                //Existing elements for the user and the recreate them based of the list sent down
                 var command = new SqlCommand("DELETE FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
                 command.Parameters.AddWithValue("@TeacherID", teacherID);
                 command.ExecuteNonQuery();

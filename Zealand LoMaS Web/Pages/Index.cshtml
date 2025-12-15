@@ -81,13 +81,13 @@
 							</p>
 							<p class=""> <b> Fornavn: </b> <br /><input type="text" asp-for="FirstName" name="FirstName" placeholder="Fornavn" required /></p>
 							<p> <b> Efternavn: </b> <br /><input type="text" asp-for="LastName" name="LastName" placeholder="Efternavn" required /></p>
-							<p> <b> Email: </b> <br /><input type="text" asp-for="Email" name="Email" placeholder="Email" required /></p>
-							<p> <b> Ugentlige timer: </b> <br /><input type="text" asp-for="WeeklyHours" name="WeeklyHours" placeholder="Ugentlige timer" required /></p>
+							<p> <b> Email: </b> <br /><input type="email" asp-for="Email" name="Email" placeholder="Email" required /></p>
+							<p> <b> Ugentlige timer: </b> <br /><input type="text" asp-for="Hours" name="Hours" placeholder="Ugentlige timer" required /></p>
 							<p> <b> Har bil?: </b> <br /><input type="Text" name="HasCar" asp-for="HasCar" value="true/false" required /> </p>
 							<p>
 								<b>Addresse</b> <br />
 								<label for="Location Selection"></label>
-								<select id="Location" name="Lokation" required>
+								<select id="Location" name="Location" required>
 									@foreach (var institution in Model.Institutions)
 									{
 										<option value="@institution.InstitutionID">@institution.Location.City</option>
@@ -160,11 +160,44 @@
 						<span onclick="document.getElementById('CreateAClass').style.display='none'" class="btn-close display-topright"></span>
 						<h1>Opret lektion</h1>
 						<form method="post" asp-page-handler="CreateAClass">
-							<p class=""> <b> Asnvarlig læres ID: </b> <br /><input type="number" asp-for="TeacherID" name="TeacherID" placeholder="Ansvarlig LæreID" required /></p>
-							<p> <b> Tilhørende instituts ID: </b> <br /><input type="number" asp-for="InstitutionID" name="InstitutionID" placeholder="Tilhørende institut" required /></p>
-							<p> <b> Tilhørende Administrators ID: </b> <br /><input type="number" asp-for="AdminID" name="AdminID" placeholder="Tilhørende Administrators ID" required /></p>
-							<p> <b> Lektionens starttidspunkt: </b> <br /><input type="datetime" asp-for="ClassStart" name="ClassStart" placeholder="Lektions starttidspunk" required /></p>
-							<p> <b> Lektionens Sluttidspunkt: </b> <br /><input type="datetime" asp-for="ClassDuration" name="ClassDuration" placeholder=" Lektionens Sluttidspunkt" required /></p>
+							<p>
+								<b>Ansvarlig lære: </b> <br />
+								<label for="Teacher Selection"></label>
+								<select id="TeacherID" name="TeacherID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
+									{
+										<option value="@teacher.TeacherID">@teacher.FirstName @teacher.LastName</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b>Tilhørende institution: </b> <br />
+								<label for="Institution Selection"></label>
+								<select id="InstitutionID" name="InstitutionID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+									{
+										<option value="@institution.InstitutionID">@institution.Location.City</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b>Tilhørende Administrator: </b> <br />
+								<label for="Admin Selection"></label>
+								<select id="AdminID" name="AdminID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Admin admin in Model.Admins)
+									{
+										<option value="@admin.AdministratorID">@admin.FirstName @admin.LastName</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b><label for="Lektionens starttidspunkt:">Start (date and time):</label></b>
+								<input type="datetime-local" asp-for="ClassStart" name="ClassStart" min="@DateTime.UtcNow" value="@DateTime.UtcNow" required> 
+							</p>
+							<p>
+								<b><label for="Lektionens Sluttidspunkt:">End (date and time):</label></b>
+								<input type="datetime-local" asp-for="ClassDuration" name="ClassDuration" min="@Model.ClassStart" value="@DateTime.UtcNow" required>
+							</p>
 							<p> <b> Lektionens Emne: </b> <br /><input type="text" asp-for="ClassSubject" name="ClassSubject" placeholder=" Lektionens Emne" required /></p>
 							<p> <b> Lektionens Beskrivelse: </b> <br /><input type="text" asp-for="ClassDescription" name="ClassDescription" placeholder=" Lektionens Beskrivelse" required /></p>
 							<input type="submit" value="Opret" />
@@ -187,6 +220,7 @@
 				<th> Administratorer </th>
 				<th> Rediger </th>
 				<th> Fjern </th>
+				<th> Kalender </th>
 			</tr>
 			@foreach (var T in Model.Teachers)
 			{
@@ -228,6 +262,12 @@
 						<form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
 							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
 							<input class="no-border" type="submit" value="Fjern">
+						</form>
+					</td>
+					<td>
+						<form method="post" asp-page-handler="SeeTeacherCalender" class="btn padding-none">
+							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
+							<input class="no-border" type="submit" value="kalender">
 						</form>
 					</td>
 				</tr>
@@ -380,8 +420,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 							</div>
 						</div>
 						@if (Model.ChangePasswordModalShow == true)
-						{
-							<script>
+						{//This makes sure the modal is visible after refreshing, if we want it too
+	 					<script>
 								document.getElementById("ChangeTeacherPassword").style.display="block"
 
 							</script>
@@ -422,6 +462,12 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 					}
 					<form method="post" asp-page-handler="EditTeacherClasses" class="btn padding-none">
 						<input type="submit" value="Rediger Lektion" class="no-border" />
+					</form>
+				</div>
+				<div class="stat p-2">
+					<h2>Se Kalender <br /></h2>
+					<form method="post" asp-page-handler="SeeTeacherCalender" class="btn padding-none">
+						<input type="submit" value="Se Kalender" class="no-border" />
 					</form>
 				</div>
 			</div>
