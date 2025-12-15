@@ -69,7 +69,7 @@ namespace Zealand_LoMaS_Web.Pages
         {
             NeedToRefresh = false;
             if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "false")
-            {
+            {//User status false means it's a teacher and id != 0 means they are a valid teacher
                 Teacher = _teacherService.GetByID(Convert.ToInt32(HttpContext.Request.Cookies["UserID"]));
                 Institution = _institutionService.GetByID(Teacher.InstitutionID);
                 Institutions = _institutionService.GetAll();
@@ -85,7 +85,7 @@ namespace Zealand_LoMaS_Web.Pages
             }
         }
         public void OnPost()
-        {
+        {   //We never actually want to run this OnPost
             Debug.WriteLine("Du kører den forkerte on post");
         }
         public void OnPostLogIn()
@@ -124,35 +124,31 @@ namespace Zealand_LoMaS_Web.Pages
             _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
             OnGet();
         }
-        public void OnPostCreateTeacher()
+        public IActionResult OnPostCreateTeacher()
         {
-            Institution i = _institutionService.GetByID(InstitutionID);
-
+            Institution i = _institutionService.GetByID(Location);
             string Region = i.Location.Region;
             string City = i.Location.City;
             int PostalCode = i.Location.PostalCode;
             string RoadName = i.Location.RoadName;
             string RoadNumber = i.Location.RoadNumber;
+            WeeklyHours = TimeSpan.FromHours(Hours);
             _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
-            OnGet();
-            Email = "";
-            FirstName = "";
-            LastName = "";
-            InstitutionID = 0;
-
+            OnGet();            //We have to manually run the OnGet since refreshing the page
+            return RedirectToPage("/Index"); //by using RedirectToPage() doesn't run it automatically
         }
         public IActionResult OnPostEditTeacherProfile()
-        {   //This is the method used when a teacher edits themselves
+        {   //This is the method used when a teacher edits themselves which is why we just send over the cookie instead of having the button do it
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
         }
         public IActionResult OnPostEditTeacher()
-        {
+        {   //In hindsight both edits could have just used this one
             return RedirectToPage("/EditTeacher", new { teacherID = TeacherID });
         }
         public void OnPostDeleteTeacher()
         {
             _teacherService.DeleteByID(TeacherID);
-            OnGet();
+            OnGet();//We have to run the OnGet() or it won't pull up all the data in the DB and all table would be empty
         }
         public void OnPostDeleteInstitution()
         {
@@ -210,7 +206,7 @@ namespace Zealand_LoMaS_Web.Pages
             if (Pass == Pass2)
             { //If the wrote the same password in both fields we update the password in the DB
                 _teacherService.ChangePass(TeacherID, Pass);
-                ChangePasswordModalShow = true; //When you use an OnPost method it refreshes, but i wan't the modal to stay on screen
+                ChangePasswordModalShow = true; //When you use an OnPost method it refreshes, but i want the modal to stay on screen
             }
             else
             {   //If both fields are not the same

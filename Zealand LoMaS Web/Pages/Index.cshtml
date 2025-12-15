@@ -81,13 +81,13 @@
 							</p>
 							<p class=""> <b> Fornavn: </b> <br /><input type="text" asp-for="FirstName" name="FirstName" placeholder="Fornavn" required /></p>
 							<p> <b> Efternavn: </b> <br /><input type="text" asp-for="LastName" name="LastName" placeholder="Efternavn" required /></p>
-							<p> <b> Email: </b> <br /><input type="text" asp-for="Email" name="Email" placeholder="Email" required /></p>
-							<p> <b> Ugentlige timer: </b> <br /><input type="text" asp-for="WeeklyHours" name="WeeklyHours" placeholder="Ugentlige timer" required /></p>
+							<p> <b> Email: </b> <br /><input type="email" asp-for="Email" name="Email" placeholder="Email" required /></p>
+							<p> <b> Ugentlige timer: </b> <br /><input type="text" asp-for="Hours" name="Hours" placeholder="Ugentlige timer" required /></p>
 							<p> <b> Har bil?: </b> <br /><input type="Text" name="HasCar" asp-for="HasCar" value="true/false" required /> </p>
 							<p>
 								<b>Addresse</b> <br />
 								<label for="Location Selection"></label>
-								<select id="Location" name="Lokation" required>
+								<select id="Location" name="Location" required>
 									@foreach (var institution in Model.Institutions)
 									{
 										<option value="@institution.InstitutionID">@institution.Location.City</option>
@@ -420,8 +420,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 							</div>
 						</div>
 						@if (Model.ChangePasswordModalShow == true)
-						{
-							<script>
+						{//This makes sure the modal is visible after refreshing, if we want it too
+	 					<script>
 								document.getElementById("ChangeTeacherPassword").style.display="block"
 
 							</script>

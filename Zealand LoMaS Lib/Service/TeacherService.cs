@@ -35,8 +35,7 @@ namespace Zealand_LoMaS_Lib.Service
                 Address address = new Address(region, city, postalCode, roadName, roadNumber);
 
                 Teacher teacher = new Teacher(0, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs);
-                string password = Argon2.Hash("NotAdmin");
-                //Debug.WriteLine(teacher.ToString());
+                string password = Argon2.Hash("NotAdmin"); //We set a default Password for teachers
                 _teacherRepo.Add(teacher, password);
             }
             catch (Exception ex)
@@ -66,12 +65,12 @@ namespace Zealand_LoMaS_Lib.Service
             List<int> classIDs = new();
             List<Competency> competencies = new();
             List<int> adminIDs = new();
-            if (admins != "")
-            {
-                List<string> aID = admins.Split(',').ToList<string>();
+            if (admins != "") 
+            { //On the web page admins is a string so here we have to split it
+                List<string> aID = admins.Split(',').ToList<string>(); //Split is a built in method that turns a string into an array of strings
                 foreach (var i in aID)
                 {
-                    if (i != " ")
+                    if (i != " ") //We need to check the string isn't just a space or the Convert.ToInt32(); will crash
                     {
                         adminIDs.Add(Convert.ToInt32(i));
                     }
@@ -103,7 +102,6 @@ namespace Zealand_LoMaS_Lib.Service
         public void ChangePass(int id, string pass)
         {
             string hashPass = Argon2.Hash(pass);
-            //Debug.WriteLine("ChangePass In Service");
             _teacherRepo.UpdatePassword(id, hashPass);
         }
         public void DeleteByID(int id)
