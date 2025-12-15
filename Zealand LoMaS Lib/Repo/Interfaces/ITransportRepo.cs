@@ -17,6 +17,5 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         List<Transport> GetByTeacherID(int teacherID);
         List<Transport> GetByInstitutionFromID(int institutionID);
         List<Transport> GetByInstitutionToID(int institutionID);
-        List<Transport> GetByDate(DateTime date);
     }
 }

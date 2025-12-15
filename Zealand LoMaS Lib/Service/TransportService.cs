@@ -38,10 +38,6 @@ namespace Zealand_LoMaS_Lib.Service
             return _transportRepo.GetAll();
         }
 
-        public List<Transport> GetByDate(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
 
         public Transport GetByID(int transportID)
         {
@@ -50,12 +46,12 @@ namespace Zealand_LoMaS_Lib.Service
 
         public List<Transport> GetByInstitutionFromID(int institutionID)
         {
-            throw new NotImplementedException();
+            return _transportRepo.GetByInstitutionFromID(institutionID);
         }
 
         public List<Transport> GetByInstitutionToID(int institutionID)
         {
-            throw new NotImplementedException();
+            return _transportRepo.GetByInstitutionToID(institutionID);
         }
 
         public List<Transport> GetByTeacherID(int teacherID)
