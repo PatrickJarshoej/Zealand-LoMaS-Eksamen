@@ -271,20 +271,6 @@ namespace Zealand_LoMaS_Lib.Repo
             return admin;
         }
 
-        public List<Admin> GetByInstitutionID(int instituitonID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Admin> GetAdminsByTeacherID(int instituitonID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Update(Admin adminObject)
         {

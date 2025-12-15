@@ -34,10 +34,6 @@ namespace Zealand_LoMaS_Lib.Service
             return _institutionRepo.GetAll();
         }
 
-        public Institution GetByAdminID(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public Institution GetByID(int id)
         {
