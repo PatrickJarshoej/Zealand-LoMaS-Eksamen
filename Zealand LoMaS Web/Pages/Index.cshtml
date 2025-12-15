@@ -187,6 +187,7 @@
 				<th> Administratorer </th>
 				<th> Rediger </th>
 				<th> Fjern </th>
+				<th> Kalender </th>
 			</tr>
 			@foreach (var T in Model.Teachers)
 			{
@@ -228,6 +229,12 @@
 						<form method="post" asp-page-handler="DeleteTeacher" class="btn padding-none">
 							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
 							<input class="no-border" type="submit" value="Fjern">
+						</form>
+					</td>
+					<td>
+						<form method="post" asp-page-handler="SeeTeacherCalender" class="btn padding-none">
+							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
+							<input class="no-border" type="submit" value="kalender">
 						</form>
 					</td>
 				</tr>
@@ -422,6 +429,12 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 					}
 					<form method="post" asp-page-handler="EditTeacherClasses" class="btn padding-none">
 						<input type="submit" value="Rediger Lektion" class="no-border" />
+					</form>
+				</div>
+				<div class="stat p-2">
+					<h2>Se Kalender <br /></h2>
+					<form method="post" asp-page-handler="SeeTeacherCalender" class="btn padding-none">
+						<input type="submit" value="Se Kalender" class="no-border" />
 					</form>
 				</div>
 			</div>

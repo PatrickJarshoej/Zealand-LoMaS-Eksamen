@@ -235,5 +235,9 @@ namespace Zealand_LoMaS_Web.Pages
             _aClassService.Create(TeacherID, AdminID, InstitutionID, ClassStart, duration, ClassSubject, ClassDescription);
             OnGet();
         }
+        public IActionResult OnPostSeeTeacherCalender()
+        {
+            return RedirectToPage("/Calender", new { teacherID = TeacherID });
+        }
     }
 }

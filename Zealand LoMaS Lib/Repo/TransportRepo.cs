@@ -222,11 +222,14 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE Transports SET TransportCost = @cost WHERE TransportID = @TransportID  ", connection);
+                    var command = new SqlCommand("UPDATE Transports SET TransportCost = @cost, Date=@date, TransportHours=@time WHERE TransportID = @TransportID  ", connection);
                     command.Parameters.AddWithValue("@cost", transport.TransportCost);
                     command.Parameters.AddWithValue("@TransportID", transport.TransportID);
+                    command.Parameters.AddWithValue("@Date", transport.TheDate);
+                    command.Parameters.AddWithValue("@time", transport.TransportHours);
                     connection.Open();
                     command.ExecuteNonQuery();
+                    Debug.WriteLine("it runs the try");
                 }
                 catch (Exception ex)
                 {
