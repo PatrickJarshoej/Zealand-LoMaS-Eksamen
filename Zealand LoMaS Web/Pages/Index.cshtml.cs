@@ -124,35 +124,31 @@ namespace Zealand_LoMaS_Web.Pages
             _adminService.Create(Email, FirstName, LastName, InstitutionIDs);
             OnGet();
         }
-        public void OnPostCreateTeacher()
+        public IActionResult OnPostCreateTeacher()
         {
-            Institution i = _institutionService.GetByID(InstitutionID);
-
+            Institution i = _institutionService.GetByID(Location);
             string Region = i.Location.Region;
             string City = i.Location.City;
             int PostalCode = i.Location.PostalCode;
             string RoadName = i.Location.RoadName;
             string RoadNumber = i.Location.RoadNumber;
+            WeeklyHours = TimeSpan.FromHours(Hours);
             _teacherService.CreateTeacher(InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
-            OnGet();
-            Email = "";
-            FirstName = "";
-            LastName = "";
-            InstitutionID = 0;
-
+            OnGet(); //We have to manually run the OnGet since refreshing the page
+            return RedirectToPage("/Index"); //by using RedirectToPage() doesn't run it automatically
         }
         public IActionResult OnPostEditTeacherProfile()
-        {   //This is the method used when a teacher edits themselves
+        {   //This is the method used when a teacher edits themselves which is why we just send over the cookie instead of having the button do it
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
         }
         public IActionResult OnPostEditTeacher()
-        {
+        {   //In hindsight both edits could have just used this one
             return RedirectToPage("/EditTeacher", new { teacherID = TeacherID });
         }
         public void OnPostDeleteTeacher()
         {
             _teacherService.DeleteByID(TeacherID);
-            OnGet();
+            OnGet();//We have to run the OnGet() or it won't pull up all the data in the DB and all table would be empty
         }
         public void OnPostDeleteInstitution()
         {
