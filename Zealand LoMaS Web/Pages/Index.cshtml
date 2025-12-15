@@ -191,11 +191,11 @@
 								</select>
 							</p>
 							<p>
-								<b><label for="Lektionens starttidspunkt:">Start (date and time):</label></b>
+								<b><label for="Lektionens starttidspunkt:">Start (date and time):</label></b> <br />
 								<input type="datetime-local" asp-for="ClassStart" name="ClassStart" min="@DateTime.UtcNow" value="@DateTime.UtcNow" required> 
 							</p>
 							<p>
-								<b><label for="Lektionens Sluttidspunkt:">End (date and time):</label></b>
+								<b><label for="Lektionens Sluttidspunkt:">End (date and time):</label></b> <br />
 								<input type="datetime-local" asp-for="ClassDuration" name="ClassDuration" min="@Model.ClassStart" value="@DateTime.UtcNow" required>
 							</p>
 							<p> <b> Lektionens Emne: </b> <br /><input type="text" asp-for="ClassSubject" name="ClassSubject" placeholder=" Lektionens Emne" required /></p>
@@ -267,7 +267,7 @@
 					<td>
 						<form method="post" asp-page-handler="SeeTeacherCalender" class="btn padding-none">
 							<input type="hidden" asp-for="TeacherID" value="@T.TeacherID">
-							<input class="no-border" type="submit" value="kalender">
+							<input class="no-border" type="submit" value="Kalender">
 						</form>
 					</td>
 				</tr>
