@@ -387,8 +387,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 							</div>
 						</div>
 						@if (Model.ChangePasswordModalShow == true)
-						{
-							<script>
+						{//This makes sure the modal is visible after refreshing, if we want it too
+	 					<script>
 								document.getElementById("ChangeTeacherPassword").style.display="block"
 
 							</script>
