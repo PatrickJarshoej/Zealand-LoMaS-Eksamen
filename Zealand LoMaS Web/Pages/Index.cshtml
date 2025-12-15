@@ -160,11 +160,44 @@
 						<span onclick="document.getElementById('CreateAClass').style.display='none'" class="btn-close display-topright"></span>
 						<h1>Opret lektion</h1>
 						<form method="post" asp-page-handler="CreateAClass">
-							<p class=""> <b> Asnvarlig læres ID: </b> <br /><input type="number" asp-for="TeacherID" name="TeacherID" placeholder="Ansvarlig LæreID" required /></p>
-							<p> <b> Tilhørende instituts ID: </b> <br /><input type="number" asp-for="InstitutionID" name="InstitutionID" placeholder="Tilhørende institut" required /></p>
-							<p> <b> Tilhørende Administrators ID: </b> <br /><input type="number" asp-for="AdminID" name="AdminID" placeholder="Tilhørende Administrators ID" required /></p>
-							<p> <b> Lektionens starttidspunkt: </b> <br /><input type="datetime" asp-for="ClassStart" name="ClassStart" placeholder="Lektions starttidspunk" required /></p>
-							<p> <b> Lektionens Sluttidspunkt: </b> <br /><input type="datetime" asp-for="ClassDuration" name="ClassDuration" placeholder=" Lektionens Sluttidspunkt" required /></p>
+							<p>
+								<b>Ansvarlig lære: </b> <br />
+								<label for="Teacher Selection"></label>
+								<select id="TeacherID" name="TeacherID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Teacher teacher in Model.Teachers)
+									{
+										<option value="@teacher.TeacherID">@teacher.FirstName @teacher.LastName</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b>Tilhørende institution: </b> <br />
+								<label for="Institution Selection"></label>
+								<select id="InstitutionID" name="InstitutionID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Institution institution in Model.Institutions)
+									{
+										<option value="@institution.InstitutionID">@institution.Location.City</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b>Tilhørende Administrator: </b> <br />
+								<label for="Admin Selection"></label>
+								<select id="AdminID" name="AdminID" required>
+									@foreach (Zealand_LoMaS_Lib.Model.Admin admin in Model.Admins)
+									{
+										<option value="@admin.AdministratorID">@admin.FirstName @admin.LastName</option>
+									}
+								</select>
+							</p>
+							<p>
+								<b><label for="Lektionens starttidspunkt:">Start (date and time):</label></b>
+								<input type="datetime-local" asp-for="ClassStart" name="ClassStart" min="@DateTime.UtcNow" value="@DateTime.UtcNow" required> 
+							</p>
+							<p>
+								<b><label for="Lektionens Sluttidspunkt:">End (date and time):</label></b>
+								<input type="datetime-local" asp-for="ClassDuration" name="ClassDuration" min="@Model.ClassStart" value="@DateTime.UtcNow" required>
+							</p>
 							<p> <b> Lektionens Emne: </b> <br /><input type="text" asp-for="ClassSubject" name="ClassSubject" placeholder=" Lektionens Emne" required /></p>
 							<p> <b> Lektionens Beskrivelse: </b> <br /><input type="text" asp-for="ClassDescription" name="ClassDescription" placeholder=" Lektionens Beskrivelse" required /></p>
 							<input type="submit" value="Opret" />
@@ -452,7 +485,7 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 						{
 							if (transport.InstitueFromID == institution.InstitutionID)
 							{
-								<p> <b>Fra: </b> <br /> @institution.Location.City</p>
+								<p> <b>Til: </b> <br /> @institution.Location.City</p>
 							}
 							if (transport.InstitueToID == institution.InstitutionID)
 							{
