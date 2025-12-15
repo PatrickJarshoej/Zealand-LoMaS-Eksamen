@@ -72,20 +72,12 @@ namespace Zealand_LoMaS_Lib.Service
             }
         }
 
-        public void DeleteByID(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<InstitutionRelation> GetAll()
         {
             return _institutionRelationRepo.GetAll();
         }
 
-        public Institution GetByAdminID(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public InstitutionRelation GetByIDs(int id1, int id2)
         {

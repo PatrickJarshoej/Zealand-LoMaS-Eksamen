@@ -93,10 +93,6 @@ namespace Zealand_LoMaS_Lib.Repo
             return transports;
         }
 
-        public List<Transport> GetByDate(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
         private List<Transport> GetTransportsByCommand(SqlCommand command) 
         {
             var transports = new List<Transport>();
