@@ -12,6 +12,7 @@ namespace Zealand_LoMaS_Lib.Service
     {
         private IInstitutionRelationRepo _institutionRelationRepo;
         private IInstitutionRepo _institutionRepo;
+
         public InstitutionRelationService(IInstitutionRelationRepo institutionRelationRepo, IInstitutionRepo institutionRepo) 
         { 
             _institutionRelationRepo = institutionRelationRepo;

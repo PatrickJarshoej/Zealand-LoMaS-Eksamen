@@ -7,6 +7,11 @@ using Zealand_LoMaS_Lib.Model;
 
 namespace Zealand_LoMaS_Lib.Repo.Interfaces
 {
+    /// <summary>
+    /// Defines methods for managing and retrieving relationships between institutions.
+    /// </summary>
+    /// <remarks>Implementations of this interface provide functionality to add, update, and query institution
+    /// relationships.</remarks>
     public interface IInstitutionRelationRepo
     {
         void Add(InstitutionRelation institutionRelation);
