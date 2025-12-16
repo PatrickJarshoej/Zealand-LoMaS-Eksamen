@@ -9,6 +9,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
 {
     public interface IAClassRepo
     {
-        public void Create(AClass aClassObject);
+        public void Add(AClass aClassObject);
     }
 }

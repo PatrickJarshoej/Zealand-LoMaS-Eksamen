@@ -17,7 +17,7 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
-        public void Create(AClass aClassObject)
+        public void Add(AClass aClassObject)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

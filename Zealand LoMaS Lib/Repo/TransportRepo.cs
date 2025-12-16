@@ -67,6 +67,33 @@ namespace Zealand_LoMaS_Lib.Repo
         /// <param name="transportID">The unique identifier of the transport record to delete.</param>
         public void DeleteByID(int transportID)
         {
+            var transports = new List<Transport>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    var command = new SqlCommand("SELECT * FROM Transports", connection);
+                    connection.Open();
+                    transports = GetTransportsByCommand(command);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine($"Error: {ex}");
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// Retrieves all transport records from the data source using <see cref="GetTransportsByCommand(SqlCommand)"/>.
+        /// </summary>
+        /// <returns>A list of <see cref="Transport"/> objects representing all transports. The list is empty if no transport
+        /// records are found.</returns>
+        public List<Transport> GetAll()
+        {
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
@@ -86,33 +113,6 @@ namespace Zealand_LoMaS_Lib.Repo
                     connection.Close();
                 }
             }
-        }
-        /// <summary>
-        /// Retrieves all transport records from the data source using <see cref="GetTransportsByCommand(SqlCommand)"/>.
-        /// </summary>
-        /// <returns>A list of <see cref="Transport"/> objects representing all transports. The list is empty if no transport
-        /// records are found.</returns>
-        public List<Transport> GetAll()
-        {
-            var transports = new List<Transport>();
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    var command = new SqlCommand("SELECT * FROM Transports", connection);
-                    connection.Open();
-                    transports = GetTransportsByCommand(command);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Error in GetAll() in TransportRepo");
-                    Debug.WriteLine($"Error: {ex}");
-                }
-                finally { connection.Close(); }
-
-
-            }
-            return transports;
         }
 
         /// <summary>
