@@ -71,14 +71,10 @@ namespace Zealand_LoMaS_Lib.Service
                 }
             }
         }
-
-
         public List<InstitutionRelation> GetAll()
         {
             return _institutionRelationRepo.GetAll();
         }
-
-
         public InstitutionRelation GetByIDs(int id1, int id2)
         {
             var institutionRelations=GetAll();
@@ -96,7 +92,6 @@ namespace Zealand_LoMaS_Lib.Service
         {
             return _institutionRelationRepo.GetByInstitutionID(id);
         }
-
         public void Update(int id1, int id2, double cost, TimeSpan time )
         {
             var ids = new List<int>();
