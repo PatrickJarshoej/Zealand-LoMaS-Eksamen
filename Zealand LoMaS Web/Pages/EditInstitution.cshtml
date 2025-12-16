@@ -27,12 +27,12 @@
         </form>
     </div>
     <div class="card container">
-        <h2>TransportRelationer</h2>
+        <h2>Transport Relationer</h2>
         @foreach (var r in Model.InstitutionRelations)
         {
 
             <p>
-                <form method="post" asp-page-handler="EditRelations" class="btn padding-none">
+                <form method="post" class="btn padding-none" asp-page-handler="EditRelations">
                     By: @Model.Institutions.First(a => a.InstitutionID == r.InstitutionIDs.First(a => a != Model.Institution.InstitutionID)).Location.City
                     Pris: @r.Cost
                     Tid: @r.Time
