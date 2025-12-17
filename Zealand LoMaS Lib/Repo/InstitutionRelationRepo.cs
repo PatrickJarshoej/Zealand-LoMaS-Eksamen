@@ -177,7 +177,9 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteFromID AND InstituteToID=@InstituteToID", connection);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations " +
+                        "WHERE InstituteFromID=@InstituteFromID " +
+                        "AND InstituteToID=@InstituteToID", connection);
                     command.Parameters.AddWithValue("@InstituteFromID", id1);
                     command.Parameters.AddWithValue("@InstituteToID", id2);
                     connection.Open();
