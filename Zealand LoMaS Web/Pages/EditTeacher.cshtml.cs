@@ -84,7 +84,6 @@ namespace Zealand_LoMaS_Web.Pages
         }
         public void OnPostCreate()
         {
-            Debug.WriteLine(InstitutionFromID);
             _transportService.Create(TeacherID, Date, InstitutionFromID, InstitutionToID);
             OnGet(TeacherID);
         }
