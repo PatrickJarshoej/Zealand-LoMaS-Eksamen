@@ -13,8 +13,8 @@ namespace Zealand_LoMaS_Lib.Model
         public TimeSpan TransportHours { get; private set; }
         public double TransportCost { get; private set; }
         public DateTime TheDate { get; private set; }
-        public int InstitueFromID { get; private set; }
-        public int InstitueToID { get; private set; }
+        public int InstituteFromID { get; private set; }
+        public int InstituteToID { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Transport"/> class with default values for all properties,this is a default constructor needed for the razorpage
@@ -30,8 +30,8 @@ namespace Zealand_LoMaS_Lib.Model
             TransportHours=TimeSpan.Zero;
             TransportCost=0;
             TheDate=DateTime.Now;
-            InstitueFromID=0;
-            InstitueToID=0;
+            InstituteFromID=0;
+            InstituteToID=0;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="Transport"/> class with the specified teacher, date, source and
@@ -49,8 +49,8 @@ namespace Zealand_LoMaS_Lib.Model
             TeacherID = teacherID;
             TransportHours = TimeSpan.Zero;
             TheDate = theDate;
-            InstitueFromID = institueFromID;
-            InstitueToID = institueToID;
+            InstituteFromID = institueFromID;
+            InstituteToID = institueToID;
             TransportCost = transportCost;
         }
         /// <summary>
@@ -71,8 +71,8 @@ namespace Zealand_LoMaS_Lib.Model
             TeacherID = teacherID;
             TransportHours = transportHours;
             TheDate = theDate;
-            InstitueFromID = institueFromID;
-            InstitueToID = institueToID;
+            InstituteFromID = institueFromID;
+            InstituteToID = institueToID;
             TransportCost = transportCost;
         }
     }

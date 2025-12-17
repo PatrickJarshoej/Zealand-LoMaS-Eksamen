@@ -30,7 +30,11 @@ namespace Zealand_LoMaS_Lib.Repo
         /// Retrieves a list of institution relations by executing the specified SQL command.
         /// </summary>
         /// <remarks>The caller is responsible for ensuring that the provided <paramref name="command"/>
-        /// is properly configured and that its connection is open before calling this method.</remarks>
+        /// is properly configured and that its connection is open before calling this method.
+        /// 
+        /// Legacy note: Column names (InstituteFromID/InstituteToID) originate from the transport system
+        /// where direction mattered. For institution relationships, these represent unordered pairs
+        /// stored in canonical (sorted) order.</remarks>
         /// <param name="command">The <see cref="SqlCommand"/> to execute. The command must be configured to return institution relation data,
         /// including columns for InstituteFromID, InstituteToID, TransportHours, and Cost.</param>
         /// <returns>A list of <see cref="InstitutionRelation"/> objects representing the relations between institutions returned
@@ -58,13 +62,13 @@ namespace Zealand_LoMaS_Lib.Repo
             return (institutionRelations);
         }
         /// <summary>
-        /// Adds a new institution relation to the data store.
+        /// Adds a new institution relation to the database.
         /// </summary>
-        /// <remarks>This method inserts a new record representing the relationship between two
-        /// institutions, including associated cost and transport time, into the underlying data store.</remarks>
-        /// <param name="institutionRelation">The <see cref="InstitutionRelation"/> object containing the details of the relation to add.  Must not be
-        /// <c>null</c>. The <c>InstitutionIDs</c> property must contain at least two elements representing the source
-        /// and target institution IDs.</param>
+        /// <remarks>
+        /// Inserts a new record using InstituteFromID/InstituteToID column names (legacy transport system naming).
+        /// The InstitutionIDs are expected to be in canonical (sorted) order as they represent unordered pairs.
+        /// </remarks>
+        /// <param name="institutionRelation">The <see cref="InstitutionRelation"/> object to add. Must not be <c>null</c>.</param>
         public void Add(InstitutionRelation institutionRelation)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -122,9 +126,13 @@ namespace Zealand_LoMaS_Lib.Repo
         /// <summary>
         /// Retrieves all <see cref="InstitutionRelation"/> records associated with the specified institution ID using <see cref="GetInstitutionsRelationsByCommand(SqlCommand)"/>.
         /// </summary>
+        /// <remarks>
+        /// Searches both InstituteFromID and InstituteToID columns (legacy transport system naming)
+        /// since institution relationships are unordered pairs despite the directional column names.
+        /// </remarks>
         /// <param name="id">The unique identifier of the institution for which to retrieve related institution relations.</param>
-        /// <returns>A list of <see cref="InstitutionRelation"/> objects where the specified institution is either the source or
-        /// target. Returns an empty list if no relations are found.</returns>
+        /// <returns>A list of <see cref="InstitutionRelation"/> objects where the specified institution participates.
+        /// Returns an empty list if no relations are found.</returns>
         public List<InstitutionRelation> GetByInstitutionID(int id)
         {
             var institutionRelation = new InstitutionRelation();
@@ -152,15 +160,16 @@ namespace Zealand_LoMaS_Lib.Repo
             return institutionRelations;
         }
         /// <summary>
-        /// Retrieves the <see cref="InstitutionRelation"/> that represents the relationship between two institutions
-        /// identified by their IDs using <see cref="GetInstitutionsRelationsByCommand(SqlCommand)"/>.
+        /// Retrieves the <see cref="InstitutionRelation"/> between two institutions with canonical ordering.
         /// </summary>
-        /// <remarks>Use this method to obtain details about the relationship between two institutions,
-        /// such as their association or linkage, based on their unique IDs.</remarks>
-        /// <param name="id1">The unique identifier of the source institution in the relationship.</param>
-        /// <param name="id2">The unique identifier of the target institution in the relationship.</param>
-        /// <returns>An <see cref="InstitutionRelation"/> object representing the relationship between the specified
-        /// institutions. If no relationship exists, the returned object may be uninitialized or contain default values.</returns>
+        /// <remarks>
+        /// Queries using InstituteFromID/InstituteToID column names (legacy transport system naming).
+        /// IMPORTANT: This method assumes canonical ID ordering (id1 &lt; id2). 
+        /// Callers must ensure IDs are sorted before calling.
+        /// </remarks>
+        /// <param name="id1">The smaller institution ID (InstituteFromID in canonical order).</param>
+        /// <param name="id2">The larger institution ID (InstituteToID in canonical order).</param>
+        /// <returns>An <see cref="InstitutionRelation"/> object or default if not found.</returns>
         public InstitutionRelation GetByInstitutionIDs(int id1, int id2)
         {
             var institutionRelation = new InstitutionRelation();
@@ -168,7 +177,7 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteFromID AND InstituteToID=@InstitutetoID", connection);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteFromID AND InstituteToID=@InstituteToID", connection);
                     command.Parameters.AddWithValue("@InstituteFromID", id1);
                     command.Parameters.AddWithValue("@InstituteToID", id2);
                     connection.Open();
@@ -188,11 +197,11 @@ namespace Zealand_LoMaS_Lib.Repo
         /// <summary>
         /// Updates the cost and transport hours for an existing institution relation in the database.
         /// </summary>
-        /// <remarks>This method updates the record in the <c>InstitutionsRelations</c> table that matches
-        /// the specified institution IDs. If no matching record exists, no changes are made.</remarks>
-        /// <param name="institutionRelation">The <see cref="InstitutionRelation"/> object containing the updated cost, transport hours, and the
-        /// identifiers of the institutions involved in the relation. The <c>InstitutionIDs</c> property must contain
-        /// exactly two elements: the source institution ID at index 0 and the destination institution ID at index 1.</param>
+        /// <remarks>
+        /// Uses InstituteFromID/InstituteToID column names (legacy transport system naming).
+        /// Assumes InstitutionIDs are in canonical order (ensured by the create function in the service layer).
+        /// </remarks>
+        /// <param name="institutionRelation">The <see cref="InstitutionRelation"/> object containing updated values.</param>
         public void Update(InstitutionRelation institutionRelation)
         {
             using (var connection = new SqlConnection(_connectionString))

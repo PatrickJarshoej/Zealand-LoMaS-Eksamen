@@ -43,8 +43,8 @@ namespace Zealand_LoMaS_Lib.Repo
                     command.Parameters.AddWithValue("@TransportHours", transport.TransportHours);
                     command.Parameters.AddWithValue("@TransportCost", transport.TransportCost);
                     command.Parameters.AddWithValue("@Date", transport.TheDate);
-                    command.Parameters.AddWithValue("@InstituteFromID", transport.InstitueFromID);
-                    command.Parameters.AddWithValue("@InstituteToID", transport.InstitueToID);
+                    command.Parameters.AddWithValue("@InstituteFromID", transport.InstituteFromID);
+                    command.Parameters.AddWithValue("@InstituteToID", transport.InstituteToID);
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
@@ -176,8 +176,11 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return transport;
         }
-
-
+        /// <summary>
+        /// Retrieves all <see cref="Transport"/> objects where the specified institution is the sending institution using <see cref="GetTransportsByCommand(SqlCommand)"/>.
+        /// </summary>
+        /// <param name="institutionID">The unique identifier of the institution from which transports are sent.</param>
+        /// <returns>A list of <see cref="Transport"/> objects. Returns an empty list if no transports are found.</returns>
         public List<Transport> GetByInstitutionFromID(int institutionID)
         {
             var transports = new List<Transport>();
@@ -192,7 +195,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine("Error in GetByInstitutionFromID() in TransportRepo");
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
@@ -201,7 +204,11 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return transports;
         }
-
+        /// <summary>
+        /// Retrieves all <see cref="Transport"/> objects where the specified institution is the arrival institution using <see cref="GetTransportsByCommand(SqlCommand)"/>.
+        /// </summary>
+        /// <param name="institutionID">The unique identifier of the institution to which transports will arrive.</param>
+        /// <returns>A list of <see cref="Transport"/> objects. Returns an empty list if no transports are found.</returns>
         public List<Transport> GetByInstitutionToID(int institutionID)
         {
             var transports = new List<Transport>();
@@ -216,7 +223,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine("Error in GetByInstitutionToID() in TransportRepo");
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
@@ -225,7 +232,11 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return transports;
         }
-
+        /// <summary>
+        /// Retrieves all <see cref="Transport"/> objects associated with the specified teacher using <see cref="GetTransportsByCommand(SqlCommand)"/>.
+        /// </summary>
+        /// <param name="teacherID">The unique identifier of the teacher whose transports to retrieve.</param>
+        /// <returns>A list of <see cref="Transport"/> objects. Returns an empty list if no transports are found.</returns>
         public List<Transport> GetByTeacherID(int teacherID)
         {
             var transports = new List<Transport>();
@@ -240,7 +251,7 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in GetAll() in TransportRepo");
+                    Debug.WriteLine("Error in GetByTeacherID() in TransportRepo");
                     Debug.WriteLine($"Error: {ex}");
                 }
                 finally { connection.Close(); }
@@ -249,10 +260,16 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return transports;
         }
-
+        // <summary>
+        /// Updates the specified <see cref="Transport"/> object in the database.
+        /// </summary>
+        /// <param name="transport">The <see cref="Transport"/> object containing updated values. 
+        /// The TransportID property is used to identify which record to update.</param>
+        /// <remarks>
+        /// Updates the TransportCost, Date, and TransportHours fields of the transport record.
+        /// </remarks>
         public void Update(Transport transport)
         {
-            Debug.WriteLine("This is the ID of the transport you tried to update:"+transport.TransportID);
             using (var connection = new SqlConnection(_connectionString))
             {
                 try
@@ -264,7 +281,6 @@ namespace Zealand_LoMaS_Lib.Repo
                     command.Parameters.AddWithValue("@time", transport.TransportHours);
                     connection.Open();
                     command.ExecuteNonQuery();
-                    Debug.WriteLine("it runs the try");
                 }
                 catch (Exception ex)
                 {
