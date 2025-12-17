@@ -142,7 +142,9 @@ namespace Zealand_LoMaS_Lib.Repo
                 try
                 {
 
-                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations WHERE InstituteFromID=@InstituteID or InstituteToID=@InstituteID", connection);
+                    var command = new SqlCommand("SELECT * FROM InstitutionsRelations " +
+                        "WHERE InstituteFromID=@InstituteID " +
+                        "OR InstituteToID=@InstituteID", connection);
                     command.Parameters.AddWithValue("@InstituteID", id);
                     connection.Open();
                     var newRelations = GetInstitutionsRelationsByCommand(command);
@@ -210,7 +212,8 @@ namespace Zealand_LoMaS_Lib.Repo
             {
                 try
                 {
-                    var command = new SqlCommand("UPDATE InstitutionsRelations SET Cost=@Cost, TransportHours=@Time WHERE InstituteFromID = @InstitutionFromID AND InstituteToID = @InstitutionToID ", connection);
+                    var command = new SqlCommand("UPDATE InstitutionsRelations SET Cost=@Cost, TransportHours=@Time " +
+                        "WHERE InstituteFromID = @InstitutionFromID AND InstituteToID = @InstitutionToID ", connection);
                     command.Parameters.AddWithValue("@InstitutionFromID", institutionRelation.InstitutionIDs[0]);
                     command.Parameters.AddWithValue("@InstitutionToID", institutionRelation.InstitutionIDs[1]);
                     command.Parameters.AddWithValue("@Cost", institutionRelation.Cost);
