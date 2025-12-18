@@ -62,6 +62,14 @@ namespace Zealand_LoMaS_Lib.Repo
 
             return institutionIDs;
         }
+
+        /// <summary>
+        /// This method is used to get the passwords from the AdministratorPasswords table in the database.
+        /// in order for it to only use one sql-command it runs 2 select statements in one command. This causes the only input needed to just email.
+        /// Afterwards it returns a string value of the password found in the table.
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
         public string GetPasswordByEmail(string Email)
         {
             string adminPass = "0";
@@ -95,6 +103,13 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return adminPass;
         }
+
+        /// <summary>
+        /// This method is used to get the administratorID stored in the administrator table from the database using only email.
+        /// This returns an int value with the ID stored in it
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
         public int GetAdminIDByEmail(string Email)
         {
             int adminID = 0;
@@ -128,6 +143,12 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return adminID;
         }
+
+        /// <summary>
+        /// This method is used to retrieve a password from the AdministratorPassword table in the database using an administratorID.
+        /// </summary>
+        /// <param name="AdminID"></param>
+        /// <returns></returns>
         public string GetPasswordByAdminID(int AdminID)
         {
             string adminPassword = "0";
@@ -185,6 +206,12 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
+        /// <summary>
+        /// This method add's a newly created admin object into the database.
+        /// It does this using 3 sql statements and a Scalar funktion. The tables used is the Administrators table, AdministratorPasswords and MapInstitutionsAdministrators.
+        /// </summary>
+        /// <param name="adminObject"></param>
+        /// <param name="Password"></param>
         public void Add(Admin adminObject, string Password)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -222,6 +249,10 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
+        /// <summary>
+        /// This method retrieves a list of objects that contains all the administrators in the administrator table.
+        /// </summary>
+        /// <returns></returns>
         public List<Admin> GetAll()
         {
             List<Admin> admins = new();
@@ -244,6 +275,11 @@ namespace Zealand_LoMaS_Lib.Repo
             return admins;
         }
 
+        /// <summary>
+        /// thhis method gets an admin based on an int ID value.
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <returns></returns>
         public Admin GetByID(int adminID)
         {
             Admin admin = new();
@@ -271,7 +307,10 @@ namespace Zealand_LoMaS_Lib.Repo
             return admin;
         }
 
-
+        /// <summary>
+        /// This method is used to update an already created Admin in the Administrators table in the database.
+        /// </summary>
+        /// <param name="adminObject"></param>
         public void Update(Admin adminObject)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -298,6 +337,10 @@ namespace Zealand_LoMaS_Lib.Repo
             }
         }
 
+        /// <summary>
+        /// This method deletes an administrator from the administrators table using an int ID value.
+        /// </summary>
+        /// <param name="adminID"></param>
         public void DeleteByID(int adminID)
         {
             using (var connection = new SqlConnection(_connectionString))

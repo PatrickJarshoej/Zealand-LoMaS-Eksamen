@@ -65,6 +65,11 @@ namespace Zealand_LoMaS_Web.Pages
             _aClassService = acs;
         }
 
+        /// <summary>
+        /// This method is used whenever the website is loaded and is the first method always used.
+        /// The method checks whether the Cookies showing if you are a teacher or an admin are activated, and which of the either teachers or administrator you are.
+        /// If both are null or "0" and "false" then the log in screen will be shown.
+        /// </summary>
         public void OnGet()
         {
             NeedToRefresh = false;
@@ -84,10 +89,20 @@ namespace Zealand_LoMaS_Web.Pages
                 Admins = _adminService.GetAll();
             }
         }
+
+        /// <summary>
+        /// this method is called if you fail to call the correct on post you need.
+        /// It then sends a debug message giving the developer information about the wrong usage of the OnPost method.
+        /// </summary>
         public void OnPost()
         {   //We never actually want to run this OnPost
             Debug.WriteLine("Du kører den forkerte on post");
         }
+
+        /// <summary>
+        /// This method is used when an attempt at to log in is used.
+        /// It runs the verify methods in both teacher and admin repository and if a value is returned that changes the ID values to something other than 0 it executes methods to create cookies for consistant log-in.
+        /// </summary>
         public void OnPostLogIn()
         {
             AdminID = _adminService.VerifyLogIn(Email, Pass);
@@ -118,6 +133,10 @@ namespace Zealand_LoMaS_Web.Pages
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
         }
+
+        /// <summary>
+        /// This method uses properties set in the CSHTML code to send a create admin object request in the database.
+        /// </summary>
         public void OnPostCreateAdmin()
         {
             InstitutionIDs.Add(InstitutionID);
@@ -155,6 +174,10 @@ namespace Zealand_LoMaS_Web.Pages
             _institutionService.DeleteByID(InstitutionID);
             OnGet();
         }
+
+        /// <summary>
+        /// This method is used to delete an admin Using their adminID
+        /// </summary>
         public void OnPostDeleteAdmin()
         {
             _adminService.DeleteByID(AdminID);
@@ -172,18 +195,33 @@ namespace Zealand_LoMaS_Web.Pages
         {
             return RedirectToPage("/EditTeacher", new { TeacherID = HttpContext.Request.Cookies["UserID"] });
         }
+
+        /// <summary>
+        /// This method was used when it was necessary to update the unhashed passwords from the start of the projects dummy data.
+        /// It has remained in case it is ever necessary to either change the encryption method again or to fix a fault if an unhashed value enters the password area.
+        /// </summary>
         public void OnPostHashAdminPassword()
         {
             _adminService.HashThePassword(AdminID);
         }
+
+        /// <summary>
+        /// This method was used when it was necessary to update the unhashed passwords from the start of the projects dummy data.
+        /// It has remained in case it is ever necessary to either change the encryption method again or to fix a fault if an unhashed value enters the password area.
+        /// </summary>
         public void OnPostHashTeacherPassword()
         {
             _teacherService.HashThePassword(TeacherID);
         }
+
+        /// <summary>
+        /// This method redirects the admin User to the EditAdministrator page where it is possible to edit the admin objects.
+        /// </summary>
         public IActionResult OnPostEditAdminProfile()
         {
             return RedirectToPage("/EditAdministrator", new { adminID = AdminID });
         }
+
         //public void OnPostEditAdministrator()
         //{
         //    _adminService.Update(AdminID, Email, FirstName, LastName, InstitutionIDs);
@@ -193,6 +231,11 @@ namespace Zealand_LoMaS_Web.Pages
         //    LastName = "";
         //    InstitutionIDs = new List<int>();
         //}
+
+        /// <summary>
+        /// This method Logs out the user bu nulling their Coockies to default values, thus resetting index to the log in screen once more.
+        /// This method also redirects you back to index in order to refresh the page.
+        /// </summary>
         public IActionResult OnPostLogOut()
         {   
             HttpContext.Response.Cookies.Append("UserID", "0"); //If you logout we set your ID to zero
@@ -214,6 +257,11 @@ namespace Zealand_LoMaS_Web.Pages
                 ChangePasswordModalShow = true;
             }
         }
+
+        /// <summary>
+        /// This method is used to change the password for the an already created Admin profile.
+        /// It uses the admin service layer to call the ChangePassword method, and also sets properties to either false or true. these properties are used to display error messages.
+        /// </summary>
         public void OnPostChangeAdminPassword()
         {
             OnGet();
@@ -229,12 +277,21 @@ namespace Zealand_LoMaS_Web.Pages
                 ChangePasswordModalShow = true;
             }
         }
+
+        /// <summary>
+        /// This method is used to create AClass objects, these objects show the classes/lektions the institutions have.
+        /// </summary>
         public void OnPostCreateAClass()
         {
             TimeSpan duration = ClassDuration - ClassStart;
             _aClassService.Create(TeacherID, AdminID, InstitutionID, ClassStart, duration, ClassSubject, ClassDescription);
             OnGet();
         }
+
+        /// <summary>
+        /// This method is used if you are an admin and wish to see a teachers calender.
+        /// It returns the value of a teachers specific ID and redirects you to another page where the ID is used to display that teachers calender.
+        /// </summary>
         public IActionResult OnPostSeeTeacherCalender()
         {
             return RedirectToPage("/Calender", new { teacherID = TeacherID });

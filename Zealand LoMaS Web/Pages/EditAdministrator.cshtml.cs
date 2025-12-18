@@ -34,6 +34,12 @@ namespace Zealand_LoMaS_Web.Pages
             _institutionService = iS;
         }
 
+        /// <summary>
+        /// This method is used whenever you enter this webpage.
+        /// it requires the parameter for the administrator that is in need of editing.
+        /// once it has this information it will get the current Values stored in the database for this User and put them into the bound properties.
+        /// </summary>
+        /// <param name="adminID"></param>
         public void OnGet(int adminID)
         {
             AdminID = adminID;
@@ -53,6 +59,10 @@ namespace Zealand_LoMaS_Web.Pages
 
         }
         
+        /// <summary>
+        /// This method calls the adminService update method to update the given administrator with the current Bound propperties.
+        /// Afterwards you are redirected to the index page again.
+        /// </summary>
         public IActionResult OnPostSave()
         {
             _adminService.Update(AdminID, FirstName, LastName, Email, InstitutionsIDs);

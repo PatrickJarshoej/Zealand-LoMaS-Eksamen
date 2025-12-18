@@ -44,6 +44,13 @@ namespace Zealand_LoMaS_Lib.Service
                 Console.WriteLine("Error: " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// This method uses af password string and email string to verify if they match the stored password for a given User in the database.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public int VerifyLogIn(string email, string password)
         {
             int teacherID = _teacherRepo.GetTeacherIDByEmail(email);
@@ -85,6 +92,11 @@ namespace Zealand_LoMaS_Lib.Service
             Teacher t = new(teacherID, institutionID, email, firstName, lastName, weeklyHours, hasCar, address, adminIDs, transportIDs, classIDs, competencies);
             _teacherRepo.Update(t);
         }
+
+        /// <summary>
+        /// This method was used to hash passwords from unhashed passwords in the database. it is no longer in use but kept in case it is ever needed again to update to another enryption method.
+        /// </summary>
+        /// <param name="teacherID"></param>
         public void HashThePassword(int teacherID)
         {
             string pass = _teacherRepo.GetPasswordByteacherID(teacherID);
@@ -99,11 +111,23 @@ namespace Zealand_LoMaS_Lib.Service
             }
         }
 
+        /// <summary>
+        /// this method is used to change the current password in the database for a user.
+        /// It requires the teacherID of the current user and 2 password string that has to be identical.
+        /// If the passwords differ the password will not be changed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pass"></param>
         public void ChangePass(int id, string pass)
         {
             string hashPass = Argon2.Hash(pass);
             _teacherRepo.UpdatePassword(id, hashPass);
         }
+
+        /// <summary>
+        /// This method uses an teacherID to delete an admin from the database that has that ID.
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteByID(int id)
         {
             _teacherRepo.DeleteByID(id);

@@ -28,7 +28,13 @@ namespace Zealand_LoMaS_Web.Pages
 
         }
 
-
+        /// <summary>
+        /// This method requires a teacherID to work.
+        /// as such it runs an if statement where it first checks if you are a teacher and if so it sets your coockie to the teacherID and gets the remaining values from the database and stores it in a Teacher object.
+        /// if an admin enters the page if it dies not have a parameter of teacherID with it, it will be returned to the index page again.
+        /// This also has a saveguard for if an admin refreshes the page by looking for whether there currently is a bound property called TeacherID
+        /// </summary>
+        /// <param name="teacherID"></param>
         public void OnGet(int teacherID)
         {
             if(HttpContext.Request.Cookies["UserStatus"] == "false" && HttpContext.Request.Cookies["UserID"] != "0")
