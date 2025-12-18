@@ -30,6 +30,11 @@ namespace Zealand_LoMaS_Web.Pages
             _institutionService = iS;
 
         }
+        /// <summary>
+        /// Uses the ID's it gets, to then get the related Relation to the institution. 
+        /// Also gets the related institutions in order to display the proper city names of those institutions
+        /// </summary>
+        /// <param name="IDs"></param>
         public void OnGet(List<int> IDs)
         {
             Ids.Add(IDs[0]);
@@ -40,6 +45,10 @@ namespace Zealand_LoMaS_Web.Pages
             Institution1=_institutionService.GetByID(IDs[0]);
             Institution2 = _institutionService.GetByID(IDs[1]);
         }
+        /// <summary>
+        /// Edits the relations, then redirects you back to index, since you probably don't need to edit it twice.
+        /// </summary>
+        /// <returns></returns>
         public IActionResult OnPostSave()
         {
             Ids.Add(ID1);

@@ -82,6 +82,9 @@ namespace Zealand_LoMaS_Web.Pages
             _teacherService.Update(TeacherID, InstitutionID, Email, FirstName, LastName, WeeklyHours, HasCar, Region, City, PostalCode, RoadName, RoadNumber, AdminIDs);
             return RedirectToPage("/Index");
         }
+        /// <summary>
+        /// Runs Create in transportservice, then runs onGet, to get all the information for this page back.
+        /// </summary>
         public void OnPostCreate()
         {
             _transportService.Create(TeacherID, Date, InstitutionFromID, InstitutionToID);
