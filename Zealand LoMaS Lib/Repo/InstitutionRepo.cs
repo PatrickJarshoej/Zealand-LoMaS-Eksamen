@@ -95,6 +95,12 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
+        /// <summary>
+        /// Deletes the institution record with the specified identifier from the data store.
+        /// </summary>
+        /// <remarks>This method also deletes any related records associated with the specified
+        /// institution <see cref="DeleteRelations(int, SqlConnection)"/>. If the institution does not exist, no action is taken.</remarks>
+        /// <param name="id">The unique identifier of the institution to delete. Must correspond to an existing institution.</param>
         public void DeleteByID(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -104,7 +110,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     var command = new SqlCommand("DELETE FROM Institutions WHERE InstitutionID = @ID", connection);
                     command.Parameters.AddWithValue("@ID", id);
                     connection.Open();
-                    DeleteRelatitons(id, connection);
+                    DeleteRelations(id, connection);
                     command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -118,7 +124,14 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
-        private void DeleteRelatitons(int id, SqlConnection connection)
+        /// <summary>
+        /// Deletes all institution relations associated with the specified institution identifier from the database.
+        /// </summary>
+        /// <param name="id">The unique identifier of the institution whose relations are to be deleted. Must correspond to a valid
+        /// institution in the database.</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the relations will be deleted. The connection must
+        /// remain open for the duration of the operation.</param>
+        private void DeleteRelations(int id, SqlConnection connection)
         {
             try
             {

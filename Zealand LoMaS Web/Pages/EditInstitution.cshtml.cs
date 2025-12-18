@@ -59,6 +59,10 @@ namespace Zealand_LoMaS_Web.Pages
             
             
         }
+        /// <summary>
+        /// Adds the Id's to the expected list, then sends it to redirects you to EditRelations With the associated values
+        /// </summary>
+        /// <returns></returns>
         public IActionResult OnPostEditRelations()
         {
             IDs.Add(ID1);

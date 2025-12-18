@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Zealand LoMaS Lib": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable"
+    }
+  }
+}

@@ -36,7 +36,7 @@ namespace Zealand_LoMaS_Lib.Service
         public void Create(int teacherID,int adminID,int institutionID,DateTime classStart,TimeSpan duration,string classSubject, string classDescription)
         {
             AClass Lesson = new(teacherID, adminID, institutionID, classStart, duration, classSubject, classDescription);
-            _aClassRepo.Create(Lesson);
+            _aClassRepo.Add(Lesson);
         }
 
     }

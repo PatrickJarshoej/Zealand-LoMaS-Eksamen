@@ -476,8 +476,8 @@ else if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Coo
 				@foreach (var transport in Model.Transports)
 				{
 					<div class="stat">
-						<h2>Transport fra @Model.Institutions.First(a => a.InstitutionID == transport.InstitueFromID).Location.City
-							Til @Model.Institutions.First(a => a.InstitutionID == transport.InstitueToID).Location.City
+						<h2>Transport fra @Model.Institutions.First(a => a.InstitutionID == transport.InstituteFromID).Location.City
+							Til @Model.Institutions.First(a => a.InstitutionID == transport.InstituteToID).Location.City
 						</h2>
 						<p>@Model.Teacher.FirstName @Model.Teacher.LastName</p>
 						<p> <b>Transport Timer: </b> <br />@transport.TransportHours.TotalHours</p>

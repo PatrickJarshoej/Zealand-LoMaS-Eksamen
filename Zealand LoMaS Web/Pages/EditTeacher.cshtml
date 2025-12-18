@@ -109,8 +109,8 @@ else
 {
     <div class="card">
         <h1>
-            Transport fra @Model.Institutions.First(a=>a.InstitutionID==transport.InstitueToID).Location.City
-            til @Model.Institutions.First(a => a.InstitutionID == transport.InstitueFromID).Location.City
+            Transport fra @Model.Institutions.First(a=>a.InstitutionID==transport.InstituteToID).Location.City
+            til @Model.Institutions.First(a => a.InstitutionID == transport.InstituteFromID).Location.City
         </h1>
         <div>
             <p>Pris: @transport.TransportCost</p>
