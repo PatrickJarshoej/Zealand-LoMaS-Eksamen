@@ -6,7 +6,7 @@
 <link href="~/css/ourdefeault.css" rel="stylesheet" asp-append-version="true" />
 <h1>@ViewData["Title"]</h1>
 @if (HttpContext.Request.Cookies["UserID"] != "0" && HttpContext.Request.Cookies["UserStatus"] == "true")
-{
+{    
     <div class="card container">
         <form method="post" asp-page-handler="Save">
             <div class="d-flex justify-content-around">

@@ -145,6 +145,13 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
+        /// <summary>
+        /// Retrieves all institutions from the database.
+        /// </summary>
+        /// <remarks>This method executes a SQL query to fetch all records from the "Institutions" table.
+        /// If an error occurs during the operation, the method logs the error and returns an empty list.</remarks>
+        /// <returns>A list of <see cref="Institution"/> objects representing all institutions in the database. If no
+        /// institutions are found or an error occurs, an empty list is returned.</returns>
         public List<Institution> GetAll()
         {
             var institutions = new List<Institution>();
@@ -302,6 +309,14 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return institution;
         }
+        /// <summary>
+        /// Updates the details of an existing institution in the database.
+        /// </summary>
+        /// <remarks>This method updates the institution's location details, including region, city,
+        /// postal code, road name, and road number. Additionally, it updates the associated administrator IDs for the
+        /// institution.</remarks>
+        /// <param name="institution">The <see cref="Institution"/> object containing the updated information.  The <see
+        /// cref="Institution.InstitutionID"/> property must correspond to an existing institution in the database.</param>
         public void Update(Institution institution)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -332,8 +347,18 @@ namespace Zealand_LoMaS_Lib.Repo
                     connection.Close();
                 }
             }
-            //throw new NotImplementedException();
         }
+        /// <summary>
+        /// Updates the mapping of administrators to an institution in the database.
+        /// </summary>
+        /// <remarks>This method removes all existing administrator mappings for the specified institution
+        /// and inserts new mappings based on the provided list of administrator IDs. Ensure that the <paramref
+        /// name="connection"/> is open and valid before calling this method.</remarks>
+        /// <param name="institutionID">The unique identifier of the institution whose administrator mappings are to be updated.</param>
+        /// <param name="adminIDs">A list of administrator IDs to associate with the specified institution. Existing mappings for the
+        /// institution will be replaced.</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database. The connection must remain open for the duration of the
+        /// operation.</param>
         private void UpdateAdminIDs(int institutionID, List<int> adminIDs, SqlConnection connection)
         {
             try
