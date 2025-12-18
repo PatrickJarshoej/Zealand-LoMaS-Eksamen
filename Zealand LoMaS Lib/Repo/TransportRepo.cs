@@ -148,7 +148,11 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return( transports );
         }
-
+        /// <summary>
+        /// Retrieves the <see cref="Transport"/> Object associated with the specified transportID using <see cref="GetTransportsByCommand(SqlCommand)"/>.
+        /// </summary>
+        /// <param name="transportID">The unique identifier of the Transport for which to retrieve related data, to that transport.</param>
+        /// <returns>A <see cref="Transport"/> object. Returns a default object if no transport object is found</returns>   
         public Transport GetByID(int transportID)
         {
             Transport transport = new Transport();
