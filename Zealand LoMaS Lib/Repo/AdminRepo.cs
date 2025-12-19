@@ -296,6 +296,7 @@ namespace Zealand_LoMaS_Lib.Repo
         /// <returns></returns>
         public Admin GetByID(int adminID)
         {
+            Debug.WriteLine("Repo: " + adminID);
             Admin admin = new();
             using (var connection = new SqlConnection(_connectionString))
             {

@@ -28,6 +28,7 @@
 				</p>
 				<div class="d-flex justify-content-between">
 					<form method="post" asp-page-handler="EditAdminProfile" class="btn padding-none">
+						<input type="hidden" asp-for="@Model.AdminID" value="@Model.AdminID" />
 						<input class="no-border" type="submit" value="Edit Profile" />
 					</form>
 					<span onclick="document.getElementById('ChangeAdminPassword').style.display='block'">

@@ -87,6 +87,7 @@ namespace Zealand_LoMaS_Web.Pages
                 Institutions = _institutionService.GetAll();
                 Teachers = _teacherService.GetAll();
                 Admins = _adminService.GetAll();
+                AdminID = Convert.ToInt32(HttpContext.Request.Cookies["UserID"]);
             }
         }
 
@@ -220,6 +221,7 @@ namespace Zealand_LoMaS_Web.Pages
         /// </summary>
         public IActionResult OnPostEditAdminProfile()
         {
+            Debug.WriteLine("On Post Edit: " + AdminID);
             return RedirectToPage("/EditAdministrator", new { adminID = AdminID });
         }
 

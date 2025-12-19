@@ -56,15 +56,18 @@ namespace Zealand_LoMaS_Web.Pages
                     InstitutionsIDs += a.ToString() + ", ";
                 }
             }
+            Debug.WriteLine("OnGet: " + AdminID);
+
 
         }
-        
+
         /// <summary>
         /// This method calls the adminService update method to update the given administrator with the current Bound propperties.
         /// Afterwards you are redirected to the index page again.
         /// </summary>
         public IActionResult OnPostSave()
         {
+            Debug.WriteLine("Save: " + AdminID);
             _adminService.Update(AdminID, FirstName, LastName, Email, InstitutionsIDs);
             return RedirectToPage("/Index");
         }

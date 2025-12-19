@@ -52,6 +52,7 @@ namespace Zealand_LoMaS_Lib.Service
         /// <returns></returns>
         public Admin GetByID(int AdminID)
         {
+            Debug.WriteLine("Service: " + AdminID);
             Admin admin = _adminRepo.GetByID(AdminID);
             return admin;
         }
