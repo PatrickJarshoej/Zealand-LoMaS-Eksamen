@@ -20,10 +20,21 @@ namespace Zealand_LoMaS_Lib.Service
         {
             _teacherRepo = tRepo;
         }
+        /// <summary>
+        /// Retrieves all teachers from the repository.
+        /// </summary>
+        /// <returns>A list of <see cref="Teacher"/> objects representing all teachers in the repository, returns an
+        /// empty list if no teachers are found.</returns>
         public List<Teacher> GetAll()
         {
             return _teacherRepo.GetAll();
         }
+
+        /// <summary>
+        /// Retrieves a teacher by their unique identifier
+        /// </summary>
+        /// <param name="ID">The unique identifier of the teacher being retrieved</param>
+        /// <returns>The <see cref="Teacher"/> object corresponding to the specified identifier</returns>
         public Teacher GetByID(int ID)
         {
             return _teacherRepo.GetByID(ID);
@@ -65,6 +76,7 @@ namespace Zealand_LoMaS_Lib.Service
                 return teacherID;
             }
         }
+
         public void Update(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, string region, string city, int postalCode, string roadName, string roadNumber, string admins)
         {
             Address address = new(region, city, postalCode, roadName, roadNumber);
@@ -77,7 +89,7 @@ namespace Zealand_LoMaS_Lib.Service
                 List<string> aID = admins.Split(',').ToList<string>(); //Split is a built in method that turns a string into an array of strings
                 foreach (var i in aID)
                 {
-                    if (i != " ") //We need to check the string isn't just a space or the Convert.ToInt32(); will crash
+                    if (i != " ") //We need to check the string isn't just a space or the Convert.ToInt32(); will crash as " " is not a valid int
                     {
                         adminIDs.Add(Convert.ToInt32(i));
                     }

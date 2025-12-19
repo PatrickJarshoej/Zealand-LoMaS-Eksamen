@@ -15,8 +15,6 @@ namespace Zealand_LoMaS_Lib.Repo.Interfaces
         public void Update(Teacher t);
         public void DeleteByID(int id);
         public Teacher GetByTransportID(int transportID);
-        public List<Teacher> GetByAdminID(int adminID);
-        public List<Teacher> GetByInstitutionID(int institutionID);
         public Teacher GetByClassID(int classID);
         public string GetPasswordByEmail(string Email);
         public int GetTeacherIDByEmail(string Email);

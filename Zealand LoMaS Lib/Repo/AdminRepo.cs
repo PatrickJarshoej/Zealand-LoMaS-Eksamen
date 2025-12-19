@@ -18,6 +18,14 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
+        /// <summary>
+        /// Retrieves a list of admins based on the specified SQL command.
+        /// </summary>
+        /// <remarks>The method executes the provided SQL command and reads the resulting data to
+        /// construct a list of  <see cref="Admin"/> objects </remarks>
+        /// <param name="command">The <see cref="SqlCommand"/> to execute for retrieving teacher data.</param>
+        /// <param name="connection">The <see cref="SqlConnection"/> used to execute the command and retrieve related data.</param>
+        /// <returns>A list of <see cref="Admin"/> objects populated with data retrieved from the database.</returns>
         private List<Admin> GetAdminsByCommand(SqlCommand command, SqlConnection connection)
         {
             var admins = new List<Admin>();
@@ -38,6 +46,12 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return admins;
         }
+        /// <summary>
+        /// Gets a list of all <see cref="Institution"/> connected to the given <see cref="Admin"/>
+        /// </summary>
+        /// <param name="adminID"> The unique identifier of the admin whose associated Institutions you would like to get</param>
+        /// <param name="connection"> An open <see cref="SqlConnection"/> connected to the database</param>
+        /// <returns></returns>
         public List<int> GetInstitutions(int adminID, SqlConnection connection)
         {
             List<int> institutionIDs = new();

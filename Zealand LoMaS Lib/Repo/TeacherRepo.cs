@@ -19,6 +19,15 @@ namespace Zealand_LoMaS_Lib.Repo
         {
             _connectionString = "Data Source=mssql8.unoeuro.com;User ID=stackoverflowed_dk;Password=mH629G5hFzaktn34pBEw;Encrypt=False; Database=stackoverflowed_dk_db_zealand_lomas; Command Timeout=30;MultipleActiveResultSets=true;";
         }
+        /// <summary>
+        /// Retrieves a list of teachers based on the specified SQL command.
+        /// </summary>
+        /// <remarks>The method executes the provided SQL command and reads the resulting data to
+        /// construct a list of  <see cref="Teacher"/> objects
+        /// to populate  the <see cref="Teacher"/> object </remarks>
+        /// <param name="command">The <see cref="SqlCommand"/> to execute for retrieving teacher data </param>
+        /// <param name="connection">The <see cref="SqlConnection"/> used to execute the command and retrieve related data </param>
+        /// <returns>A list of <see cref="Teacher"/> objects populated with data retrieved from the database </returns>
         private List<Teacher> GetTeachersByCommand(SqlCommand command, SqlConnection connection)
         {//This is a single method that all our get methods can use, saves a lot of code
             var teachers = new List<Teacher>();
@@ -69,6 +78,14 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return institutionID;
         }
+        /// <summary>
+        /// Retrieves the address of a teacher based on the specified teacher ID.
+        /// </summary>
+        /// <remarks>Ensure that the <paramref name="connection"/> parameter is an open and valid SQL
+        /// connection before calling this method. The method does not handle closing the connection.</remarks>
+        /// <param name="id">The unique identifier of the teacher whose address is to be retrieved.</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> used to execute the database query.</param>
+        /// <returns>An <see cref="Address"/> object containing the teacher's address details if found; otherwise, an empty object.</returns>
         private Address GetAddress(int id, SqlConnection connection)
         {
             Address address = new();
@@ -98,6 +115,15 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return address;
         }
+        /// <summary>
+        /// Retrieves a list of administrator IDs associated with the specified teacher ID
+        /// </summary>
+        /// <remarks>Ensure that the <paramref name="connection"/> is properly opened before calling this
+        /// method</remarks>
+        /// <param name="id">The unique identifier of the teacher whose associated administrators are to be retrieved.</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> used to execute the database query.</param>
+        /// <returns>A list of integers representing the IDs of administrators associated with the specified teacher or eturns an
+        /// empty list if no administrators are found.</returns>
         private List<int> GetAdmins(int id, SqlConnection connection)
         {
             List<int> adminIDs = new List<int>();
@@ -121,6 +147,16 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return adminIDs;
         }
+        /// <summary>
+        /// Adds a new teacher to the database along with their associated details, such as address, administrators,
+        /// institution, and password
+        /// </summary>
+        /// <remarks>This method inserts the teacher's basic information into the database and retrieves
+        /// the generated teacher ID. The ID is then used to insert related data, such as the teacher's address,
+        /// administrators, institution, and password, into their respective tables. The method ensures that all related
+        /// data is added in a single operation</remarks>
+        /// <param name="teacher">The <see cref="Teacher"/> object containing the teacher's details to be added</param>
+        /// <param name="password">The password to associate with the teacher for authentication purposes</param>
         public void Add(Teacher teacher, string password)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -140,7 +176,7 @@ namespace Zealand_LoMaS_Lib.Repo
                     AddTeacherAddress(teacher, teacherID, connection); //Then we use this ID as our foreign key
                     AddTeacherAdmins(teacher, teacherID, connection);
                     AddTeacherInstitution(teacher, teacherID, connection);
-                    AddTeacherPassword(teacher, teacherID, password, connection);
+                    AddTeacherPassword(teacherID, password, connection);
                 }
                 catch (Exception ex)
                 {
@@ -153,6 +189,15 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
+        /// <summary>
+        /// Inserts the address information of a teacher into the database
+        /// </summary>
+        /// <remarks>This method assumes that the <paramref name="connection"/> is already open and valid
+        /// The address details are retrieved from the <see cref="Teacher.Address"/> property and inserted into the
+        /// "TeacherAddress" table </remarks>
+        /// <param name="teacher">The <see cref="Teacher"/> object containing the address details to be added </param>
+        /// <param name="tID">The unique identifier of the teacher, which is used as a foreign key in the database </param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the address will be inserted </param>
         private void AddTeacherAddress(Teacher teacher, int tID, SqlConnection connection)
         {
             try
@@ -172,6 +217,14 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error" + ex.Message);
             }
         }
+        /// <summary>
+        /// Associates the specified teacher with a list of administrators in the database
+        /// </summary>
+        /// <remarks>This method inserts into the "MapAdministratorsTeachers" table, mapping the
+        /// specified teacher to each administrator in the <see cref="Teacher.AdminIDs"/> collection </remarks>
+        /// <param name="teacher">The <see cref="Teacher"/> object containing the list of administrator IDs to associate with the teacher </param>
+        /// <param name="tID">The unique identifier of the teacher to be associated with the administrators </param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the admins will be inserted </param>
         private void AddTeacherAdmins(Teacher teacher, int tID, SqlConnection connection)
         {
             try
@@ -190,6 +243,19 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error" + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Associates a teacher with multiple classes by inserting into the MapTeacherClasses table. This method is
+        /// not currently in use, it was originally assumed to be used when creating a teacher but after closer consideration
+        /// we decided it would be seperate. However as the method still theoretically functions we kept is so i can be used
+        /// once <see cref="AClass"/> has been fully implemented
+        /// </summary>
+        /// <remarks>This method inserts for each class ID in the teacher's <see cref="Teacher.ClassIDs"/> collection
+        /// into the MapTeacherClasses table, associating the teacher with the
+        /// specified classes </remarks>
+        /// <param name="teacher">The teacher object containing the list of class IDs to associate </param>
+        /// <param name="tID">The unique identifier of the teacher to be associated with the classes </param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the classes will be inserted </param>
         private void AddTeacherClasses(Teacher teacher, int tID, SqlConnection connection)
         {   /*
                 This was created along with creater teacher but is no longer in use as 
@@ -216,6 +282,18 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
         }
+
+        /// <summary>
+        /// Adds the competencies of a teacher to the database by inserting them into the MapCompetenciesTeachers table. This method is
+        /// not currently in use, it was originally assumed to be used when creating a teacher but after closer consideration
+        /// we decided it should be seperate. However as the method still theoretically functions we kept is so i can be used
+        /// once <see cref="Competency"/> has been fully implemented
+        /// </summary>
+        /// <remarks>This method iterates through the competencies of the specified teacher and inserts
+        /// each competency into the database
+        /// <param name="teacher">The <see cref="Teacher"/> object containing the competencies to be added</param>
+        /// <param name="tID">The unique identifier of the teacher to associate with the competencies</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> used to execute the database commands</param>
         private void AddTeacherCompetencies(Teacher teacher, int tID, SqlConnection connection)
         {   //Same as the method above
             try
@@ -239,7 +317,17 @@ namespace Zealand_LoMaS_Lib.Repo
             {
             }
         }
-        private void AddTeacherPassword(Teacher teacher, int teacherID, string password, SqlConnection connection)
+
+        /// <summary>
+        /// Adds a password for the specified teacher to the database.
+        /// </summary>
+        /// <remarks>This method inserts into the "TeacherPasswords" table with the specified
+        /// teacher ID and password </remarks>
+        /// <param name="teacherID">The unique identifier of the teacher for whom the password is being added. Must correspond to an existing
+        /// teacher in the database </param>
+        /// <param name="password">The password to associate with the teacher </param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the password will be inserted </param>
+        private void AddTeacherPassword(int teacherID, string password, SqlConnection connection)
         {
             try
             {
@@ -254,6 +342,15 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error" + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Associates a teacher with an institution by inserting a mapping record into the database.
+        /// </summary>
+        /// <remarks>This method inserts a record into the "MapInstitutionsTeachers" table, linking the
+        /// specified teacher to an institution </remarks>
+        /// <param name="teacher">The <see cref="Teacher"/> object containing the institution information to associate with the teacher.</param>
+        /// <param name="teacherID">The unique identifier of the teacher to be associated with the institution.</param>
+        /// <param name="connection">An open <see cref="SqlConnection"/> to the database where the map is located </param>
         private void AddTeacherInstitution(Teacher teacher, int teacherID, SqlConnection connection)
         {
             try
@@ -269,6 +366,14 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error" + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Deletes a teacher from the database based on the specified teacherID.
+        /// </summary>
+        /// <remarks>This method executes a SQL DELETE command to remove the teacher record with the
+        /// specified ID from the "Teachers" table. If the specified ID does not exist in the database, nothing will
+        /// be deleted, and no exception will be thrown. The database uses On Delete Cascade so we only need to delete from this one table </remarks>
+        /// <param name="id">The unique identifier of the teacher to delete </param>
         public void DeleteByID(int id)
         {
             //Debug.WriteLine(id);
@@ -309,10 +414,6 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teachers;
         }
-        public List<Teacher> GetByAdminID(int adminID)
-        {
-            throw new NotImplementedException();
-        }
         public Teacher GetByClassID(int classID)
         {
             Teacher teacher = new();
@@ -342,6 +443,12 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacher;
         }
+        /// <summary>
+        /// Retrieves a teacher by their unique identifier using GetTeachersByCommand() 
+        /// </summary>
+        /// <param name="id">The unique identifier of the teacher to retrieve.</param>
+        /// <returns>A <see cref="Teacher"/> object representing the teacher with the specified identifier. If no teacher is
+        /// found, the returned object may be uninitialized or contain default values.</returns>
         public Teacher GetByID(int id)
         {
             Teacher teacher = new();
@@ -366,10 +473,6 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
             return teacher;
-        }
-        public List<Teacher> GetByInstitutionID(int institutionID)
-        {
-            throw new NotImplementedException();
         }
         public Teacher GetByTransportID(int transportID)
         {
@@ -400,6 +503,15 @@ namespace Zealand_LoMaS_Lib.Repo
             }
             return teacher;
         }
+
+        /// <summary>
+        /// This method updates all the properties of a teacher object
+        /// </summary>
+        /// <remarks> This method also updates all of the mapped values such as admins and institution 
+        /// the <see cref="Teacher.WeeklyHours"/> are stored as a decimal(10,2) in the database so we need to convert it into
+        /// a type of floating point number, in this case a double
+        /// </remarks>
+        /// <param name="teacher">This is the edited teacher</param>
         public void Update(Teacher teacher)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -430,12 +542,20 @@ namespace Zealand_LoMaS_Lib.Repo
                 }
             }
         }
+
+        /// <summary>
+        /// This method updates all associated admins
+        /// </summary>
+        /// <remarks> When updating Maps we decided it was easier and quicker to just delete all the existing elements 
+        /// for the user and the recreate them based of the list sent down </remarks>
+        /// <param name="teacherID"> The unique identifier of the teacher to update </param>
+        /// <param name="adminIDs"> The list of administrators to add</param>
+        /// <param name="connection"> An open <see cref="SqlConnection"/> to the database where the map is located </param>
         private void UpdateAdminIDs(int teacherID, List<int> adminIDs, SqlConnection connection)
         {
             Debug.WriteLine("TeacherID: "+teacherID);
             try
-            {   //When updating Maps we decided it was easier and quicker to just delete all the 
-                //Existing elements for the user and the recreate them based of the list sent down
+            {   
                 var command = new SqlCommand("DELETE FROM MapAdministratorsTeachers WHERE TeacherID=@TeacherID", connection);
                 command.Parameters.AddWithValue("@TeacherID", teacherID);
                 command.ExecuteNonQuery();
@@ -454,6 +574,14 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
+
+        /// <summary>
+        /// This method updates the associated institution
+        /// </summary>
+        /// <remarks> When updating Maps we decided it was easier and quicker to just delete all the existing elements 
+        /// for the user and the recreate them based of the value sent down </remarks>
+        /// <param name="teacher"> The teacher to update </param>
+        /// <param name="connection"> An open <see cref="SqlConnection"/> to the database where the map is located </param>
         private void UpdateTeacherInstitution(Teacher teacher, SqlConnection connection)
         {
             try
@@ -474,6 +602,14 @@ namespace Zealand_LoMaS_Lib.Repo
                 Debug.WriteLine("Error: " + ex);
             }
         }
+
+        /// <summary>
+        /// This method updates the associated address
+        /// </summary>
+        /// <remarks> When updating Maps we decided it was easier and quicker to just delete all the existing elements 
+        /// for the user and the recreate them based of the value sent down </remarks>
+        /// <param name="teacher"> The teacher to update </param>
+        /// <param name="connection"> An open <see cref="SqlConnection"/> to the database where the map is located </param>
         private void UpdateTeacherAddress(Teacher teacher, SqlConnection connection)
         {
             try

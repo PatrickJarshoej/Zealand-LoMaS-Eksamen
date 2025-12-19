@@ -25,7 +25,6 @@ namespace Zealand_LoMaS_Lib.Service
 
         public void DeleteByID(int id)
         {
-            //Debug.WriteLine("ID: " + id);
             _institutionRepo.DeleteByID(id);
         }
 
@@ -37,8 +36,6 @@ namespace Zealand_LoMaS_Lib.Service
 
         public Institution GetByID(int id)
         {
-            Debug.WriteLine("ID: " + id);
-            //return null;
             return _institutionRepo.GetByID(id);
         }
 
@@ -46,11 +43,11 @@ namespace Zealand_LoMaS_Lib.Service
         {
             List<int> adminIDs = new();
             if (admins != "")
-            {
-                List<string> aID = admins.Split(',').ToList<string>();
+            { //On the web page admins is a string so here we have to split it
+                List<string> aID = admins.Split(',').ToList<string>();  //Split is a built in method that turns a string into an array of strings
                 foreach (var i in aID)
                 {
-                    if (i != " ")
+                    if (i != " ") //We need to check the string isn't just a space or the Convert.ToInt32(); will crash as " " is not a valid int
                     {
                         adminIDs.Add(Convert.ToInt32(i));
                     }

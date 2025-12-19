@@ -22,7 +22,7 @@ namespace Zealand_LoMaS_Lib.Model
         public List<Competency> Competencies { get; private set; }
 
 
-        public Teacher() { }
+        public Teacher() { } //Required for the razorpage to load
         public Teacher(int teacherID, int institutionID, string email, string firstName, string lastName, TimeSpan weeklyHours, bool hasCar, Address address, List<int> adminIDs, List<int> classIDs, List<int> transportIDs, List<Competency> competencies)
         {
             TeacherID = teacherID;
@@ -51,7 +51,7 @@ namespace Zealand_LoMaS_Lib.Model
             Address = address;
             AdminIDs = adminIDs;
         }
-        public override string ToString()
+        public override string ToString() //Very helpful to quickly check what values were not set properly
         {
             return $"Name: {FirstName} {LastName}, Email: {Email}, Address: {Address.City}, Institution: {InstitutionID}, Admins: {AdminIDs[0]}";
         }
