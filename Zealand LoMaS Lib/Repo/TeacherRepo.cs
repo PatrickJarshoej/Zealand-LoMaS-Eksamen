@@ -23,8 +23,7 @@ namespace Zealand_LoMaS_Lib.Repo
         /// Retrieves a list of teachers based on the specified SQL command.
         /// </summary>
         /// <remarks>The method executes the provided SQL command and reads the resulting data to
-        /// construct a list of  <see cref="Teacher"/> objects
-        /// to populate  the <see cref="Teacher"/> object </remarks>
+        /// construct a list of  <see cref="Teacher"/> objects </remarks>
         /// <param name="command">The <see cref="SqlCommand"/> to execute for retrieving teacher data </param>
         /// <param name="connection">The <see cref="SqlConnection"/> used to execute the command and retrieve related data </param>
         /// <returns>A list of <see cref="Teacher"/> objects populated with data retrieved from the database </returns>

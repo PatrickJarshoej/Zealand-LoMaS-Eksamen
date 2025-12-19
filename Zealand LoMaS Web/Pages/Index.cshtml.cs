@@ -132,6 +132,7 @@ namespace Zealand_LoMaS_Web.Pages
         public void OnPostCreateInstitute()
         {
             _institutionService.Create(InstituteRegion, InstituteCity, InstitutePostal, InstituteRoadName, InstituteRoadNumber);
+            OnGet();
         }
 
         /// <summary>
