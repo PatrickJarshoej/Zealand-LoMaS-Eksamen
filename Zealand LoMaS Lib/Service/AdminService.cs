@@ -69,17 +69,25 @@ namespace Zealand_LoMaS_Lib.Service
         public void Update(int adminID, string firstName, string lastName, string email, string institutionsIDs)
         {
             List<int> institutionIDs = new();
-            if (institutionsIDs != "")
+            try
             {
-                List<string> iID = institutionsIDs.Split(',').ToList<string>();
-                foreach (var i in iID)
+                if (institutionsIDs != "")
                 {
-                    if (i != " ")
+                    List<string> iID = institutionsIDs.Split(',').ToList<string>();
+                    foreach (var i in iID)
                     {
-                        institutionIDs.Add(Convert.ToInt32(i));
+                        if (i != " ")
+                        {
+                            institutionIDs.Add(Convert.ToInt32(i));
 
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("No Institutions found in AdminService");
+                Debug.WriteLine("Error: " + ex);
             }
             Admin admin = new(adminID, firstName, lastName, email, institutionIDs);
             _institutionRepo.UpdateMapAdminInstitute(adminID, institutionIDs);
